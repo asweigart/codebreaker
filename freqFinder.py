@@ -11,124 +11,6 @@ LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 TRIGRAM_THRESHOLD = 2
 TRIGRAM_MATCH_RANGE = 30
 
-def getLetterCount(message):
-    letterToCount = {}
-    for letter in LETTERS:
-        letterToCount[letter] = 0 # intialize each letter to 0
-
-    for letter in message:
-        if letter in LETTERS:
-            letterToCount[letter] += 1
-
-    return letterToCount
-
-def getLetterFreq(message):
-    counts = getLetterCount(message)
-    totalCount = 0
-    for letter in counts:
-        totalCount += counts[letter]
-
-    letterToFreq = {}
-    for letter in counts:
-        letterToFreq[letter] = round(counts[letter] * 100 / totalCount, 2)
-    return letterToFreq
-
-def _getFrequencyOrder(message):
-    message = message.upper()
-    # first, get a dictionary of each letter and its frequency count from the message
-    letterToFreq = getLetterCount(message)
-
-    # second, make a dictionary of each frequency count to each letter(s) with that frequency
-    freqToLetter = {}
-    for letter in LETTERS:
-        freqToLetter[letterToFreq[letter]] = [] # intialize to a blank list
-
-    for letter in LETTERS:
-        freqToLetter[letterToFreq[letter]].append(letter)
-
-    # third, put each list of letters in reverse "ETAOIN" order, and then convert it to a string
-    for freq in freqToLetter:
-        freqToLetter[freq].sort(key=lambda x: ETAOIN.find(x), reverse=True)
-        freqToLetter[freq] = ''.join(freqToLetter[freq])
-
-    # fourth, convert the freqToLetter dictionary to a list of tuple pairs (key, value), then sort them
-    freqPairs = list(freqToLetter.items())
-    freqPairs.sort(key=lambda x: x[0], reverse=True)
-
-    # fifth, now that the letters are ordered by frequency, extract all the letters for the final string
-    freqOrder = ''
-    for freqPair in freqPairs:
-        freqOrder += freqPair[1]
-
-    return freqOrder
-
-
-def _englishFreqMatch(message):
-    message = message.upper()
-    freq = getLetterCount(message)
-
-    total = 0
-    freqPercentage = {}
-    for letter in freq:
-        total += freq[letter]
-    for letter in freq:
-        freqPercentage[letter] = freq[letter] / total
-
-    offScore = 0.0 # the lower the offScore, the better the match
-    for letter in LETTERS:
-        offScore += (englishLetterFreq[letter] - freqPercentage[letter]) ** 2
-    return round(offScore, 3)
-
-def englishFreqMatch(message):
-    freqOrder = _getFrequencyOrder(message)
-
-    matches = 0
-    for commonLetter in ETAOIN[:6]:
-        if commonLetter in freqOrder[:6]:
-            matches += 1
-    for uncommonLetter in ETAOIN[-6:]:
-        if uncommonLetter in freqOrder[-6:]:
-            matches += 1
-
-    return matches
-
-
-def englishTrigramMatch(message):
-    message = message.upper()
-
-    # Create a string of only hte letter characters
-    lettersOnly = []
-    for character in message:
-        if character in LETTERS:
-            lettersOnly.append(character)
-    message = ''.join(lettersOnly)
-
-    total = 0
-    trigrams = {}
-    for i in range(len(message) - 2):
-        trigram = message[i:i+3]
-        if trigram in trigrams:
-            trigrams[trigram] += 1
-        else:
-            trigrams[trigram] = 1
-        total +=1
-
-    topFreqs = list(trigrams.items())
-    topFreqs.sort(key=lambda x: x[1], reverse=True)
-    topFreqs = [x[0] for x in topFreqs]
-
-    trigramFreqs = {}
-    for trigram in trigrams:
-        trigramFreqs[trigram] = trigrams[trigram] / total * 100
-
-    matches = 0
-    for commonTrig in englishTrigramFreq:
-        if commonTrig in topFreqs[:TRIGRAM_MATCH_RANGE]:
-            matches += 1
-
-    return matches >= TRIGRAM_THRESHOLD
-
-
 def main():
     import random
 
@@ -191,6 +73,130 @@ THAT THEN I SCORN TO CHANGE MY STATE WITH KINGS."""
     print('Frequency score of "VDIUFRFDSFEWAFDSAFLKHFDSALKFA":')
     print(englishFreqMatch("VDIUFRFDSFEWAFDSAFLKHFDSALKFA"))
     print()
+
+
+def getLetterCount(message):
+    # Returns a dictionary with keys of single letters and values of the
+    # count of how many times they appear in the message parameter.
+    letterToCount = {}
+    for letter in LETTERS:
+        letterToCount[letter] = 0 # intialize each letter to 0
+
+    for letter in message:
+        if letter in LETTERS:
+            letterToCount[letter] += 1
+
+    return letterToCount
+
+def getLetterFreq(message):
+    # Returns a dictionary with keys of single letters and values of the
+    # percentage of their frequency in the message parameter.
+    counts = getLetterCount(message)
+    totalCount = 0
+    for letter in counts:
+        totalCount += counts[letter]
+
+    letterToFreq = {}
+    for letter in counts:
+        letterToFreq[letter] = round(counts[letter] * 100 / totalCount, 2)
+    return letterToFreq
+
+def getFrequencyOrder(message):
+    # Returns a string of the alphabet letters arranged in order of most
+    # frequently occurring in the message parameter.
+    message = message.upper()
+
+    # first, get a dictionary of each letter and its frequency count from the message
+    letterToFreq = getLetterCount(message)
+
+    # second, make a dictionary of each frequency count to each letter(s) with that frequency
+    freqToLetter = {}
+    for letter in LETTERS:
+        freqToLetter[letterToFreq[letter]] = [] # intialize to a blank list
+
+    for letter in LETTERS:
+        freqToLetter[letterToFreq[letter]].append(letter)
+
+    # third, put each list of letters in reverse "ETAOIN" order, and then convert it to a string
+    for freq in freqToLetter:
+        freqToLetter[freq].sort(key=lambda x: ETAOIN.find(x), reverse=True)
+        freqToLetter[freq] = ''.join(freqToLetter[freq])
+
+    # fourth, convert the freqToLetter dictionary to a list of tuple pairs (key, value), then sort them
+    freqPairs = list(freqToLetter.items())
+    freqPairs.sort(key=lambda x: x[0], reverse=True)
+
+    # fifth, now that the letters are ordered by frequency, extract all the letters for the final string
+    freqOrder = ''
+    for freqPair in freqPairs:
+        freqOrder += freqPair[1]
+
+    return freqOrder
+
+
+def englishFreqMatch(message):
+    # Return the number of matches that the string in the message parameter
+    # has when its letter frequency is compared to English letter frequency.
+    # A "match" is how many of its six most frequent and six least frequent
+    # letters is among the six most frequent and six least frequent letters
+    # for English.
+    freqOrder = getFrequencyOrder(message)
+    print(freqOrder)
+
+    matches = 0
+    # Find how many matches for the six most common letters there are.
+    for commonLetter in ETAOIN[:6]:
+        if commonLetter in freqOrder[:6]:
+            matches += 1
+    # Find how many matches for the six least common letters there are.
+    for uncommonLetter in ETAOIN[-6:]:
+        if uncommonLetter in freqOrder[-6:]:
+            matches += 1
+
+    return matches
+
+
+def englishTrigramMatch(message):
+    # Return True if the string in the message parameter matches the
+    # trigram frequency of English.
+
+    # Remove the non-letter characters from message
+    message = message.upper()
+    lettersOnly = []
+    for character in message:
+        if character in LETTERS:
+            lettersOnly.append(character)
+    message = ''.join(lettersOnly)
+
+    # Count the trigrams in message
+    total = 0
+    trigrams = {}
+    for i in range(len(message) - 2):
+        trigram = message[i:i+3]
+        if trigram in trigrams:
+            trigrams[trigram] += 1
+        else:
+            trigrams[trigram] = 1
+        total +=1
+
+    # Sort the trigrams by frequency
+    topFreqs = list(trigrams.items())
+    topFreqs.sort(key=lambda x: x[1], reverse=True)
+    topFreqLetters = []
+    for item in topFreqs:
+        topFreqLetters.append(item[0])
+
+    trigramFreqs = {}
+    for trigram in trigrams:
+        trigramFreqs[trigram] = trigrams[trigram] / total * 100
+
+    matches = 0
+    for commonTrig in englishTrigramFreq:
+        if commonTrig in topFreqLetters[:TRIGRAM_MATCH_RANGE]:
+            matches += 1
+
+    return matches >= TRIGRAM_THRESHOLD
+
 
 if __name__ == '__main__':
     main()

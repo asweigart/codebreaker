@@ -4,10 +4,13 @@
 import random
 import rabinMiller
 
+SILENT_MODE = False
 
 def main():
     # create a public/private keypair with 1024 bit keys
-    makeKeyFiles('al_sweigart', 1024, True)
+    print('Making key files...')
+    makeKeyFiles('al_sweigart', 1024)
+    print('Key files made.')
 
 
 def makeKeyFiles(name, keysize=1024):
@@ -17,18 +20,20 @@ def makeKeyFiles(name, keysize=1024):
 
     publicKey, privateKey = generateKey(keysize)
 
-    print()
-    print('The public key is a %s and %s digit number.' % (len(str(publicKey[0])), len(str(publicKey[1]))))
-    print()
-    print('Writing public key to file %s_pubkey.txt...' % (name))
+    if not SILENT_MODE:
+        print()
+        print('The public key is a %s and %s digit number.' % (len(str(publicKey[0])), len(str(publicKey[1]))))
+        print()
+        print('Writing public key to file %s_pubkey.txt...' % (name))
     fp = open('%s_pubkey.txt' % (name), 'w')
     fp.write('%s,%s' % (publicKey[0], publicKey[1]))
     fp.close()
 
-    print()
-    print('The private key is a %s and %s digit number.' % (len(str(publicKey[0])), len(str(publicKey[1]))))
-    print()
-    print('Writing private key to file %s_privkey.txt...' % (name))
+    if not SILENT_MODE:
+        print()
+        print('The private key is a %s and %s digit number.' % (len(str(publicKey[0])), len(str(publicKey[1]))))
+        print()
+        print('Writing private key to file %s_privkey.txt...' % (name))
     fp = open('%s_privkey.txt' % (name), 'w')
     fp.write('%s,%s' % (privateKey[0], privateKey[1]))
     fp.close()
@@ -39,13 +44,16 @@ def generateKey(keysize=1024):
     # size. This function may take a while to run.
 
     # Step 1: Create two prime numbers, p and q.
-    print('Generating p prime...')
+    if not SILENT_MODE:
+        print('Generating p prime...')
     p = rabinMiller.generateLargePrime(keysize)
-    print('Generating q prime...')
+    if not SILENT_MODE:
+        print('Generating q prime...')
     q = rabinMiller.generateLargePrime(keysize)
 
     # Step 2: Create a number e.
-    print('Generating e that is relatively prime to (p-1)*(q-1)...')
+    if not SILENT_MODE:
+        print('Generating e that is relatively prime to (p-1)*(q-1)...')
     while True:
         # Come up with an e that is relatively prime to (p-1)*(q-1)
         e = random.randrange(2 ** (keysize - 1), 2 ** (keysize))
@@ -54,16 +62,18 @@ def generateKey(keysize=1024):
     n = p * q
 
     # Step 3: Get the mod inverse of e.
-    print('Calculating d that is mod inverse of e...')
+    if not SILENT_MODE:
+        print('Calculating d that is mod inverse of e...')
     d = getModInverse(e, (p - 1) * (q - 1))
 
     publicKey = (n, e)
     privateKey = (n, d)
 
-    print('Public key:')
-    print(publicKey)
-    print('Private key:')
-    print(privateKey)
+    if not SILENT_MODE:
+        print('Public key:')
+        print(publicKey)
+        print('Private key:')
+        print(privateKey)
 
     return (publicKey, privateKey)
 
