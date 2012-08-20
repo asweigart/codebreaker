@@ -1,0 +1,52 @@
+# Detect English module
+# http://inventwithpython.com/codebreaker (BSD Licensed)
+
+# To use, run:
+#   import detectEnglish
+#   detectEnglish.isEnglish(someString) # returns True or False
+# (There must be a "dictionary.txt" file in this directory with all English
+# words in it, one word per line.)
+import re
+
+dictionaryFile = open('dictionary.txt')
+ENGLISH_WORDS = dictionaryFile.read().upper().split('\n')
+dictionaryFile.close()
+
+nonLettersOrSpacePattern = re.compile('[^A-Z\s]')
+nonLettersPattern = re.compile('[^A-Z]')
+LETTTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+def getEnglishCount(message):
+    # Returns the amount of words in message that appear in the dictionary.
+
+    message = message.upper()
+
+    # Use a "regular expression" to get rid of non-letters or spaces from the message.
+    message = nonLettersOrSpacePattern.sub('', message)
+
+    words = message.split()
+
+    # Go through each word and see how many are english words.
+    matches = 0
+    for word in words:
+        # If the word exists in ENGLISH_WORDS, then increment the number of
+        # matches by 1.
+        if word in ENGLISH_WORDS:
+            matches += 1
+
+    # Return the fraction of matching words out of total words.
+    return (matches / len(words))
+
+def isEnglish(message, wordPercentage=20):
+    # By default, 20% of the words must be recognized as English words that
+    # exist in the dictionary file.
+    wordPercentage /= 100
+
+
+    # Get the percentage of recognized English words.
+    englishWords = getEnglishCount(message)
+
+    # Get the number of letters in the message.
+    numLetters = len(nonLettersPattern.sub('', message.upper()))
+
+    return (englishWords >= wordPercentage)
