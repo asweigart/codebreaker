@@ -9,7 +9,9 @@
 import re
 
 dictionaryFile = open('dictionary.txt')
-ENGLISH_WORDS = dictionaryFile.read().upper().split('\n')
+ENGLISH_WORDS = {}
+for word in dictionaryFile.read().upper().split('\n'):
+    ENGLISH_WORDS[word] = None
 dictionaryFile.close()
 
 nonLettersOrSpacePattern = re.compile('[^A-Z\s]')
