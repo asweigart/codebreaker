@@ -18,6 +18,17 @@ nonLettersOrSpacePattern = re.compile('[^A-Z\s]')
 nonLettersPattern = re.compile('[^A-Z]')
 LETTTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
+
+def main():
+    print('Testing the English detection module...')
+    messages = ['The quick brown fox jumped over the yellow lazy dog.',
+                'Hello there. lkjjfldsf dsafk alf ewfewlfjl efa',
+                'Sumimasen. Kore wa nan desu ka?',
+                '1100010110010111001011110000']
+    for m in messages:
+        print('%s\n\t%s\n' % (m, isEnglish(m)))
+
+
 def getEnglishCount(message):
     # Returns the amount of words in message that appear in the dictionary.
 
@@ -27,6 +38,9 @@ def getEnglishCount(message):
     message = nonLettersOrSpacePattern.sub('', message)
 
     words = message.split()
+
+    if not words:
+        return False # after removing non-letters, message was blank
 
     # Go through each word and see how many are english words.
     matches = 0
@@ -52,3 +66,6 @@ def isEnglish(message, wordPercentage=20):
     numLetters = len(nonLettersPattern.sub('', message.upper()))
 
     return (englishWords >= wordPercentage)
+
+if __name__ == '__main__':
+    main()
