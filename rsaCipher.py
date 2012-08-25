@@ -56,11 +56,12 @@ def getTextFromBlocks(blockInts, messageLength, blockSize=DEFAULT_BLOCK_SIZE):
     for blockInt in blockInts:
         blockMessage = []
         for i in range(blockSize-1, -1, -1):
-            # Decode the message string for the 512 (or whatever blockSize is
-            # set to) characters from this block integer.
-            charNumber = blockInt // (BYTE_SIZE ** i)
-            blockInt = blockInt % (BYTE_SIZE ** i)
-            blockMessage.insert(0, bytes([charNumber]).decode('ascii'))
+            if len(message) + i < messageLength:
+                # Decode the message string for the 512 (or whatever blockSize is
+                # set to) characters from this block integer.
+                charNumber = blockInt // (BYTE_SIZE ** i)
+                blockInt = blockInt % (BYTE_SIZE ** i)
+                blockMessage.insert(0, bytes([charNumber]).decode('ascii'))
         message.extend(blockMessage)
     return ''.join(message)
 

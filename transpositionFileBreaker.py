@@ -1,17 +1,10 @@
-# Transposition Cipher Breaker
+# Transposition File Breaker
 # http://inventwithpython.com/codebreaker (BSD Licensed)
 
-import math, re, sys, time, os, sys, transpositionDecrypt, detectEnglish
+import sys, time, os, sys, transpositionDecrypt, detectEnglish
 
 inputFilename = 'frankenstein.encrypted.txt'
 outputFilename = 'frankenstein.decrypted.txt'
-
-dictionaryFile = open('dictionary.txt')
-englishWords = {}
-for word in dictionaryFile.read().split('\n'):
-    englishWords[word] = None
-#englishWords = dictionaryFile.read().split('\n') # 507 seconds
-dictionaryFile.close()
 
 def main():
     if not os.path.exists(inputFilename):
@@ -22,39 +15,16 @@ def main():
     content = inputFile.read()
     inputFile.close()
 
-    print('Breaking...')
-    # Python programs can be stopped at any time by pressing Ctrl-C (on
-    # Windows) or Ctrl-D (on Mac and Linux)
-    print('(Press Ctrl-C or Ctrl-D to quit at any time.)')
     brokenMessage = breakTransposition(content)
 
     if brokenMessage != None:
-        print('Writing broken file to %s:' % (outputFilename))
+        print('Writing decrypted text to %s:' % (outputFilename))
 
         outputFile = open(outputFilename, 'w')
         outputFile.write(brokenMessage)
         outputFile.close()
     else:
         print('Failed to break encryption.')
-
-
-# The getEnglishCount() function's code was copy/pasted from transpositionBreaker.py
-def getEnglishCount(message):
-    message = message.lower()
-    message = re.sub('[^a-z\s]', '', message)
-    words = message.split()
-    matches = 0
-    for word in words:
-        if word in englishWords:
-            matches += 1
-    return matches / len(words)
-
-
-# The isEnglish() function's code was copy/pasted from transpositionBreaker.py
-def isEnglish(message, thresholdPercent):
-    if englishWords == None:
-        loadDictionary('dictionary.txt')
-    return (100 * getEnglishCount(message)) >= thresholdPercent
 
 
 # The breakTransposition() function's code was copy/pasted from
@@ -80,8 +50,8 @@ def breakTransposition(message):
         print('Key test time: %s seconds, ' % (totalTime), end='')
         sys.stdout.flush() # flush printed text to the screen
 
-        print('Percent English: %s%%' % (round(detectEnglish.getEnglishCount(decryptedText) * 100, 2)))
-        if isEnglish(decryptedText, 20):
+        print('Percent English: %s%%' % (englishPercentage))
+        if detectEnglish.isEnglish(decryptedText, 20):
             print()
             print('Key ' + str(key) + ': ' + decryptedText[:100])
             print()

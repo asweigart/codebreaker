@@ -8,15 +8,20 @@
 # words in it, one word per line.)
 import re
 
-dictionaryFile = open('dictionary.txt')
-ENGLISH_WORDS = {}
-for word in dictionaryFile.read().upper().split('\n'):
-    ENGLISH_WORDS[word] = None
-dictionaryFile.close()
-
 nonLettersOrSpacePattern = re.compile('[^A-Z\s]')
 nonLettersPattern = re.compile('[^A-Z]')
 LETTTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+
+def loadDictionary(dictionaryFilename):
+    dictionaryFile = open(dictionaryFilename)
+    englishWords = {}
+    for word in dictionaryFile.read().split('\n'):
+        englishWords[word] = None
+    dictionaryFile.close()
+    return englishWords
+
+ENGLISH_WORDS = loadDictionary('dictionary.txt')
 
 
 def main():
@@ -29,41 +34,39 @@ def main():
         print('%s\n\t%s\n' % (m, isEnglish(m)))
 
 
+# The getEnglishCount() function's code was copy/pasted from transpositionBreaker.py
 def getEnglishCount(message):
-    # Returns the amount of words in message that appear in the dictionary.
-
     message = message.upper()
-
-    # Use a "regular expression" to get rid of non-letters or spaces from the message.
-    message = nonLettersOrSpacePattern.sub('', message)
-
+    message = re.sub('[^A-Z\s]', '', message)
     words = message.split()
-    if not words:
-        return False # after removing non-letters, message was blank
 
-    # Go through each word and see how many are english words.
+    if not words:
+        return False # no words at all, so return False
+
     matches = 0
     for word in words:
-        # If the word exists in ENGLISH_WORDS, then increment the number of
-        # matches by 1.
         if word in ENGLISH_WORDS:
             matches += 1
+    return matches / len(words)
 
-    # Return the fraction of matching words out of total words.
-    return (matches / len(words))
 
-def isEnglish(message, wordPercentage=20):
+def isEnglish(message, wordPercentage=20, letterPercentage=67):
     # By default, 20% of the words must be recognized as English words that
-    # exist in the dictionary file.
+    # exist in the dictionary file, and 67% of all the characters in the
+    # message must be letters (not punctuation, spaces, or numbers).
     wordPercentage /= 100
+    letterPercentage /= 100
 
     # Get the percentage of recognized English words.
     englishWords = getEnglishCount(message)
 
     # Get the number of letters in the message.
-    numLetters = len(nonLettersPattern.sub('', message.upper()))
+    numLetters = 0
+    for symbol in message.upper():
+        if symbol in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+            numLetters += 1
 
-    return (englishWords >= wordPercentage)
+    return (englishWords >= wordPercentage) and (numLetters / len(message) >= letterPercentage)
 
 
 # If detectEnglish.py is run (instead of imported as a module) call

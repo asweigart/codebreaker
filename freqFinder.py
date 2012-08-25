@@ -122,7 +122,7 @@ def getFrequencyOrder(message):
 
     # third, put each list of letters in reverse "ETAOIN" order, and then convert it to a string
     for freq in freqToLetter:
-        freqToLetter[freq].sort(key=lambda x: ETAOIN.find(x), reverse=True)
+        freqToLetter[freq].sort(key=ETAOIN.find, reverse=True)
         freqToLetter[freq] = ''.join(freqToLetter[freq])
 
     # fourth, convert the freqToLetter dictionary to a list of tuple pairs (key, value), then sort them
@@ -144,7 +144,6 @@ def englishFreqMatch(message):
     # letters is among the six most frequent and six least frequent letters
     # for English.
     freqOrder = getFrequencyOrder(message)
-    print(freqOrder)
 
     matches = 0
     # Find how many matches for the six most common letters there are.
@@ -180,7 +179,7 @@ def englishTrigramMatch(message):
             trigrams[trigram] += 1
         else:
             trigrams[trigram] = 1
-        total +=1
+        total += 1
 
     # Sort the trigrams by frequency
     topFreqs = list(trigrams.items())

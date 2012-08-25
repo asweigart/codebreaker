@@ -1,7 +1,7 @@
 # Vigenere Cipher (Polyalphabetic Cipher)
 # http://inventwithpython.com/codebreaker (BSD Licensed)
 
-import pyperclip, simpleSubCipher
+import pyperclip
 
 LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
@@ -44,9 +44,9 @@ def translateMessage(message, key, mode):
         num = LETTERS.find(symbol)
         if num != -1:
             if mode == 'encrypt':
-               num += LETTERS.find(key[keyIndex]) # add if encrypting
+                num += LETTERS.find(key[keyIndex]) # add if encrypting
             elif mode == 'decrypt':
-               num -= LETTERS.find(key[keyIndex]) # subtract if decrypting
+                num -= LETTERS.find(key[keyIndex]) # subtract if decrypting
 
             # handle the potential wrap around
             if num >= len(LETTERS):
@@ -70,4 +70,4 @@ def translateMessage(message, key, mode):
 # If vigenereCipher.py is run (instead of imported as a module) call
 # the main() function.
 if __name__ == '__main__':
-     main()
+    main()

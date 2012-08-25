@@ -22,15 +22,15 @@ ciphertext word 'JHJHWDOV' (because all of them have the pattern
 '0.1.0.1.2.3.4.5')
 
 In this program, a "map" or "mapping" is a dictionary where the keys are the
-letters in SYMBOLS (e.g. 'A', 'B', 'C', etc) and the values are lists of
+letters in LETTERS (e.g. 'A', 'B', 'C', etc) and the values are lists of
 letters that could possibly be the correct decryption. If the list is blank,
 this means that it is unknown what this letter could decrypt to.
 """
 
 # The import statement for wordPatterns is further down.
-import os, sys, simpleSubCipher, re, copy
+import os, simpleSubCipher, re, copy
 
-SYMBOLS = simpleSubCipher.SYMBOLS
+LETTERS = simpleSubCipher.LETTERS
 
 
 def main():
@@ -66,7 +66,7 @@ def main():
     # display the results to the user.
     print('Done.')
     print()
-    printMapping(ciphertext, theMap)
+    printMapping(theMap)
     print()
     print('Original ciphertext:')
     print(message)
@@ -123,7 +123,7 @@ def getNewBlankMapping():
     # uppercase letters, and the values are blank lists.
     # E.g. {'A': [], 'B': [], 'C': [], ...etc}
     theMap = {}
-    for i in SYMBOLS:
+    for i in LETTERS:
         theMap[i] = []
     return theMap
 
@@ -202,16 +202,16 @@ def removeSolvedLettersFromMapping(theMap):
     return theMap
 
 
-def printMapping(ciphertext, theMap):
+def printMapping(theMap):
     # Display a mapping data structure on the screen.
     print('Mapping:')
-    print('    ' + ' '.join(list(SYMBOLS)))
-    print('    ' + ' '.join('=' * len(SYMBOLS)))
+    print('    ' + ' '.join(list(LETTERS)))
+    print('    ' + ' '.join('=' * len(LETTERS)))
 
-    for i in range(len(SYMBOLS)):
+    for i in range(len(LETTERS)):
         print('    ', end='')
         foundAnyLetters = False
-        for j in SYMBOLS:
+        for j in LETTERS:
             # theMap[j] points to a list of single-character strings that
             # are potential solutions for the ciphertext letter in j.
             if len(theMap[j]) > i:
@@ -229,11 +229,11 @@ def decryptWithMap(ciphertext, theMap):
     # information in theMap, instead of a simple sub key.
 
     # First create a simple sub key from the theMap mapping.
-    key = ['x'] * len(SYMBOLS)
+    key = ['x'] * len(LETTERS)
     for letter in theMap.keys():
         if len(theMap[letter]) == 1:
             # There is only one possible letter mapping, so add it to the key.
-            keyIndex = SYMBOLS.find(theMap[letter][0].upper())
+            keyIndex = LETTERS.find(theMap[letter][0].upper())
             key[keyIndex] = letter.upper()
         else:
             ciphertext = ciphertext.replace(letter, '_')
@@ -243,35 +243,36 @@ def decryptWithMap(ciphertext, theMap):
     # decryption.
     return simpleSubCipher.decryptMessage(key, ciphertext)
 
+def checkForWordPatternsPy():
+    # If the wordPatterns.py file does not exist, create it based on the words
+    # in our dictionary text file, dictionary.txt.
+    # (You can download this file from http://inventwithpython.com/dictionary.txt)
+    if not os.path.exists('wordPatterns.py'):
+        import pprint # import the "pretty print" module
+        allPatterns = {}
 
-# If the wordPatterns.py file does not exist, create it based on the words
-# in our dictionary text file, dictionary.txt.
-# (You can download this file from http://inventwithpython.com/dictionary.txt)
-if not os.path.exists('wordPatterns.py'):
-    import pprint # import the "pretty print" module
-    allPatterns = {}
+        fp = open('dictionary.txt')
+        wordList = fp.readlines()
+        fp.close()
 
-    fp = open('dictionary.txt')
-    wordList = fp.readlines()
-    fp.close()
+        for word in wordList:
+            word = word.strip() # get rid of newline at the end of the string
+            pattern = getWordPattern(word)
 
-    for word in wordList:
-        word = word.strip() # get rid of newline at the end of the string
-        pattern = getWordPattern(word)
+            if pattern not in allPatterns:
+                allPatterns[pattern] = [word]
+            else:
+                allPatterns[pattern].append(word)
 
-        if pattern not in allPatterns:
-            allPatterns[pattern] = [word]
-        else:
-            allPatterns[pattern].append(word)
-
-    # This is code that writes code. The wordPatterns.py file contains
-    # one very, very large assignment statement.
-    fp = open('wordPatterns.py', 'w')
-    fp.write('allPatterns = ')
-    fp.write(pprint.pformat(allPatterns))
-    fp.close()
+        # This is code that writes code. The wordPatterns.py file contains
+        # one very, very large assignment statement.
+        fp = open('wordPatterns.py', 'w')
+        fp.write('allPatterns = ')
+        fp.write(pprint.pformat(allPatterns))
+        fp.close()
 
 # Import our wordPatterns.py file.
+checkForWordPatternsPy()
 import wordPatterns
 
 if __name__ == '__main__':

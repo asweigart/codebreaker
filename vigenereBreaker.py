@@ -20,7 +20,7 @@ def main():
 
     if brokenCiphertext != None:
         print('Copying broken ciphertext to clipboard:')
-        print(brokenCiphertext) # only print the first 1000 characters
+        print(brokenCiphertext)
         pyperclip.copy(brokenCiphertext)
     else:
         print('Failed to break encryption.')
@@ -41,7 +41,7 @@ def findRepeatSequences(ciphertext):
 
     # Compile a list of seqLen-letter sequences found in the ciphertext.
     seqSpacings = {}
-    for seqLen in range(3,5):
+    for seqLen in range(3, 5):
         for seqStart in range(len(ciphertext) - seqLen):
             # Determine what the sequence is, and store it in seq
             seq = ciphertext[seqStart:seqStart+seqLen]

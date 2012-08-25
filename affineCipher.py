@@ -1,7 +1,7 @@
 # Affine Cipher
 # http://inventwithpython.com/codebreaker (BSD Licensed)
 
-import sys, random, pyperclip
+import sys, pyperclip
 
 LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 

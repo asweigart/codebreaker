@@ -31,7 +31,7 @@ def encryptMessage(message, key):
 
     ciphertext = '' # will contain the encrypted string
     for symbol in message:
-        for i in range(int(key[keyIndex])):
+        for dummy in range(int(key[keyIndex])):
             # A randomly-selected null symbol is appended to the end
             # of the ciphertext.
             ciphertext += random.choice(SYMBOLS)
@@ -50,7 +50,7 @@ def encryptMessage(message, key):
     # Add some more nulls after adding the last symbol. This way, a code
     # breaker cannot assume that the last symbol in the ciphertext is
     # always a part of the original message.
-    for i in range(int(key[keyIndex])):
+    for dummy in range(int(key[keyIndex])):
         ciphertext += random.choice(SYMBOLS)
 
     return ciphertext

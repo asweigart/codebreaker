@@ -1,6 +1,8 @@
 # Caesar Cipher
 # http://inventwithpython.com/codebreaker (BSD Licensed)
 
+import pyperclip
+
 # the string to be encrypted/decrypted
 message = 'This is my secret message.'
 
@@ -25,9 +27,9 @@ for symbol in message:
         # get the encrypted (or decrypted) number for this symbol
         num = LETTERS.find(symbol) # get the number of the symbol
         if mode == 'encrypt':
-           num = num + key
+            num = num + key
         elif mode == 'decrypt':
-           num = num - key
+            num = num - key
 
         # handle the wrap around if num is larger than the length of LETTERS
         # or less than 0
@@ -45,3 +47,6 @@ for symbol in message:
 
 # print the encrypted/decrypted string to the screen
 print(translated)
+
+# copy the encrypted/decrypted string to the clipboard
+pyperclip.copy(translated)

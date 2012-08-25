@@ -1,7 +1,7 @@
 # Transposition Cipher Encryption
 # http://inventwithpython.com/codebreaker (BSD Licensed)
 
-import math, pyperclip
+import pyperclip
 
 def main():
     myMessage = 'Common sense is not so common.'

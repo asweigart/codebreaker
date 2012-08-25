@@ -40,7 +40,7 @@ def breakTransposition(message):
             print('Enter D for done, or just press Enter to continue breaking:')
             response = input('> ')
 
-            if response.upper().startswith('D'):
+            if response.strip().upper().startswith('D'):
                 return decryptedText
 
     return None
