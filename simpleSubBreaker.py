@@ -58,6 +58,9 @@ def main():
 
     # determine the possible valid ciphertext translations
     print('Breaking...')
+    # Python programs can be stopped at any time by pressing Ctrl-C (on
+    # Windows) or Ctrl-D (on Mac and Linux)
+    print('(Press Ctrl-C or Ctrl-D to quit at any time.)')
     theMap = breakSimpleSub(getNewBlankMapping(), allCandidates)
 
     # display the results to the user.
@@ -67,7 +70,7 @@ def main():
     print()
     print('Original ciphertext:')
     print(message)
-    print('')
+    print()
     print('Broken ciphertext:')
     print(decryptWithMap(message, theMap))
     print()

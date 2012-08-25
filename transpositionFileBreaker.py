@@ -1,7 +1,7 @@
 # Transposition Cipher Breaker
 # http://inventwithpython.com/codebreaker (BSD Licensed)
 
-import math, re, sys, time, os, sys
+import math, re, sys, time, os, sys, transpositionDecrypt, detectEnglish
 
 inputFilename = 'frankenstein.encrypted.txt'
 outputFilename = 'frankenstein.decrypted.txt'
@@ -15,40 +15,27 @@ dictionaryFile.close()
 
 def main():
     if not os.path.exists(inputFilename):
-        print('The file %s does not exist. Quitting...' % (inputFilename))
+        print('The file %s does not exist. Quitting.' % (inputFilename))
         sys.exit()
 
     inputFile = open(inputFilename)
     content = inputFile.read()
     inputFile.close()
 
+    print('Breaking...')
+    # Python programs can be stopped at any time by pressing Ctrl-C (on
+    # Windows) or Ctrl-D (on Mac and Linux)
+    print('(Press Ctrl-C or Ctrl-D to quit at any time.)')
     brokenMessage = breakTransposition(content)
-    print('Writing broken file to %s:' % (outputFilename))
 
-    outputFile = open(outputFilename, 'w')
-    outputFile.write(brokenMessage)
-    outputFile.close()
+    if brokenMessage != None:
+        print('Writing broken file to %s:' % (outputFilename))
 
-
-
-# The decryptMessage() function's code was copy/pasted from
-# transpositionDecrypt.py with the comments removed.
-def decryptMessage(key, message):
-    numOfColumns = math.ceil(len(message) / key)
-    numOfRows = key
-    numOfShadedBoxes = (numOfColumns * numOfRows) - len(message)
-
-    plaintext = [''] * numOfColumns
-
-    col = 0
-    row = 0
-    for i in range(len(message)):
-        plaintext[col] += message[i]
-        col += 1
-        if (col == numOfColumns) or (col == numOfColumns - 1 and row >= numOfRows - numOfShadedBoxes):
-            col = 0
-            row += 1
-    return ''.join(plaintext)
+        outputFile = open(outputFilename, 'w')
+        outputFile.write(brokenMessage)
+        outputFile.close()
+    else:
+        print('Failed to break encryption.')
 
 
 # The getEnglishCount() function's code was copy/pasted from transpositionBreaker.py
@@ -86,22 +73,26 @@ def breakTransposition(message):
         # so we record the time in startTime.
         startTime = time.time()
 
-        decryptedText = decryptMessage(key, message)
-        englishPercentage = round(getEnglishCount(decryptedText) * 100, 2)
+        decryptedText = transpositionDecrypt.decryptMessage(key, message)
+        englishPercentage = round(detectEnglish.getEnglishCount(decryptedText) * 100, 2)
 
-        print('Key test time: %s seconds, ' % (round(time.time() - startTime, 3)), end='')
-        sys.stdout.flush()
+        totalTime = round(time.time() - startTime, 3)
+        print('Key test time: %s seconds, ' % (totalTime), end='')
+        sys.stdout.flush() # flush printed text to the screen
 
-        print('Percent English: %s%%' % (round(getEnglishCount(decryptedText) * 100, 2)))
+        print('Percent English: %s%%' % (round(detectEnglish.getEnglishCount(decryptedText) * 100, 2)))
         if isEnglish(decryptedText, 20):
             print()
             print('Key ' + str(key) + ': ' + decryptedText[:100])
             print()
             print('Enter D for done, or just press Enter to continue:')
             response = input('> ')
-            if response.upper().startswith('D'):
+            if response.strip().upper().startswith('D'):
                 return decryptedText
+    return None
 
 
+# If transpositionFileBreaker.py is run (instead of imported as a module)
+# call the main() function.
 if __name__ == '__main__':
     main()

@@ -1,5 +1,6 @@
 # Prime Number Sieve
 # http://inventwithpython.com/codebreaker (BSD Licensed)
+
 import math
 
 def main():
@@ -82,5 +83,7 @@ def testPrimeFunctions():
         print('ERROR! Both functions are not consistent with each other.')
 
 
+# If primeSieve.py is run (instead of imported as a module) call
+# the main() function.
 if __name__ == '__main__':
     main()

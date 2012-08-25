@@ -4,7 +4,7 @@
 # frequency taken from http://en.wikipedia.org/wiki/Letter_frequency
 englishLetterFreq = {'E': 12.70, 'T': 9.06, 'A': 8.17, 'O': 7.51, 'I': 6.97, 'N': 6.75, 'S': 6.33, 'H': 6.09, 'R': 5.99, 'D': 4.25, 'L': 4.03, 'C': 2.78, 'U': 2.76, 'M': 2.41, 'W': 2.36, 'F': 2.23, 'G': 2.02, 'Y': 1.97, 'P': 1.93, 'B': 1.29, 'V': 0.98, 'K': 0.77, 'J': 0.15, 'X': 0.15, 'Q': 0.10, 'Z': 0.07}
 englishTrigramFreq = {'THE': 3.508232, 'AND': 1.593878, 'ING': 1.147042, 'HER': 0.822444, 'HAT': 0.650715, 'HIS': 0.596748, 'THA': 0.593593, 'ERE': 0.560594, 'FOR': 0.555372, 'ENT': 0.530771, 'ION': 0.506454, 'TER': 0.461099, 'WAS': 0.460487, 'YOU': 0.437213, 'ITH': 0.43125, 'VER': 0.430732, 'ALL': 0.422758, 'WIT': 0.39729, 'THI': 0.394796, 'TIO': 0.378058}
-englishFreqOrder = ('E', 'T', 'A', 'O', 'I', 'N', 'S', 'H', 'R', 'D', 'L', 'C', 'U', 'M', 'W', 'F', 'G', 'Y', 'P', 'B', 'V', 'K', 'J', 'X', 'Q', 'Z')
+englishFreqOrder = tuple('ETAOINSHRDLCUMWFGYPBVKJXQZ')
 ETAOIN = ''.join(englishFreqOrder)
 LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
@@ -14,20 +14,21 @@ TRIGRAM_MATCH_RANGE = 30
 def main():
     import random
 
-    sonnet = """WHEN, IN DISGRACE WITH FORTUNE AND MEN'S EYES,
-I ALL ALONE BEWEEP MY OUTCAST STATE,
-AND TROUBLE DEAF HEAVEN WITH MY BOOTLESS CRIES,
-AND LOOK UPON MYSELF AND CURSE MY FATE,
-WISHING ME LIKE TO ONE MORE RICH IN HOPE,
-FEATURED LIKE HIM, LIKE HIM WITH FRIENDS POSSESSED,
-DESIRING THIS MAN'S ART, AND THAT MAN'S SCOPE,
-WITH WHAT I MOST ENJOY CONTENTED LEAST,
-YET IN THESE THOUGHTS MYSELF ALMOST DESPISING,
-HAPLY I THINK ON THEE, AND THEN MY STATE,
-LIKE TO THE LARK AT BREAK OF DAY ARISING
-FROM SULLEN EARTH, SINGS HYMNS AT HEAVEN'S GATE
-FOR THY SWEET LOVE REMEMBERED SUCH WEALTH BRINGS,
-THAT THEN I SCORN TO CHANGE MY STATE WITH KINGS."""
+    sonnet = """When, in disgrace with Fortune and men's eyes,
+I all alone beweep my outcast state,
+And trouble deaf heaven with my bootless cries,
+And look upon myself and curse my fate,
+Wishing me like to one more rich in hope,
+Featured like him, like him with friends possessed,
+Desiring this man's art, and that man's scope,
+With what I most enjoy contented least,
+Yet in these thoughts myself almost despising,
+Haply I think on thee, and then my state,
+Like to the lark at break of day arising
+From sullen earth, sings hymns at heaven's gate
+
+For thy sweet love remembered such wealth brings,
+That then I scorn to change my state with kings.""".upper()
 
     loremIpsum = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porta varius ante eget tincidunt. Pellentesque placerat, turpis nec elementum consectetur, enim nulla molestie velit, quis semper erat lacus quis metus.'.upper()
 
@@ -88,6 +89,7 @@ def getLetterCount(message):
 
     return letterToCount
 
+
 def getLetterFreq(message):
     # Returns a dictionary with keys of single letters and values of the
     # percentage of their frequency in the message parameter.
@@ -100,6 +102,7 @@ def getLetterFreq(message):
     for letter in counts:
         letterToFreq[letter] = round(counts[letter] * 100 / totalCount, 2)
     return letterToFreq
+
 
 def getFrequencyOrder(message):
     # Returns a string of the alphabet letters arranged in order of most
@@ -198,5 +201,7 @@ def englishTrigramMatch(message):
     return matches >= TRIGRAM_THRESHOLD
 
 
+# If freqFinder.py is run (instead of imported as a module) call
+# the main() function.
 if __name__ == '__main__':
     main()

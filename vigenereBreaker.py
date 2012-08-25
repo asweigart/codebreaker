@@ -14,9 +14,17 @@ nonLettersPattern = re.compile('[^A-Z]')
 
 def main():
     # Instead of typing this ciphertext out, you can copy & paste it
-    # from http://inventwithpython.com/codebreaker/ciphertexts.html
+    # from http://inventwithpython.com/vigenereBreaker.py
     ciphertext = """ADIZ AVTZQECI TMZUBB WSA M PMILQEV HALPQAVTAKUOI, LGOUQDAF, KDMKTSVMZTSL, IZR XOEXGHZR KKUSITAAF. VZ WSA TWBHDG UBALMMZHDAD QZ HCE VMHSGOHUQBO OX KAAKULMD GXIWVOS, KRGDURDNY I RCMMSTUGVTAWZ CA TZM OCICWXFG JF "STSCMILPY" OID "UWYDPTSBUCI" WABT HCE LCDWIG EIOVDNW. BGFDNY QE KDDWTK QJNKQPSMEV BA PZ TZM ROOHWZ AT XOEXGHZR KKUSICW IZR VRLQRWXIST UBOEDTUUZNUM. PIMIFO ICMLV EMF DI, LCDWIG OWDYZD XWD HCE YWHSMNEMZH XOVM MBY CQXTSM SUPACG (GUKE) OO BDMFQCLWG BOMK, TZUHVIF'A OCYETZQOFIFO OSITJM. RCM A LQYS CE OIE VZAV WR VPT 8, LPQ GZCLQAB MEKXABNITTQ TJR YMDAVN FIHOG CJGBHVNSTKGDS. ZM PSQIKMP O IUEJQF JF LMOVIIICQG AOJ JDSVKAVS UZREIZ QDPZMDG, DNUTGRDNY BTS HELPAR JF LPQ PJMTM, MB ZLWKFFJMWKTOIIUIX AVCZQZS OHSB OCPLV NUBY SWBFWIGK NAF OHW MZWBMS UMQCIFM. MTOEJ BTS RAJ PQ KJRCMP OO TZM ZOOIGVMZ KHQAUQVL DINCMALWDM, RHWZQ VZ CJMMHZD GVQ CA TZM RWMSL LQGDGFA RCM A KBAFZD-HZAUMAE KAAKULMD, HCE SKQ. WI 1948 TMZUBB JGQZSY MSF ZSRMSV'E QJMHCFWIG DINCMALWDM VT EIZQCEKBQF PNADQFNILG, IVZRW PQ ONSAAFSY IF BTS YENMXCKMWVF CA TZM YOICZMEHZR UWYDPTWZE OID TMOOHE AVFSMEKBQR DN EIFVZMSBUQVL TQAZJGQ. PQ KMOLM M DVPWZ AB OHW KTSHIUIX PVSAA AT HOJXTCBEFMEWN, AFL BFZDAKFSY OKKUZGALQZU XHWUUQVL JMMQOIGVE GPCZ IE HCE TMXCPSGD-LVVBGBUBNKQ ZQOXTAWZ, KCIUP ISME XQDGO OTAQFQEV QZ HCE 1960K. BGFDNY'A TCHOKMJIVLABK FZSMTFSY IF I OFDMAVMZ KRGAQQPTAWZ WI 1952, WZMZ VJMGAQLPAD IOHN WWZQ GOIDT UZGEYIX WI TZM GBDTWL WWIGVWY. VZ AUKQDOEV BDSVTEMZH RILP RSHADM TCMMGVQG (XHWUUQVL UIEHMALQAB) VS SV MZOEJVMHDVW BA DMIKWZ. HPRAVS RDEV QZ 1954, XPSL WHSM TOW ISZKK JQTJRW PUG 42ID TQDHCDSG, RFJM UGMBDDW XAWNOFQZU. VN AVCIZSL LQHZREQZSY TZIF VDS VMMHC WSA EIDCALQ; VDS EWFVZR SVP GJMW WFVZRK JQZDENMP VDS VMMHC WSA MQXIVMZHVL. GV 10 ESKTWUNSM 2009, FGTXCRIFO MB DNLMDBZT UIYDVIYV, NFDTAAT DMIEM YWIIKBQF BOJLAB WRGEZ AVDW IZ CAFAKUOG PMJXWX AHWXCBY GV NSCADN AT OHW JDWOIKP SCQEJVYSIT XWD "HCE SXBOGLAVS KVY ZM ION TJMMHZD." SA AT HAQ 2012 I BFDVSBQ AZMTMD'G WIDT ION BWNAFZ TZM TCPSW WR ZJRVA IVDCZ EAIGD YZMBO TMZUBB A KBMHPTGZK DVRVWZ WA EFIOHZD."""
-    breakVigenere(ciphertext)
+    brokenCiphertext = breakVigenere(ciphertext)
+
+    if brokenCiphertext != None:
+        print('Copying broken ciphertext to clipboard:')
+        print(brokenCiphertext) # only print the first 1000 characters
+        pyperclip.copy(brokenCiphertext)
+    else:
+        print('Failed to break encryption.')
+
 
 
 def findRepeatSequences(ciphertext):
@@ -150,12 +158,7 @@ def breakVigenere(ciphertext):
                 if brokenCiphertext != None:
                     break
 
-    if brokenCiphertext == None:
-        print('Unable to break this ciphertext.')
-    else:
-        print('Copying broken ciphertext to clipboard:')
-        print(brokenCiphertext) # only print the first 1000 characters
-        pyperclip.copy(brokenCiphertext)
+    return brokenCiphertext
 
 
 def kasiskiExamination(ciphertext):
@@ -237,7 +240,7 @@ def attemptBreakWithKeyLength(ciphertext, mostLikelyKeyLength):
                 print('Enter D for done, or just press Enter to continue breaking:')
                 response = input('> ')
 
-                if response.upper().startswith('D'):
+                if response.strip().upper().startswith('D'):
                     return decryptedText
 
     # No English-looking decryption found with any of the possible keys,
@@ -245,5 +248,7 @@ def attemptBreakWithKeyLength(ciphertext, mostLikelyKeyLength):
     return None
 
 
+# If vigenereBreaker.py is run (instead of imported as a module) call
+# the main() function.
 if __name__ == '__main__':
     main()

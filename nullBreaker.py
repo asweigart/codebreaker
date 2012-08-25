@@ -1,6 +1,5 @@
 # Null Cipher Breaker, http://inventwithpython.com/codebreaker (BSD Licensed)
-import copy, time
-import nullCipher, pyperclip, transpositionBreaker
+import copy, time, nullCipher, pyperclip, transpositionBreaker
 
 # There are two settings our breaking program needs to limit the range of the possible keys it checks.
 # MAX_KEY_NUMBER is the range of numbers it checks for each number in the key. A MAX_KEY_NUMBER value of 9 means it will check the numbers 0 through 9.
@@ -33,14 +32,13 @@ def main():
     # The breakNull() function will have all the encryption breaking code in it, and return the original plaintext.
     brokenMessage = breakNull(myMessage)
 
-    if brokenMessage == None:
-        # breakNull() will return the None value if it was unable to break the encryption.
-        print('Breaking failed. Unable to break this ciphertext.')
-    else:
+    if brokenMessage != None:
         # The plaintext is displayed on the screen. For the convenience of the user, we copy the text of the code to the clipboard.
         print('Copying broken message to clipboard:')
         print(brokenMessage)
         pyperclip.copy(brokenMessage)
+    else:
+        print('Failed to break encryption.')
 
 
 def breakNull(ciphertext):
@@ -66,17 +64,12 @@ def breakNull(ciphertext):
                 print('Enter D for done, or just press Enter to continue breaking:')
                 response = input('> ')
 
-                if response.upper().startswith('D'):
+                if response.strip().upper().startswith('D'):
                     return decryptedText
             trialKey = getNextKey(trialKey)
-    print('No decryptions found. Code breaking has failed.')
+    print('Failed to break encryption.')
     return None
 
 
 if __name__ == '__main__':
-    key = [0] * 4
-    while True:
-        key = getNextKey(key)
-        print(key)
-
-    #main()
+    main()

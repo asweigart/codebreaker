@@ -38,7 +38,6 @@ def getEnglishCount(message):
     message = nonLettersOrSpacePattern.sub('', message)
 
     words = message.split()
-
     if not words:
         return False # after removing non-letters, message was blank
 
@@ -58,7 +57,6 @@ def isEnglish(message, wordPercentage=20):
     # exist in the dictionary file.
     wordPercentage /= 100
 
-
     # Get the percentage of recognized English words.
     englishWords = getEnglishCount(message)
 
@@ -67,5 +65,8 @@ def isEnglish(message, wordPercentage=20):
 
     return (englishWords >= wordPercentage)
 
+
+# If detectEnglish.py is run (instead of imported as a module) call
+# the main() function.
 if __name__ == '__main__':
     main()

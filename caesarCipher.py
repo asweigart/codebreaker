@@ -11,7 +11,7 @@ key = 13
 mode = 'encrypt' # set to 'encrypt' or 'decrypt'
 
 # every possible symbol that can be encrypted
-SYMBOLS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 # stores the encrypted/decrypted form of the message
 translated = ''
@@ -21,26 +21,23 @@ message = message.upper()
 
 # run the encryption/decryption code on each symbol in the message string
 for symbol in message:
-    # get the number of the symbol
-    num = SYMBOLS.find(symbol)
-
-    # -1 means the symbol in the message was not found in SYMBOLS
-    if num != -1:
+    if symbol in LETTERS:
         # get the encrypted (or decrypted) number for this symbol
+        num = LETTERS.find(symbol) # get the number of the symbol
         if mode == 'encrypt':
            num = num + key
         elif mode == 'decrypt':
            num = num - key
 
-        # handle the wrap around if num is larger than the length of SYMBOLS
+        # handle the wrap around if num is larger than the length of LETTERS
         # or less than 0
-        if num >= len(SYMBOLS):
-            num = num - len(SYMBOLS)
+        if num >= len(LETTERS):
+            num = num - len(LETTERS)
         elif num < 0:
-            num = num + len(SYMBOLS)
+            num = num + len(LETTERS)
 
         # add encrypted/decrypted number's symbol at the end of translated
-        translated = translated + SYMBOLS[num]
+        translated = translated + LETTERS[num]
 
     else:
         # just add the symbol without encrypting/decrypting

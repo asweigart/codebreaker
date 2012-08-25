@@ -1,19 +1,15 @@
 # Null Cipher
 # http://inventwithpython.com/codebreaker (BSD Licensed)
+
 import random, pyperclip
 
-myMessage = 'x?/Wh/jev/*n 9DI=/( u=AsM<Ye v*ajW( w/Hof10rd>R,jJR iNFtdSu mYGe%KHan,?sVPV jImu_VrstF6 nE9wh2HaXzRt SxIfSt cTvhw/XooAzso,/e ZZib<0t @8t&9Io jRmLBEeaP1nJ,A -6+-BDP naCe5MYitFchl2$erh6 Bn,mo!wr=>-e Q_nz8lorxb S*dleDVsAQ8s.Y9'
-myKey = 302
-mode = 'decrypt' # set to 'encrypt' or 'decrypt'
-
-
+myMessage = 'When I use a word, it means just what I choose it to mean -- neither more nor less.'
+myKey = '302'
+mode = 'encrypt' # set to 'encrypt' or 'decrypt'
 
 # The nulls will be randomly selected from this list of characters.
 # Don't forget the space character at the start!
 SYMBOLS = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
-
-myKey = str(myKey)
-
 
 def main():
     if mode == 'encrypt':

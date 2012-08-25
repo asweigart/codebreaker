@@ -38,6 +38,7 @@ def encryptMessage(key, message):
     # Convert the ciphertext list into a single string value and return it.
     return ''.join(ciphertext)
 
+
 # If transpositionEncrypt.py is run (instead of imported as a module) call
 # the main() function.
 if __name__ == '__main__':

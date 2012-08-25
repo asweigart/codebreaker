@@ -1,8 +1,11 @@
 # Affine Cipher Breaker
 # http://inventwithpython.com/codebreaker (BSD Licensed)
+
 import pyperclip, affineCipher, detectEnglish
 
 def main():
+    # You might want to copy & paste this text from the source code at
+    # http://inventwithpython.com/affineBreaker.py
     myMessage = 'H RZPEDYBO NZDKW WBTBOIB YZ MB RHKKBW VUYBKKVLBUY VG VY RZDKW WBRBVIB H QDPHU VUYZ MBKVBIVUL YQHY VY NHT QDPHU. -HKHU YDOVUL'
 
     brokenCiphertext = breakAffine(myMessage.upper())
@@ -14,7 +17,7 @@ def main():
         print(brokenCiphertext[:1000])
         pyperclip.copy(brokenCiphertext)
     else:
-        print('Could not break this ciphertext.')
+        print('Failed to break encryption.')
 
 
 def breakAffine(message):
@@ -25,11 +28,11 @@ def breakAffine(message):
     print('(Press Ctrl-C or Ctrl-D to quit at any time.)')
 
     # brute force by looping through every possible key
-    for keyA in range(len(affineCipher.SYMBOLS)):
-        if affineCipher.gcd(keyA, len(affineCipher.SYMBOLS)) != 1:
+    for keyA in range(len(affineCipher.LETTERS)):
+        if affineCipher.gcd(keyA, len(affineCipher.LETTERS)) != 1:
             continue
 
-        for keyB in range(len(affineCipher.SYMBOLS)):
+        for keyB in range(len(affineCipher.LETTERS)):
             decryptedText = affineCipher.decryptMessage(keyA, keyB, message)
             print('Tried KeyA %s, KeyB %s... (%s)' % (keyA, keyB, decryptedText[:40]))
 
@@ -38,14 +41,17 @@ def breakAffine(message):
                 print()
                 print('Possible encryption break:')
                 print('KeyA: %s, KeyB: %s' % (keyA, keyB))
-                print('Decrypted message: ' + decryptedText[:100])
+                print('Decrypted message: ' + decryptedText[:200])
                 print()
                 print('Enter D for done, or just press Enter to continue breaking:')
                 response = input('> ')
 
-                if response.upper().startswith('D'):
+                if response.strip().upper().startswith('D'):
                     return decryptedText
     return None
 
+
+# If affineBreaker.py is run (instead of imported as a module) call
+# the main() function.
 if __name__ == '__main__':
     main()

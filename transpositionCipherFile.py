@@ -4,10 +4,10 @@
 import math, time, os, sys, transpositionEncrypt, transpositionDecrypt
 
 def main():
-    inputFilename = 'frankenstein.encrypted.txt'
+    inputFilename = 'frankenstein.txt'
     # BE CAREFUL! If a file with the outputFilename name already exists, this
     # program will overwrite that file.
-    outputFilename = 'frankenstein.decrypted.txt'
+    outputFilename = 'frankenstein.encrypted.txt'
     myKey = 42
     myMode = 'decrypt' # set to 'encrypt' or 'decrypt'
 
@@ -36,7 +36,8 @@ def main():
         translated = transpositionEncrypt.encryptMessage(myKey, content)
     elif myMode == 'decrypt':
         translated = transpositionDecrypt.decryptMessage(myKey, content)
-    print('%sion time: %s seconds' % (myMode.title(), round(time.time() - startTime, 3)))
+    totalTime = round(time.time() - startTime, 2)
+    print('%sion time: %s seconds' % (myMode.title(), totalTime))
 
     # Write out the translated message to the output file.
     outputFileObj = open(outputFilename, 'w')
@@ -47,5 +48,7 @@ def main():
     print('%sed file is %s.' % (myMode.title(), outputFilename))
 
 
+# If transpositionCipherFile.py is run (instead of imported as a module) call
+# the main() function.
 if __name__ == '__main__':
     main()

@@ -9,12 +9,10 @@ def main():
 
     translated = decryptMessage(myKey, myMessage)
 
-    # Print the (decrypted) string in translated to the screen, with
-    # a | (called "pipe" character) after it in case there are spaces at the
-    # end of the decrypted message.
+    # Print with a | (called "pipe" character) after it in case
+    # there are spaces at the end of the decrypted message.
     print(translated + '|')
 
-    # Copy the (decrypted) string in translated to the clipboard.
     pyperclip.copy(translated)
 
 
@@ -49,6 +47,7 @@ def decryptMessage(key, message):
             row += 1
 
     return ''.join(plaintext)
+
 
 # If transpositionDecrypt.py is run (instead of imported as a module) call
 # the main() function.
