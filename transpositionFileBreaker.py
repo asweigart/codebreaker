@@ -18,7 +18,7 @@ def main():
     brokenMessage = breakTransposition(content)
 
     if brokenMessage != None:
-        print('Writing decrypted text to %s:' % (outputFilename))
+        print('Writing decrypted text to %s.' % (outputFilename))
 
         outputFile = open(outputFilename, 'w')
         outputFile.write(brokenMessage)

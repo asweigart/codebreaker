@@ -1,4 +1,4 @@
-import unittest, subprocess, pyperclip
+import unittest, subprocess, pyperclip, hashlib, os
 
 # You can download pyperclip from:
 # http://coffeeghost.net/src/pyperclip.py
@@ -135,7 +135,7 @@ class CodeBreakerUnitTests(unittest.TestCase):
         self.assertTrue(checkForText('caesarBreaker.py', "message = 'GUVF VF ZL FRPERG ZRFFNTR.'"))
 
         # breaking the ciphertext 'GUVF VF ZL FRPERG ZRFFNTR.'
-        correctString = """Key #0: GUVF VF ZL FRPERG ZRFFNTR.
+        expectedOutput = """Key #0: GUVF VF ZL FRPERG ZRFFNTR.
 Key #1: FTUE UE YK EQODQF YQEEMSQ.
 Key #2: ESTD TD XJ DPNCPE XPDDLRP.
 Key #3: DRSC SC WI COMBOD WOCCKQO.
@@ -162,7 +162,7 @@ Key #23: JXYI YI CO IUSHUJ CUIIQWU.
 Key #24: IWXH XH BN HTRGTI BTHHPVT.
 Key #25: HVWG WG AM GSQFSH ASGGOUS.
 """
-        self.assertEqual(procOut, correctString)
+        self.assertEqual(procOut, expectedOutput)
 
 
     def test_transpositionEncryptProgram(self):
@@ -189,9 +189,125 @@ Key #25: HVWG WG AM GSQFSH ASGGOUS.
         self.assertEqual(procOut, 'Common sense is not so common.|\n')
         self.assertEqual(pyperclip.paste().decode('ascii'), 'Common sense is not so common.')
 
+    def test_transpositionBreakerProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe transpositionBreaker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        procOut = proc.communicate('D\n'.encode('ascii'))[0].decode('ascii')
+
+        # Make sure output is correct
+        expectedOutput = """Breaking...
+(Press Ctrl-C or Ctrl-D to quit at any time.)
+Trying key #1...
+Trying key #2...
+Trying key #3...
+Trying key #4...
+Trying key #5...
+Trying key #6...
+Trying key #7...
+Trying key #8...
+Trying key #9...
+Trying key #10...
+
+Possible encryption break:
+Key 10: Charles Babbage, FRS (26 December 1791 - 18 October 1871) was an English mathematician, philosopher,
+
+Enter D for done, or just press Enter to continue breaking:
+> Copying broken ciphertext to clipboard:
+Charles Babbage, FRS (26 December 1791 - 18 October 1871) was an English mathematician, philosopher, inventor and mechanical engineer who originated the concept of a programmable computer. Considered a "father of the computer", Babbage is credited with inventing the first mechanical computer that eventually led to more complex designs. Parts of his uncompleted mechanisms are on display in the London Science Museum. In 1991, a perfectly functioning difference engine was constructed from Babbage's original plans. Built to tolerances achievable in the 19th century, the success of the finished engine indicated that Babbage's machine would have worked. Nine years later, the Science Museum completed the printer Babbage had designed for the difference engine.
+"""
+
+        expectedClipboard = """Charles Babbage, FRS (26 December 1791 - 18 October 1871) was an English mathematician, philosopher, inventor and mechanical engineer who originated the concept of a programmable computer. Considered a "father of the computer", Babbage is credited with inventing the first mechanical computer that eventually led to more complex designs. Parts of his uncompleted mechanisms are on display in the London Science Museum. In 1991, a perfectly functioning difference engine was constructed from Babbage's original plans. Built to tolerances achievable in the 19th century, the success of the finished engine indicated that Babbage's machine would have worked. Nine years later, the Science Museum completed the printer Babbage had designed for the difference engine."""
+
+        self.assertEqual(procOut, expectedOutput)
+        self.assertEqual(pyperclip.paste().decode('ascii'), expectedClipboard)
+
+    def test_frankensteinTextFile(self):
+        fp = open('frankenstein.txt')
+        content = fp.read()
+        fp.close()
+        self.assertEqual(hashlib.md5(content.encode('ascii')).hexdigest(), '4054e83e00af969dc1b0c27612274a12')
+
+    def test_transpositionFileCipherProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe transpositionFileCipher.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        #import pdb; pdb.set_trace()
+        if os.path.exists('frankenstein.encrypted.txt'):
+            procOut = proc.communicate('C\n'.encode('ascii'))[0].decode('ascii')
+            expectedOutputPiece1 = """This will overwrite the file frankenstein.encrypted.txt. (C)ontinue or (Q)uit?
+> """
+        else:
+            procOut = proc.communicate()[0].decode('ascii')
+            expectedOutputPiece1 = ''
+
+        expectedOutputPiece1 += """Encrypting...
+Encryption time: """
+        expectedOutputPiece2 = """seconds
+Done encrypting frankenstein.txt (441034 characters).
+Encrypted file is frankenstein.encrypted.txt.
+"""
+
+        # Make sure output is correct
+        self.assertTrue(expectedOutputPiece1 in procOut)
+        self.assertTrue(expectedOutputPiece2 in procOut)
 
 
+    def test_transpositionFileBreakerProgram(self):
+        if not os.path.exists('frankenstein.encrypted.txt'):
+            # Make the encrypted file by running this test:
+            self.test_transpositionFileCipherProgram()
+
+        proc = subprocess.Popen('c:\\python32\\python.exe transpositionFileBreaker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        procOut = proc.communicate('D\n'.encode('ascii'))[0].decode('ascii')
+
+        expectedOutputPiece1 = """Breaking...
+(Press Ctrl-C or Ctrl-D to quit at any time.)
+"""
+        expectedOutputPiece2 = """Key 10: Project Gutenberg's Frankenstein, by Mary Wollstonecraft (Godwin) Shelley
+
+This eBook is for the use
+
+Enter D for done, or just press Enter to continue:
+> Writing decrypted text to frankenstein.decrypted.txt."""
+        self.assertTrue(expectedOutputPiece1 in procOut)
+        self.assertTrue(expectedOutputPiece2 in procOut)
+        for i in range(1, 11):
+            self.assertTrue('Trying key #%s... Key test time:' % (i) in procOut)
+
+
+    def test_transpositionTestProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe transpositionTest.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        procOut = proc.communicate()[0].decode('ascii')
+
+        # Technically the seed is set to 42, so the output should be predictable.
+        # But I'll just check for the "test passed" string in the output.
+
+        self.assertTrue('Transposition cipher test passed.' in procOut)
+
+
+    def test_detectEnglishProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe detectEnglish.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        procOut = proc.communicate()[0].decode('ascii')
+
+        expectedOutput = 'Testing the English detection module...\nThe quick brown fox jumped over the yellow lazy dog.\n\tTrue\n\nHello there. lkjjfldsf dsafk alf ewfewlfjl efa\n\tTrue\n\nSumimasen. Kore wa nan desu ka?\n\tFalse\n\n1100010110010111001011110000\n\tFalse\n\n'
+
+        self.assertEqual(procOut, expectedOutput)
+
+
+    def test_affineCipherProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe affineCipher.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        procOut = proc.communicate()[0].decode('ascii')
+
+        expectedClipboard = 'H RZPEDYBO NZDKW WBTBOIB YZ MB RHKKBW VUYBKKVLBUY VG VY RZDKW WBRBVIB H QDPHU VUYZ MBKVBIVUL YQHY VY NHT QDPHU. -HKHU YDOVUL'
+
+        self.assertEqual(procOut, 'Encrypted text:\nH RZPEDYBO NZDKW WBTBOIB YZ MB RHKKBW VUYBKKVLBUY VG VY RZDKW WBRBVIB H QDPHU VUYZ MBKVBIVUL YQHY VY NHT QDPHU. -HKHU YDOVUL\nFull encrypted text copied to clipboard.\n')
+        self.assertEqual(pyperclip.paste().decode('ascii'), expectedClipboard)
 
 
 if __name__ == '__main__':
-    unittest.main()
+    TEST_ALL = True #False
+
+    if not TEST_ALL:
+        customSuite = unittest.TestSuite()
+        customSuite.addTest(CodeBreakerUnitTests('test_affineCipherProgram'))
+        unittest.TextTestRunner().run(customSuite)
+    elif TEST_ALL:
+        unittest.main()
+

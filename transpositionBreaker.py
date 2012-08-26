@@ -27,7 +27,7 @@ def breakTransposition(message):
 
     # brute force by looping through every possible key
     for key in range(1, len(message)):
-        print('Trying key #%s... ' % (key))
+        print('Trying key #%s...' % (key))
 
         decryptedText = transpositionDecrypt.decryptMessage(key, message)
 
