@@ -14,9 +14,9 @@ def main():
     key = key.upper()
 
     if mode == 'encrypt':
-        translated = translateMessage(message, key, 'encrypt')
+        translated = encryptMessage(key, message)
     elif mode == 'decrypt':
-        translated = translateMessage(message, key, 'decrypt')
+        translated = decryptMessage(key, message)
 
     print('%sed message:' % (mode.title()))
     print(translated)
@@ -25,15 +25,15 @@ def main():
     print('The message has been copied to the clipboard.')
 
 
-def encryptMessage(message, key):
-    return translateMessage(message, key, 'encrypt')
+def encryptMessage(key, message):
+    return translateMessage(key, message, 'encrypt')
 
 
-def decryptMessage(message, key):
-    return translateMessage(message, key, 'decrypt')
+def decryptMessage(key, message):
+    return translateMessage(key, message, 'decrypt')
 
 
-def translateMessage(message, key, mode):
+def translateMessage(key, message, mode):
     translated = [] # stores the encrypted/decrypted message string
 
     keyIndex = 0

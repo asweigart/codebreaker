@@ -1,37 +1,5 @@
 # Pyperclip v1.4
 
-
-
-"""TODO - need to update to fall back on TK
-
-from Tkinter import Tk
-r = Tk()
-r.withdraw()
-r.clipboard_clear()
-r.clipboard_append('i can has clipboardz?')
-print r.clipboard_get()
-r.destroy()
-
-
-Do performance testing on other OSes to see if this approach beats out the others.
-"""
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # A cross-platform clipboard module for Python. (only handles plain text for now)
 # By Al Sweigart al@coffeeghost.net
 
@@ -75,7 +43,7 @@ Do performance testing on other OSes to see if this approach beats out the other
 # 1.2 Use the platform module to help determine OS.
 # 1.3 Changed ctypes.windll.user32.OpenClipboard(None) to ctypes.windll.user32.OpenClipboard(0), after some people ran into some TypeError
 
-import platform, os
+import platform, os, sys
 
 def winGetClipboard():
     ctypes.windll.user32.OpenClipboard(0)
@@ -103,7 +71,7 @@ def winSetClipboard(text):
         # works on Python 3 (bytes() requires an encoding)
         ctypes.cdll.msvcrt.strcpy(ctypes.c_char_p(pchData), bytes(text, 'ascii'))
     ctypes.windll.kernel32.GlobalUnlock(hCd)
-    ctypes.windll.user32.SetClipboardData(1,hCd)
+    ctypes.windll.user32.SetClipboardData(1, hCd)
     ctypes.windll.user32.CloseClipboard()
 
 def macSetClipboard(text):
@@ -121,6 +89,7 @@ def gtkGetClipboard():
     return gtk.Clipboard().wait_for_text()
 
 def gtkSetClipboard(text):
+    global cb
     cb = gtk.Clipboard()
     cb.set_text(text)
     cb.store()
@@ -175,11 +144,11 @@ elif os.name == 'posix' or platform.system() == 'Linux':
             import gtk
             getcb = gtkGetClipboard
             setcb = gtkSetClipboard
-        except:
+        except Exception:
             try:
                 import PyQt4.QtCore
                 import PyQt4.QtGui
-                app = QApplication([])
+                app = PyQt4.QApplication([])
                 cb = PyQt4.QtGui.QApplication.clipboard()
                 getcb = qtGetClipboard
                 setcb = qtSetClipboard

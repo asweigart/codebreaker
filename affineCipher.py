@@ -46,6 +46,7 @@ def encryptMessage(keyA, keyB, message):
         sys.exit('The affine cipher becomes incredibly weak when keyA is set to 1. Choose a different key.')
     if keyB == 0:
         sys.exit('The affine cipher becomes incredibly weak when keyB is set to 0. Choose a different key.')
+
     if gcd(keyA, len(LETTERS)) != 1:
         sys.exit('The key (%s) and the size of the alphabet (%s) are not relatively prime. Choose a different key.' % (keyA, len(LETTERS)))
 

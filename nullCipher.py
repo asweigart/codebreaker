@@ -22,7 +22,7 @@ def main():
     pyperclip.copy(translated)
 
 
-def encryptMessage(message, key):
+def encryptMessage(key, message):
     # The expression int(key[keyIndex]) will be used to decide how many
     # nulls should be inserted. For example, if key is the value '102' and
     # keyIndex is 0, then 1 null character will be inserted into the
@@ -56,7 +56,7 @@ def encryptMessage(message, key):
     return ciphertext
 
 
-def decryptMessage(message, key):
+def decryptMessage(key, message):
     # The value inside messageIndex will refer to the index we are
     # currently looking at in message.
     messageIndex = 0

@@ -14,7 +14,7 @@ def main():
         # The plaintext is displayed on the screen. For the convenience of
         # the user, we copy the text of the code to the clipboard.
         print('Copying broken ciphertext to clipboard:')
-        print(brokenCiphertext[:1000])
+        print(brokenCiphertext)
         pyperclip.copy(brokenCiphertext)
     else:
         print('Failed to break encryption.')

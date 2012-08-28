@@ -1,7 +1,7 @@
 # Null Cipher Breaker
 # http://inventwithpython.com/codebreaker (BSD Licensed)
 
-import nullCipher, pyperclip, detectEnglish
+import nullCipher, pyperclip, detectEnglish, itertools, sys
 
 # There are two settings our breaking program needs to limit the range of the possible keys it checks.
 # MAX_KEY_NUMBER is the range of numbers it checks for each number in the key. A MAX_KEY_NUMBER value of 9 means it will check the numbers 0 through 9.
@@ -10,8 +10,10 @@ import nullCipher, pyperclip, detectEnglish
 MAX_KEY_NUMBER = 9
 MAX_KEY_LENGTH = 5
 
-myMessage = 'kWhhbe#n n>IP uTksEe b<aZ wXCo(rdq7,( iActy moveeanggsU jCku2stmT dwhlvaPt FZIx czyhtoo(&sxe SUi6t Ylt#o 3kmCeaU5nb -rR-b nbLegitOTh6eroN Jmogzr2e Lgnpor/0 GleOjs.s.'
-              #W h e n   I  u  s e   a  w  o rd  ,  i  t  m  eans just what I choose it to mean -- neither more nor less.
+SILENT_MODE = False
+
+myMessage = """y\ZWh,De,. n #{ItZ9 uL<sl6!e 2&a"\B w{Eo;l#rdvK,9\s i.Xt?WC mQ-ef>yanpushOz j9lu_H4stsd .Bawhmua_ogt <`I#w$ ctoh({'oo={sINUe 84i%G3t NLt2#Wo 7Zm*<^eacUnuG6 -=g-f:! nxQe$Qmit&Ah0#ner:O Gt!moc;rXGUe q/nKrgor"\ 9 \lecBs|10s.9i"""
+#                 Wh  e   n   I    u  s   e   a    w  o   rd  ,    i  t    m  e   an  s    j  u   st      wh  a   t   I    c  h   oo  s   e   i   t   t   o   m   ea  n    -  -    n  e   it  h   er      mo  r   e   n   or      le  s   s.
 
 def main():
     # As a convenience to the user, we will calculate the number of keys that the current MAX_KEY_LENGTH and MAX_KEY_NUMBER settings will cause the breaker program to go through.
@@ -46,31 +48,30 @@ def main():
 def breakNull(ciphertext):
     # The program needs to try keys of length 1 (such as '5'), of length 2 (such as '5 5'), and so on up to length MAX_KEY_LENGTH.
     # This is because the key '1 0' will decrypt differently than '1 0 0'.
-    for trialKeyLength in range(1, MAX_KEY_LENGTH + 1):
-        # We will be using the "list of int values" for of keys. The string form like '4 2 3' that we use in the original encryption program is used just because it makes it easier to type for the user.
-        # We use list replication (multiplying a list value by an int value) to get the starting key.
-        trialKey = [0] * trialKeyLength
+    for keyLength in range(1, MAX_KEY_LENGTH + 1):
+        for keyParts in itertools.product(range(MAX_KEY_NUMBER + 1), repeat=keyLength):
+            key = []
+            for digit in keyParts:
+                key.append(str(digit))
+            key = ''.join(key)
 
-        trialKey = getNextKey(trialKey)
+            decryptedText = nullCipher.decryptMessage(key, ciphertext)
 
-        while trialKey != [0] * trialKeyLength:
-            decryptedText = nullCipher.decryptMessage(ciphertext, trialKey)
-            percentEnglish = round(detectEnglish.getEnglishCount(decryptedText) * 100, 2)
-            if percentEnglish > 0:
-                print('Key %s decrypts to %s%% English.' % (trialKey, percentEnglish))
-            if percentEnglish >= 25:
+            if not SILENT_MODE:
+                print('Key %s: %s' % (key, decryptedText[:40]))
+
+            if detectEnglish.isEnglish(decryptedText):
                 print()
                 print('Possible encryption break:')
-                print('Key ' + str(trialKey) + ': ' + decryptedText[:100])
+                print('Key: %s' % (key))
+                print('Decrypted message: ' + decryptedText[:200])
                 print()
                 print('Enter D for done, or just press Enter to continue breaking:')
                 response = input('> ')
 
                 if response.strip().upper().startswith('D'):
                     return decryptedText
-            trialKey = getNextKey(trialKey)
-    print('Failed to break encryption.')
-    return None
+    return None # failed to break encryption
 
 
 if __name__ == '__main__':

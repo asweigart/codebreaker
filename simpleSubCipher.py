@@ -36,6 +36,7 @@ def checkValidKey(key):
 
 def translateMessage(key, message, mode):
     translated = ''
+    message = message.upper()
 
     SET_A = LETTERS
     SET_B = key

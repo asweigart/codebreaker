@@ -4,7 +4,7 @@
 import pyperclip, simpleSubCipher
 
 def main():
-    myMessage = r"""This is my secret message."""
+    myMessage = r"""Your cover is blown."""
     myKey = 'alphanumeric'
     myMode = 'encrypt' # set to 'encrypt' or 'decrypt'
 
@@ -38,7 +38,8 @@ def decryptMessage(key, message):
 def makeSimpleSubKey(keyword):
     # create the key from the keyword
     newKey = ''
-    keyAlphabet = list(' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~')
+    keyword = keyword.upper()
+    keyAlphabet = list(simpleSubCipher.LETTERS)
     for i in range(len(keyword)):
         if keyword[i] not in newKey:
             newKey += keyword[i]

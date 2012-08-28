@@ -134,26 +134,31 @@ def getNthLetter(nth, keyLength, message):
 
 def breakVigenere(ciphertext):
     # First, we need to do Kasiski Examination to figure out what the length of the ciphertext's encryption key is.
-    print('Determining most likely key lengths with Kasiski Examination...')
+    if not SILENT_MODE:
+        print('Determining most likely key lengths with Kasiski Examination...')
+
     allLikelyKeyLengths = kasiskiExamination(ciphertext)
-    print('Kasiski Examination results say the most likely key lengths are: ', end='')
-    for keyLength in allLikelyKeyLengths:
-        print('%s ' % (keyLength), end='')
-    print()
-    print()
+    if not SILENT_MODE:
+        print('Kasiski Examination results say the most likely key lengths are: ', end='')
+        for keyLength in allLikelyKeyLengths:
+            print('%s ' % (keyLength), end='')
+        print()
+        print()
 
     for keyLength in allLikelyKeyLengths:
-        print('Attempting break with key length %s (%s possible keys)...' % (keyLength, NUM_MOST_FREQ_LETTERS ** keyLength))
+        #print('Attempting break with key length %s (%s possible keys)...' % (keyLength, NUM_MOST_FREQ_LETTERS ** keyLength))
         brokenCiphertext = attemptBreakWithKeyLength(ciphertext, keyLength)
         if brokenCiphertext != None:
             break
 
     # If none of the key lengths we found using Kasiski Examination worked, start brute forcing through key lengths.
     if brokenCiphertext == None:
-        print('Unable to break message with likely key length(s). Brute forcing key length...')
+        if not SILENT_MODE:
+            print('Unable to break message with likely key length(s). Brute forcing key length...')
         for keyLength in range(1, MAX_KEY_LENGTH + 1):
             if keyLength not in allLikelyKeyLengths: # don't re-check key lengths we've already tried from Kasiski Examination
-                print('Attempting break with key length %s (%s possible keys)...' % (keyLength, NUM_MOST_FREQ_LETTERS ** keyLength))
+                if not SILENT_MODE:
+                    print('Attempting break with key length %s (%s possible keys)...' % (keyLength, NUM_MOST_FREQ_LETTERS ** keyLength))
                 brokenCiphertext = attemptBreakWithKeyLength(ciphertext, keyLength)
                 if brokenCiphertext != None:
                     break
@@ -200,7 +205,7 @@ def attemptBreakWithKeyLength(ciphertext, mostLikelyKeyLength):
         # match. See the englishFreqMatch() comments in freqFinder).
         freqScores = []
         for possibleKey in LETTERS:
-            translated = vigenereCipher.decryptMessage(nthLetters, possibleKey)
+            translated = vigenereCipher.decryptMessage(possibleKey, nthLetters)
             freqScores.append((possibleKey, freqFinder.englishFreqMatch(translated)))
 
         # Each value in freqScores is a tuple (<letter>, <match score>). Since
@@ -210,12 +215,13 @@ def attemptBreakWithKeyLength(ciphertext, mostLikelyKeyLength):
 
         allFreqScores.append(freqScores[:NUM_MOST_FREQ_LETTERS])
 
-    for i in range(len(allFreqScores)):
-        # use i+1, because otherwise the "first" letter is called the "0th" letter
-        print('Possible letters for letter %s of the key: ' % (i + 1), end='')
-        for freqScore in allFreqScores[i]:
-            print('%s ' % freqScore[0], end='')
-        print()
+    if not SILENT_MODE:
+        for i in range(len(allFreqScores)):
+            # use i+1, because otherwise the "first" letter is called the "0th" letter
+            print('Possible letters for letter %s of the key: ' % (i + 1), end='')
+            for freqScore in allFreqScores[i]:
+                print('%s ' % freqScore[0], end='')
+            print()
 
     # Try every combination of the most likely letters for each position
     # in the key.
@@ -228,7 +234,7 @@ def attemptBreakWithKeyLength(ciphertext, mostLikelyKeyLength):
         if not SILENT_MODE:
             print('Attempting with key: %s' % (possibleKey))
 
-        decryptedText = vigenereCipher.decryptMessage(ciphertext, possibleKey)
+        decryptedText = vigenereCipher.decryptMessage(possibleKey, ciphertext)
 
         if freqFinder.englishTrigramMatch(decryptedText):
             if detectEnglish.isEnglish(decryptedText):
