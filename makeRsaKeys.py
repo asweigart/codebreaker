@@ -1,7 +1,7 @@
 # RSA Key Generator
 # http://inventwithpython.com/codebreaker (BSD Licensed)
 
-import random, sys, os, rabinMiller
+import random, sys, os, rabinMiller, cryptomath
 
 OVERWRITE_MODE = True # CAREFUL! If True, you may overwrite your old keys!
 SILENT_MODE = False
@@ -62,14 +62,14 @@ def generateKey(keySize=DEFAULT_KEY_SIZE):
     while True:
         # Come up with an e that is relatively prime to (p-1)*(q-1)
         e = random.randrange(2 ** (keySize - 1), 2 ** (keySize))
-        if gcd(e, (p - 1) * (q - 1)) == 1:
+        if cryptomath.gcd(e, (p - 1) * (q - 1)) == 1:
             break
     n = p * q
 
     # Step 3: Get the mod inverse of e.
     if not SILENT_MODE:
         print('Calculating d that is mod inverse of e...')
-    d = getModInverse(e, (p - 1) * (q - 1))
+    d = cryptomath.findModInverse(e, (p - 1) * (q - 1))
 
     publicKey = (n, e)
     privateKey = (n, d)
@@ -82,25 +82,6 @@ def generateKey(keySize=DEFAULT_KEY_SIZE):
 
     return (publicKey, privateKey)
 
-
-def gcd(a, b):
-    # Return the Greatest Common Divisor of a and b.
-    while a != 0:
-        a, b = b % a, a
-    return b
-
-
-def getModInverse(a, m):
-    # Returns the modular inverse of a % m, which is
-    # the number x such that a*x % m = 1
-
-    # Calculate using the Extended Euclidean Algorithm:
-    u1, u2, u3 = 1, 0, a
-    v1, v2, v3 = 0, 1, m
-    while v3 != 0:
-        q = u3 // v3 # // is the integer division operator
-        v1, v2, v3, u1, u2, u3 = (u1 - q * v1), (u2 - q * v2), (u3 - q * v3), v1, v2, v3
-    return u1 % m
 
 
 # If makeRsaKeys.py is run (instead of imported as a module) call

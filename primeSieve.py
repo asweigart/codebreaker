@@ -23,7 +23,7 @@ def main():
     print('126 is prime: %s' % (126 in primes))
     print('147 is prime: %s' % (147 in primes))
     print()
-    testPrimeFunctions()
+    _testPrimeFunctions()
 
 
 def isPrime(num):
@@ -66,8 +66,8 @@ def primeSieve(sieveSize):
     return primes
 
 
-def testPrimeFunctions():
-    TEST_SIZE = 50000
+def _testPrimeFunctions():
+    TEST_SIZE = 20000
     sievePrimes = primeSieve(TEST_SIZE)
 
     print('Testing if both functions are consistent with each other...')

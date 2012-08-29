@@ -1,7 +1,7 @@
 # Null Cipher Breaker
 # http://inventwithpython.com/codebreaker (BSD Licensed)
 
-import nullCipher, pyperclip, detectEnglish, itertools, sys
+import nullCipher, pyperclip, detectEnglish, itertools
 
 # There are two settings our breaking program needs to limit the range of the possible keys it checks.
 # MAX_KEY_NUMBER is the range of numbers it checks for each number in the key. A MAX_KEY_NUMBER value of 9 means it will check the numbers 0 through 9.

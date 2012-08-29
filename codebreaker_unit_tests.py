@@ -304,7 +304,6 @@ Enter D for done, or just press Enter to continue:
         self.assertEqual(procOut, 'Encrypted text:\nH RZPEDYBO NZDKW WBTBOIB YZ MB RHKKBW VUYBKKVLBUY VG VY RZDKW WBRBVIB H QDPHU VUYZ MBKVBIVUL YQHY VY NHT QDPHU. -HKHU YDOVUL\nFull encrypted text copied to clipboard.\n')
         self.assertEqual(pyperclip.paste().decode('ascii'), expectedClipboard)
 
-
     def test_affineCipherModule(self):
         import affineCipher
 
@@ -320,13 +319,17 @@ Enter D for done, or just press Enter to continue:
         self.assertRaises(SystemExit, affineCipher.encryptMessage, 26, 23, FOX_MESSAGE)
         self.assertRaises(SystemExit, affineCipher.encryptMessage, 26, 23, FOX_MESSAGE)
 
+
+
+
     def test_affineBreakerProgram(self):
         proc = subprocess.Popen('c:\\python32\\python.exe affineBreaker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         procOut = proc.communicate('D\n'.encode('ascii'))[0].decode('ascii')
 
+        expectedOutput = 'Breaking...\n(Press Ctrl-C or Ctrl-D to quit at any time.)\nTried KeyA 1, KeyB 0... (H RZPEDYBO NZDKW WBTBOIB YZ MB RHKKBW VU)\nTried KeyA 1, KeyB 1... (G QYODCXAN MYCJV VASANHA XY LA QGJJAV UT)\nTried KeyA 1, KeyB 2... (F PXNCBWZM LXBIU UZRZMGZ WX KZ PFIIZU TS)\nTried KeyA 1, KeyB 3... (E OWMBAVYL KWAHT TYQYLFY VW JY OEHHYT SR)\nTried KeyA 1, KeyB 4... (D NVLAZUXK JVZGS SXPXKEX UV IX NDGGXS RQ)\nTried KeyA 1, KeyB 5... (C MUKZYTWJ IUYFR RWOWJDW TU HW MCFFWR QP)\nTried KeyA 1, KeyB 6... (B LTJYXSVI HTXEQ QVNVICV ST GV LBEEVQ PO)\nTried KeyA 1, KeyB 7... (A KSIXWRUH GSWDP PUMUHBU RS FU KADDUP ON)\nTried KeyA 1, KeyB 8... (Z JRHWVQTG FRVCO OTLTGAT QR ET JZCCTO NM)\nTried KeyA 1, KeyB 9... (Y IQGVUPSF EQUBN NSKSFZS PQ DS IYBBSN ML)\nTried KeyA 1, KeyB 10... (X HPFUTORE DPTAM MRJREYR OP CR HXAARM LK)\nTried KeyA 1, KeyB 11... (W GOETSNQD COSZL LQIQDXQ NO BQ GWZZQL KJ)\nTried KeyA 1, KeyB 12... (V FNDSRMPC BNRYK KPHPCWP MN AP FVYYPK JI)\nTried KeyA 1, KeyB 13... (U EMCRQLOB AMQXJ JOGOBVO LM ZO EUXXOJ IH)\nTried KeyA 1, KeyB 14... (T DLBQPKNA ZLPWI INFNAUN KL YN DTWWNI HG)\nTried KeyA 1, KeyB 15... (S CKAPOJMZ YKOVH HMEMZTM JK XM CSVVMH GF)\nTried KeyA 1, KeyB 16... (R BJZONILY XJNUG GLDLYSL IJ WL BRUULG FE)\nTried KeyA 1, KeyB 17... (Q AIYNMHKX WIMTF FKCKXRK HI VK AQTTKF ED)\nTried KeyA 1, KeyB 18... (P ZHXMLGJW VHLSE EJBJWQJ GH UJ ZPSSJE DC)\nTried KeyA 1, KeyB 19... (O YGWLKFIV UGKRD DIAIVPI FG TI YORRID CB)\nTried KeyA 1, KeyB 20... (N XFVKJEHU TFJQC CHZHUOH EF SH XNQQHC BA)\nTried KeyA 1, KeyB 21... (M WEUJIDGT SEIPB BGYGTNG DE RG WMPPGB AZ)\nTried KeyA 1, KeyB 22... (L VDTIHCFS RDHOA AFXFSMF CD QF VLOOFA ZY)\nTried KeyA 1, KeyB 23... (K UCSHGBER QCGNZ ZEWERLE BC PE UKNNEZ YX)\nTried KeyA 1, KeyB 24... (J TBRGFADQ PBFMY YDVDQKD AB OD TJMMDY XW)\nTried KeyA 1, KeyB 25... (I SAQFEZCP OAELX XCUCPJC ZA NC SILLCX WV)\nTried KeyA 3, KeyB 0... (L XRFKBIJW NRBMQ QJPJWUJ IR EJ XLMMJQ HY)\nTried KeyA 3, KeyB 1... (C OIWBSZAN EISDH HAGANLA ZI VA OCDDAH YP)\nTried KeyA 3, KeyB 2... (T FZNSJQRE VZJUY YRXRECR QZ MR FTUURY PG)\nTried KeyA 3, KeyB 3... (K WQEJAHIV MQALP PIOIVTI HQ DI WKLLIP GX)\nTried KeyA 3, KeyB 4... (B NHVARYZM DHRCG GZFZMKZ YH UZ NBCCZG XO)\nTried KeyA 3, KeyB 5... (S EYMRIPQD UYITX XQWQDBQ PY LQ ESTTQX OF)\nTried KeyA 3, KeyB 6... (J VPDIZGHU LPZKO OHNHUSH GP CH VJKKHO FW)\nTried KeyA 3, KeyB 7... (A MGUZQXYL CGQBF FYEYLJY XG TY MABBYF WN)\nTried KeyA 3, KeyB 8... (R DXLQHOPC TXHSW WPVPCAP OX KP DRSSPW NE)\nTried KeyA 3, KeyB 9... (I UOCHYFGT KOYJN NGMGTRG FO BG UIJJGN EV)\nTried KeyA 3, KeyB 10... (Z LFTYPWXK BFPAE EXDXKIX WF SX LZAAXE VM)\nTried KeyA 3, KeyB 11... (Q CWKPGNOB SWGRV VOUOBZO NW JO CQRROV MD)\nTried KeyA 3, KeyB 12... (H TNBGXEFS JNXIM MFLFSQF EN AF THIIFM DU)\nTried KeyA 3, KeyB 13... (Y KESXOVWJ AEOZD DWCWJHW VE RW KYZZWD UL)\nTried KeyA 3, KeyB 14... (P BVJOFMNA RVFQU UNTNAYN MV IN BPQQNU LC)\nTried KeyA 3, KeyB 15... (G SMAFWDER IMWHL LEKERPE DM ZE SGHHEL CT)\nTried KeyA 3, KeyB 16... (X JDRWNUVI ZDNYC CVBVIGV UD QV JXYYVC TK)\nTried KeyA 3, KeyB 17... (O AUINELMZ QUEPT TMSMZXM LU HM AOPPMT KB)\nTried KeyA 3, KeyB 18... (F RLZEVCDQ HLVGK KDJDQOD CL YD RFGGDK BS)\nTried KeyA 3, KeyB 19... (W ICQVMTUH YCMXB BUAUHFU TC PU IWXXUB SJ)\nTried KeyA 3, KeyB 20... (N ZTHMDKLY PTDOS SLRLYWL KT GL ZNOOLS JA)\nTried KeyA 3, KeyB 21... (E QKYDUBCP GKUFJ JCICPNC BK XC QEFFCJ AR)\nTried KeyA 3, KeyB 22... (V HBPULSTG XBLWA ATZTGET SB OT HVWWTA RI)\nTried KeyA 3, KeyB 23... (M YSGLCJKX OSCNR RKQKXVK JS FK YMNNKR IZ)\nTried KeyA 3, KeyB 24... (D PJXCTABO FJTEI IBHBOMB AJ WB PDEEBI ZQ)\nTried KeyA 3, KeyB 25... (U GAOTKRSF WAKVZ ZSYSFDS RA NS GUVVSZ QH)\nTried KeyA 5, KeyB 0... (R TFDGLKVI NFLCU UVJVIMV KF SV TRCCVU ZE)\nTried KeyA 5, KeyB 1... (W YKILQPAN SKQHZ ZAOANRA PK XA YWHHAZ EJ)\nTried KeyA 5, KeyB 2... (B DPNQVUFS XPVME EFTFSWF UP CF DBMMFE JO)\nTried KeyA 5, KeyB 3... (G IUSVAZKX CUARJ JKYKXBK ZU HK IGRRKJ OT)\nTried KeyA 5, KeyB 4... (L NZXAFEPC HZFWO OPDPCGP EZ MP NLWWPO TY)\nTried KeyA 5, KeyB 5... (Q SECFKJUH MEKBT TUIUHLU JE RU SQBBUT YD)\nTried KeyA 5, KeyB 6... (V XJHKPOZM RJPGY YZNZMQZ OJ WZ XVGGZY DI)\nTried KeyA 5, KeyB 7... (A COMPUTER WOULD DESERVE TO BE CALLED IN)\n\nPossible encryption break:\nKeyA: 5, KeyB: 7\nDecrypted message: A COMPUTER WOULD DESERVE TO BE CALLED INTELLIGENT IF IT COULD DECEIVE A HUMAN INTO BELIEVING THAT IT WAS HUMAN. -ALAN TURING\n\nEnter D for done, or just press Enter to continue breaking:\n> Copying broken ciphertext to clipboard:\nA COMPUTER WOULD DESERVE TO BE CALLED INTELLIGENT IF IT COULD DECEIVE A HUMAN INTO BELIEVING THAT IT WAS HUMAN. -ALAN TURING\n'
         expectedClipboard = 'A COMPUTER WOULD DESERVE TO BE CALLED INTELLIGENT IF IT COULD DECEIVE A HUMAN INTO BELIEVING THAT IT WAS HUMAN. -ALAN TURING'
 
-        self.assertEqual(procOut, 'Encrypted text:\nH RZPEDYBO NZDKW WBTBOIB YZ MB RHKKBW VUYBKKVLBUY VG VY RZDKW WBRBVIB H QDPHU VUYZ MBKVBIVUL YQHY VY NHT QDPHU. -HKHU YDOVUL\nFull encrypted text copied to clipboard.\n')
+        self.assertEqual(procOut, expectedOutput)
         self.assertEqual(pyperclip.paste().decode('ascii'), expectedClipboard)
 
 
@@ -432,13 +435,139 @@ Enter D for done, or just press Enter to continue:
         self.assertEqual(procOut, expectedOutput)
 
 
+    def test_freqFinderProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe freqFinder.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        procOut = proc.communicate()[0].decode('ascii')
+
+        expectedOutput = '12\nShakespeare\'s Sonnet #29\nWHEN, IN DISGRACE WITH FORTUNE AND MEN\'S EYES,\nI ALL ALONE BEWEEP MY OUTCAST STATE,\nAND TROUBLE DEAF HEAVEN WITH MY BOOTLESS CRIES,\nAND LOOK UPON MYSELF AND CURSE MY FATE,\nWISHING ME LIKE TO ONE MORE RICH IN HOPE,\nFEATURED LIKE HIM, LIKE HIM WITH FRIENDS POSSESSED,\nDESIRING THIS MAN\'S ART, AND THAT MAN\'S SCOPE,\nWITH WHAT I MOST ENJOY CONTENTED LEAST,\nYET IN THESE THOUGHTS MYSELF ALMOST DESPISING,\nHAPLY I THINK ON THEE, AND THEN MY STATE,\nLIKE TO THE LARK AT BREAK OF DAY ARISING\nFROM SULLEN EARTH, SINGS HYMNS AT HEAVEN\'S GATE\n\nFOR THY SWEET LOVE REMEMBERED SUCH WEALTH BRINGS,\nTHAT THEN I SCORN TO CHANGE MY STATE WITH KINGS.\n\nLetter Frequencies of Sonnet #29:\n{\'A\': 37, \'C\': 10, \'B\': 6, \'E\': 66, \'D\': 16, \'G\': 11, \'F\': 10, \'I\': 35, \'H\': 32, \'K\': 9, \'J\': 1, \'M\': 20, \'L\': 20, \'O\': 28, \'N\': 38, \'Q\': 0, \'P\': 7, \'S\': 42, \'R\': 21, \'U\': 9, \'T\': 49, \'W\': 11, \'V\': 3, \'Y\': 14, \'X\': 0, \'Z\': 0}\n\nFrequency score of Sonnet #29:\n10\n\nFrequency score of Scrambled Sonnet #29:\n10\n\nFrequency score of Lorem Ipsum text:\n4\n\nFrequency score of alphabet:\n0\n\nFrequency score of alphabet x 100:\n0\n\nFrequency score of "AAAAAAAAAAAAAAAH":\n1\n\nFrequency score of "VDIUFRFDSFEWAFDSAFLKHFDSALKFA":\n1\n\n'
+
+        self.assertEqual(procOut, expectedOutput)
+
+
+    def test_primeSieveProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe primeSieve.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        procOut = proc.communicate()[0].decode('ascii')
+
+        expectedOutput = '  2 is prime: True\n  5 is prime: True\n 11 is prime: True\n 16 is prime: False\n 17 is prime: True\n101 is prime: True\n126 is prime: False\n147 is prime: False\n\n  2 is prime: True\n  5 is prime: True\n 11 is prime: True\n 16 is prime: False\n 17 is prime: True\n101 is prime: True\n126 is prime: False\n147 is prime: False\n\nTesting if both functions are consistent with each other...\nTest Passed: Both functions are consistent with each other.\n'
+        self.assertEqual(procOut, expectedOutput)
+
+    def test_primeSieveModule(self):
+        import primeSieve
+
+        self.assertTrue(primeSieve.isPrime(2))
+        self.assertTrue(primeSieve.isPrime(17))
+        self.assertTrue(primeSieve.isPrime(37))
+        self.assertFalse(primeSieve.isPrime(20))
+        self.assertFalse(primeSieve.isPrime(1))
+        self.assertFalse(primeSieve.isPrime(0))
+        self.assertFalse(primeSieve.isPrime(-1))
+
+        sieve = primeSieve.primeSieve(1000)
+        self.assertTrue(11 in sieve)
+        self.assertTrue(16 not in sieve)
+        self.assertTrue(17 in sieve)
+        self.assertTrue(147 not in sieve)
+
+
+    def test_rabinMillerProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe rabinMiller.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        procOut = proc.communicate()[0].decode('ascii')
+
+        expectedOutput = 'Example prime testing:\n2 is prime: True\n3 is prime: True\n5 is prime: True\n10 is prime: False\n100 is prime: False\n101 is prime: True\n5099806053 is prime: False\n5099806057 is prime: True\n'
+        self.assertEqual(procOut, expectedOutput)
+
+    def test_rabinMillerModule(self):
+        import rabinMiller, random
+
+        self.assertTrue(rabinMiller.isPrime(2))
+        self.assertTrue(rabinMiller.isPrime(17))
+        self.assertTrue(rabinMiller.isPrime(37))
+        self.assertFalse(rabinMiller.isPrime(20))
+        self.assertFalse(rabinMiller.isPrime(1))
+        self.assertFalse(rabinMiller.isPrime(0))
+        self.assertFalse(rabinMiller.isPrime(-1))
+        self.assertFalse(rabinMiller.isPrime(5099806053))
+        self.assertTrue(rabinMiller.isPrime(5099806057))
+
+        random.seed(42)
+        for keySize in (32, 64, 128, 256, 512, 600, 1024):
+            prime = rabinMiller.generateLargePrime(keySize)
+            self.assertTrue(rabinMiller.isPrime(prime))
+
+    def test_makeRsaKeysProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe makeRsaKeys.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        procOut = proc.communicate()[0].decode('ascii')
+
+        self.assertTrue('Key files made.' in procOut)
+
+    def test_makeRsaKeysModule(self):
+        import makeRsaKeys, os
+
+        makeRsaKeys.SILENT_MODE = True
+
+        # erase keys if they exist already
+        for filename in ('unittest_pubkey.txt', 'unittest_privkey.txt'):
+            if os.path.exists(filename):
+                os.unlink(filename)
+
+        makeRsaKeys.makeKeyFiles('unittest')
+        self.assertTrue(os.path.exists('unittest_pubkey.txt'))
+        self.assertTrue(os.path.exists('unittest_privkey.txt'))
+        # Testing the format of the key files can be done with rsaCipher.readKeyFile() later
+
+        # cleanup key files
+        for filename in ('unittest_pubkey.txt', 'unittest_privkey.txt'):
+            os.unlink(filename)
+
+        for keySize in (32, 64, 128, 256, 512, 600, 1024):
+            makeRsaKeys.generateKey(keySize)
+
+    def test_cryptomathModule(self):
+        import cryptomath, random
+        random.seed(42)
+
+        self.assertEqual(cryptomath.gcd(543, 526), 1)
+        self.assertEqual(cryptomath.gcd(184543, 825), 1)
+        self.assertEqual(cryptomath.gcd(184545, 825), 15)
+        self.assertEqual(cryptomath.gcd(30594, 8302), 2)
+
+        # create a bunch of things with expected gcds
+        for i in range(500):
+            a = random.randint(50, 100000)
+            b = random.randint(50, 100000)
+            self.assertEqual(cryptomath.gcd(a, b*a), a)
+
+        self.assertEqual(cryptomath.findModInverse(5, 7), 3)
+        self.assertEqual(cryptomath.findModInverse(5, 18), 11)
+        self.assertEqual(cryptomath.findModInverse(7, 180), 103)
+        self.assertEqual(cryptomath.findModInverse(8, 12), None)
+        self.assertEqual(cryptomath.findModInverse(51, 18), None)
+
+        # confirm that relatively prime a & m values have mod inverse of None
+        for i in range(500):
+            while True:
+                a = random.randint(50, 100000)
+                m = random.randint(10, 50000)
+                if cryptomath.gcd(a, m) != 1:
+                    break
+            self.assertEqual(cryptomath.findModInverse(a, m), None)
+        # confirm that non-relatively prime a & m values do have a mod inverse
+        for i in range(500):
+            while True:
+                a = random.randint(50, 100000)
+                m = random.randint(10, 50000)
+                if cryptomath.gcd(a, m) == 1:
+                    break
+            self.assertNotEqual(cryptomath.findModInverse(a, m), None)
+
+
 
 if __name__ == '__main__':
     TEST_ALL = False
 
     if not TEST_ALL:
         customSuite = unittest.TestSuite()
-        customSuite.addTest(CodeBreakerUnitTests('test_vigenereBreakerProgram'))
+        customSuite.addTest(CodeBreakerUnitTests('test_cryptomathModule'))
         unittest.TextTestRunner().run(customSuite)
     elif TEST_ALL:
         unittest.main()

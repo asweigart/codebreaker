@@ -1,7 +1,7 @@
 # Affine Cipher
 # http://inventwithpython.com/codebreaker (BSD Licensed)
 
-import sys, pyperclip
+import sys, pyperclip, cryptomath
 
 LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
@@ -24,22 +24,6 @@ def main():
     print('Full %sed text copied to clipboard.' % (myMode))
 
 
-def gcd(a, b):
-    # Return the Greatest Common Divisor of a and b using Euclid's Algorithm
-    while a != 0:
-        a, b = b % a, a
-    return b
-
-
-def findModInverse(a, m):
-    # Return the modular inverse of a mod m.
-    # Uses the naive bruteforce approach to finding mod inverses.
-    for b in range(m):
-        if (a * b) % m == 1:
-            return b
-    return None # no mod inverse exists because a & m aren't relatively prime
-
-
 def encryptMessage(keyA, keyB, message):
     # key strength and validity checks
     if keyA == 1:
@@ -47,7 +31,7 @@ def encryptMessage(keyA, keyB, message):
     if keyB == 0:
         sys.exit('The affine cipher becomes incredibly weak when keyB is set to 0. Choose a different key.')
 
-    if gcd(keyA, len(LETTERS)) != 1:
+    if cryptomath.gcd(keyA, len(LETTERS)) != 1:
         sys.exit('The key (%s) and the size of the alphabet (%s) are not relatively prime. Choose a different key.' % (keyA, len(LETTERS)))
 
     ciphertext = ''
@@ -63,11 +47,11 @@ def encryptMessage(keyA, keyB, message):
 
 
 def decryptMessage(keyA, keyB, message):
-    if gcd(keyA, len(LETTERS)) != 1:
+    if cryptomath.gcd(keyA, len(LETTERS)) != 1:
         sys.exit('The key (%s) and the size of the alphabet (%s) are not relatively prime. Choose a different key.' % (keyA, len(LETTERS)))
 
     plaintext = ''
-    modInverseOfKeyA = findModInverse(keyA, len(LETTERS))
+    modInverseOfKeyA = cryptomath.findModInverse(keyA, len(LETTERS))
 
     for symbol in message:
         if symbol in LETTERS:

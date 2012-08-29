@@ -1,7 +1,7 @@
 # Affine Cipher Breaker
 # http://inventwithpython.com/codebreaker (BSD Licensed)
 
-import pyperclip, affineCipher, detectEnglish
+import pyperclip, affineCipher, detectEnglish, cryptomath
 
 def main():
     # You might want to copy & paste this text from the source code at
@@ -29,7 +29,7 @@ def breakAffine(message):
 
     # brute force by looping through every possible key
     for keyA in range(len(affineCipher.LETTERS)):
-        if affineCipher.gcd(keyA, len(affineCipher.LETTERS)) != 1:
+        if cryptomath.gcd(keyA, len(affineCipher.LETTERS)) != 1:
             continue
 
         for keyB in range(len(affineCipher.LETTERS)):
