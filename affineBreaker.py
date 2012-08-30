@@ -3,6 +3,8 @@
 
 import pyperclip, affineCipher, detectEnglish, cryptomath
 
+SILENT_MODE = False
+
 def main():
     # You might want to copy & paste this text from the source code at
     # http://inventwithpython.com/affineBreaker.py
@@ -34,7 +36,8 @@ def breakAffine(message):
 
         for keyB in range(len(affineCipher.LETTERS)):
             decryptedText = affineCipher.decryptMessage(keyA, keyB, message)
-            print('Tried KeyA %s, KeyB %s... (%s)' % (keyA, keyB, decryptedText[:40]))
+            if not SILENT_MODE:
+                print('Tried KeyA %s, KeyB %s... (%s)' % (keyA, keyB, decryptedText[:40]))
 
             if detectEnglish.isEnglish(decryptedText):
                 # Check with the user if the decrypted key has been found.

@@ -102,6 +102,9 @@ class CodeBreakerPyLint(unittest.TestCase):
     def test_freqFinderPy(self):
         self.runPylintOnFile('freqFinder.py')
 
+    def test_cryptomathPy(self):
+        self.runPylintOnFile('cryptomath.py')
+
     def test_primeSievePy(self):
         self.runPylintOnFile('primeSieve.py')
 
@@ -224,6 +227,13 @@ Charles Babbage, FRS (26 December 1791 - 18 October 1871) was an English mathema
         self.assertEqual(procOut, expectedOutput)
         self.assertEqual(pyperclip.paste().decode('ascii'), expectedClipboard)
 
+        # run again, this time skipping that first decrypted output
+        proc = subprocess.Popen('c:\\python32\\python.exe transpositionBreaker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        procOut = proc.communicate('\n'.encode('ascii'))[0].decode('ascii')
+        self.assertTrue('Failed to break encryption.' in procOut)
+
+
+
     def test_frankensteinTextFile(self):
         fp = open('frankenstein.txt')
         content = fp.read()
@@ -319,9 +329,6 @@ Enter D for done, or just press Enter to continue:
         self.assertRaises(SystemExit, affineCipher.encryptMessage, 26, 23, FOX_MESSAGE)
         self.assertRaises(SystemExit, affineCipher.encryptMessage, 26, 23, FOX_MESSAGE)
 
-
-
-
     def test_affineBreakerProgram(self):
         proc = subprocess.Popen('c:\\python32\\python.exe affineBreaker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         procOut = proc.communicate('D\n'.encode('ascii'))[0].decode('ascii')
@@ -331,6 +338,11 @@ Enter D for done, or just press Enter to continue:
 
         self.assertEqual(procOut, expectedOutput)
         self.assertEqual(pyperclip.paste().decode('ascii'), expectedClipboard)
+
+        # run again, this time skipping that first decrypted output
+        proc = subprocess.Popen('c:\\python32\\python.exe affineBreaker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        procOut = proc.communicate('\n'.encode('ascii'))[0].decode('ascii')
+        self.assertTrue('Failed to break encryption.' in procOut)
 
 
     def test_simpleSubCipherProgram(self):
@@ -468,6 +480,10 @@ Enter D for done, or just press Enter to continue:
         self.assertTrue(17 in sieve)
         self.assertTrue(147 not in sieve)
 
+        for lowPrime in [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997]:
+            self.assertTrue(lowPrime in sieve)
+            if lowPrime != 2:
+                self.assertFalse(lowPrime + 1 in sieve)
 
     def test_rabinMillerProgram(self):
         proc = subprocess.Popen('c:\\python32\\python.exe rabinMiller.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
@@ -490,13 +506,24 @@ Enter D for done, or just press Enter to continue:
         self.assertTrue(rabinMiller.isPrime(5099806057))
 
         random.seed(42)
-        for keySize in (32, 64, 128, 256, 512, 600, 1024):
-            prime = rabinMiller.generateLargePrime(keySize)
-            self.assertTrue(rabinMiller.isPrime(prime))
+        for i in range(3):
+            for keySize in (32, 64, 128, 256, 512, 600, 1024):
+                prime = rabinMiller.generateLargePrime(keySize)
+                self.assertTrue(rabinMiller.isPrime(prime))
+
+        for lowPrime in [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997]:
+            self.assertTrue(rabinMiller.isPrime(lowPrime))
 
     def test_makeRsaKeysProgram(self):
         proc = subprocess.Popen('c:\\python32\\python.exe makeRsaKeys.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         procOut = proc.communicate()[0].decode('ascii')
+
+        import os
+        self.assertTrue(os.path.exists('al_sweigart_pubkey.txt'))
+        self.assertTrue(os.path.exists('al_sweigart_privkey.txt'))
+        import rsaCipher
+        rsaCipher.readKeyFile('al_sweigart_pubkey.txt')
+        rsaCipher.readKeyFile('al_sweigart_privkey.txt')
 
         self.assertTrue('Key files made.' in procOut)
 
@@ -513,7 +540,9 @@ Enter D for done, or just press Enter to continue:
         makeRsaKeys.makeKeyFiles('unittest')
         self.assertTrue(os.path.exists('unittest_pubkey.txt'))
         self.assertTrue(os.path.exists('unittest_privkey.txt'))
-        # Testing the format of the key files can be done with rsaCipher.readKeyFile() later
+        import rsaCipher
+        rsaCipher.readKeyFile('al_sweigart_pubkey.txt')
+        rsaCipher.readKeyFile('al_sweigart_privkey.txt')
 
         # cleanup key files
         for filename in ('unittest_pubkey.txt', 'unittest_privkey.txt'):
@@ -526,6 +555,7 @@ Enter D for done, or just press Enter to continue:
         import cryptomath, random
         random.seed(42)
 
+        # standard set of gcd tests
         self.assertEqual(cryptomath.gcd(543, 526), 1)
         self.assertEqual(cryptomath.gcd(184543, 825), 1)
         self.assertEqual(cryptomath.gcd(184545, 825), 15)
@@ -537,6 +567,7 @@ Enter D for done, or just press Enter to continue:
             b = random.randint(50, 100000)
             self.assertEqual(cryptomath.gcd(a, b*a), a)
 
+        # standard set of mod inverse tests
         self.assertEqual(cryptomath.findModInverse(5, 7), 3)
         self.assertEqual(cryptomath.findModInverse(5, 18), 11)
         self.assertEqual(cryptomath.findModInverse(7, 180), 103)
@@ -561,13 +592,23 @@ Enter D for done, or just press Enter to continue:
             self.assertNotEqual(cryptomath.findModInverse(a, m), None)
 
 
+    def test_vigenereCipherProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe vigenereCipher.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        procOut = proc.communicate()[0].decode('ascii')
+
+        expectedOutput = 'Encrypted message:\nADIZ AVTZQECI TMZUBB WSA M PMILQEV HALPQAVTAKUOI, LGOUQDAF, KDMKTSVMZTSL, IZR XOEXGHZR KKUSITAAF. VZ WSA TWBHDG UBALMMZHDAD QZ HCE VMHSGOHUQBO OX KAAKULMD GXIWVOS, KRGDURDNY I RCMMSTUGVTAWZ CA TZM OCICWXFG JF "STSCMILPY" OID "UWYDPTSBUCI" WABT HCE LCDWIG EIOVDNW. BGFDNY QE KDDWTK QJNKQPSMEV BA PZ TZM ROOHWZ AT XOEXGHZR KKUSICW IZR VRLQRWXIST UBOEDTUUZNUM. PIMIFO ICMLV EMF DI, LCDWIG OWDYZD XWD HCE YWHSMNEMZH XOVM MBY CQXTSM SUPACG (GUKE) OO BDMFQCLWG BOMK, TZUHVIF\'A OCYETZQOFIFO OSITJM. RCM A LQYS CE OIE VZAV WR VPT 8, LPQ GZCLQAB MEKXABNITTQ TJR YMDAVN FIHOG CJGBHVNSTKGDS. ZM PSQIKMP O IUEJQF JF LMOVIIICQG AOJ JDSVKAVS UZREIZ QDPZMDG, DNUTGRDNY BTS HELPAR JF LPQ PJMTM, MB ZLWKFFJMWKTOIIUIX AVCZQZS OHSB OCPLV NUBY SWBFWIGK NAF OHW MZWBMS UMQCIFM. MTOEJ BTS RAJ PQ KJRCMP OO TZM ZOOIGVMZ KHQAUQVL DINCMALWDM, RHWZQ VZ CJMMHZD GVQ CA TZM RWMSL LQGDGFA RCM A KBAFZD-HZAUMAE KAAKULMD, HCE SKQ. WI 1948 TMZUBB JGQZSY MSF ZSRMSV\'E QJMHCFWIG DINCMALWDM VT EIZQCEKBQF PNADQFNILG, IVZRW PQ ONSAAFSY IF BTS YENMXCKMWVF CA TZM YOICZMEHZR UWYDPTWZE OID TMOOHE AVFSMEKBQR DN EIFVZMSBUQVL TQAZJGQ. PQ KMOLM M DVPWZ AB OHW KTSHIUIX PVSAA AT HOJXTCBEFMEWN, AFL BFZDAKFSY OKKUZGALQZU XHWUUQVL JMMQOIGVE GPCZ IE HCE TMXCPSGD-LVVBGBUBNKQ ZQOXTAWZ, KCIUP ISME XQDGO OTAQFQEV QZ HCE 1960K. BGFDNY\'A TCHOKMJIVLABK FZSMTFSY IF I OFDMAVMZ KRGAQQPTAWZ WI 1952, WZMZ VJMGAQLPAD IOHN WWZQ GOIDT UZGEYIX WI TZM GBDTWL WWIGVWY. VZ AUKQDOEV BDSVTEMZH RILP RSHADM TCMMGVQG (XHWUUQVL UIEHMALQAB) VS SV MZOEJVMHDVW BA DMIKWZ. HPRAVS RDEV QZ 1954, XPSL WHSM TOW ISZKK JQTJRW PUG 42ID TQDHCDSG, RFJM UGMBDDW XAWNOFQZU. VN AVCIZSL LQHZREQZSY TZIF VDS VMMHC WSA EIDCALQ; VDS EWFVZR SVP GJMW WFVZRK JQZDENMP VDS VMMHC WSA MQXIVMZHVL. GV 10 ESKTWUNSM 2009, FGTXCRIFO MB DNLMDBZT UIYDVIYV, NFDTAAT DMIEM YWIIKBQF BOJLAB WRGEZ AVDW IZ CAFAKUOG PMJXWX AHWXCBY GV NSCADN AT OHW JDWOIKP SCQEJVYSIT XWD "HCE SXBOGLAVS KVY ZM ION TJMMHZD." SA AT HAQ 2012 I BFDVSBQ AZMTMD\'G WIDT ION BWNAFZ TZM TCPSW WR ZJRVA IVDCZ EAIGD YZMBO TMZUBB A KBMHPTGZK DVRVWZ WA EFIOHZD.\n\nThe message has been copied to the clipboard.\n'
+        expectedClipboard = 'ADIZ AVTZQECI TMZUBB WSA M PMILQEV HALPQAVTAKUOI, LGOUQDAF, KDMKTSVMZTSL, IZR XOEXGHZR KKUSITAAF. VZ WSA TWBHDG UBALMMZHDAD QZ HCE VMHSGOHUQBO OX KAAKULMD GXIWVOS, KRGDURDNY I RCMMSTUGVTAWZ CA TZM OCICWXFG JF "STSCMILPY" OID "UWYDPTSBUCI" WABT HCE LCDWIG EIOVDNW. BGFDNY QE KDDWTK QJNKQPSMEV BA PZ TZM ROOHWZ AT XOEXGHZR KKUSICW IZR VRLQRWXIST UBOEDTUUZNUM. PIMIFO ICMLV EMF DI, LCDWIG OWDYZD XWD HCE YWHSMNEMZH XOVM MBY CQXTSM SUPACG (GUKE) OO BDMFQCLWG BOMK, TZUHVIF\'A OCYETZQOFIFO OSITJM. RCM A LQYS CE OIE VZAV WR VPT 8, LPQ GZCLQAB MEKXABNITTQ TJR YMDAVN FIHOG CJGBHVNSTKGDS. ZM PSQIKMP O IUEJQF JF LMOVIIICQG AOJ JDSVKAVS UZREIZ QDPZMDG, DNUTGRDNY BTS HELPAR JF LPQ PJMTM, MB ZLWKFFJMWKTOIIUIX AVCZQZS OHSB OCPLV NUBY SWBFWIGK NAF OHW MZWBMS UMQCIFM. MTOEJ BTS RAJ PQ KJRCMP OO TZM ZOOIGVMZ KHQAUQVL DINCMALWDM, RHWZQ VZ CJMMHZD GVQ CA TZM RWMSL LQGDGFA RCM A KBAFZD-HZAUMAE KAAKULMD, HCE SKQ. WI 1948 TMZUBB JGQZSY MSF ZSRMSV\'E QJMHCFWIG DINCMALWDM VT EIZQCEKBQF PNADQFNILG, IVZRW PQ ONSAAFSY IF BTS YENMXCKMWVF CA TZM YOICZMEHZR UWYDPTWZE OID TMOOHE AVFSMEKBQR DN EIFVZMSBUQVL TQAZJGQ. PQ KMOLM M DVPWZ AB OHW KTSHIUIX PVSAA AT HOJXTCBEFMEWN, AFL BFZDAKFSY OKKUZGALQZU XHWUUQVL JMMQOIGVE GPCZ IE HCE TMXCPSGD-LVVBGBUBNKQ ZQOXTAWZ, KCIUP ISME XQDGO OTAQFQEV QZ HCE 1960K. BGFDNY\'A TCHOKMJIVLABK FZSMTFSY IF I OFDMAVMZ KRGAQQPTAWZ WI 1952, WZMZ VJMGAQLPAD IOHN WWZQ GOIDT UZGEYIX WI TZM GBDTWL WWIGVWY. VZ AUKQDOEV BDSVTEMZH RILP RSHADM TCMMGVQG (XHWUUQVL UIEHMALQAB) VS SV MZOEJVMHDVW BA DMIKWZ. HPRAVS RDEV QZ 1954, XPSL WHSM TOW ISZKK JQTJRW PUG 42ID TQDHCDSG, RFJM UGMBDDW XAWNOFQZU. VN AVCIZSL LQHZREQZSY TZIF VDS VMMHC WSA EIDCALQ; VDS EWFVZR SVP GJMW WFVZRK JQZDENMP VDS VMMHC WSA MQXIVMZHVL. GV 10 ESKTWUNSM 2009, FGTXCRIFO MB DNLMDBZT UIYDVIYV, NFDTAAT DMIEM YWIIKBQF BOJLAB WRGEZ AVDW IZ CAFAKUOG PMJXWX AHWXCBY GV NSCADN AT OHW JDWOIKP SCQEJVYSIT XWD "HCE SXBOGLAVS KVY ZM ION TJMMHZD." SA AT HAQ 2012 I BFDVSBQ AZMTMD\'G WIDT ION BWNAFZ TZM TCPSW WR ZJRVA IVDCZ EAIGD YZMBO TMZUBB A KBMHPTGZK DVRVWZ WA EFIOHZD.'
+
+        self.assertEqual(procOut, expectedOutput)
+        self.assertEqual(pyperclip.paste().decode('ascii'), expectedClipboard)
+
 
 if __name__ == '__main__':
-    TEST_ALL = False
+    TEST_ALL = True
 
     if not TEST_ALL:
         customSuite = unittest.TestSuite()
-        customSuite.addTest(CodeBreakerUnitTests('test_cryptomathModule'))
+        customSuite.addTest(CodeBreakerUnitTests('test_primeSieveModule'))
         unittest.TextTestRunner().run(customSuite)
     elif TEST_ALL:
         unittest.main()

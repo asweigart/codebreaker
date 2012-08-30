@@ -11,7 +11,7 @@ def main():
     brokenCiphertext = breakTransposition(myMessage)
 
     if brokenCiphertext == None:
-        print('Breaking failed. Unable to break this ciphertext.')
+        print('Failed to break encryption.')
     else:
         print('Copying broken ciphertext to clipboard:')
         print(brokenCiphertext[:1000]) # only print the first 1000 characters
