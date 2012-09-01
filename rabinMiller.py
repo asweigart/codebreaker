@@ -20,7 +20,7 @@ def rabinMiller(num):
         s = s // 2
         t += 1
 
-    for dummy_trials in range(5): # attempt to falsify num's primality 5 times
+    for dummy_trials in range(5): # try to falsify num's primality 5 times
         a = random.randrange(2, num - 1)
         v = pow(a, s, num)
         if v != 1: # this test does not apply if v is 1.

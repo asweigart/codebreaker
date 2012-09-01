@@ -7,7 +7,7 @@ SILENT_MODE = False
 
 def main():
     # You might want to copy & paste this text from the source code at
-    # http://inventwithpython.com/affineBreaker.py
+    # http://invpy.com/affineBreaker.py
     myMessage = 'H RZPEDYBO NZDKW WBTBOIB YZ MB RHKKBW VUYBKKVLBUY VG VY RZDKW WBRBVIB H QDPHU VUYZ MBKVBIVUL YQHY VY NHT QDPHU. -HKHU YDOVUL'
 
     brokenCiphertext = breakAffine(myMessage.upper())

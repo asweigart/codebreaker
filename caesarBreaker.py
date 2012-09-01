@@ -13,7 +13,7 @@ for key in range(len(LETTERS)):
 
     # The rest of the program is the same as the original Caesar program:
 
-    # run the encryption/decryption code on each symbol in the message string
+    # run the encryption/decryption code on each symbol in the message
     for symbol in message:
         if symbol in LETTERS:
             num = LETTERS.find(symbol) # get the number of the symbol
@@ -23,7 +23,7 @@ for key in range(len(LETTERS)):
             if num < 0:
                 num = num + len(LETTERS)
 
-            # add encrypted/decrypted number's symbol at the end of translated
+            # add number's symbol at the end of translated
             translated = translated + LETTERS[num]
 
         else:

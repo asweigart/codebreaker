@@ -3,17 +3,17 @@
 
 """
 In this program, a "word pattern" is a description of which letters are
-repeated in a word. A word pattern is a series of numbers delimited by periods.
-The first letter to appear in the word is assigned 0, the second letter 1, and
-so on. So the word pattern for 'cucumber' is '0.1.0.1.2.3.4.5' because the
-first letter 'c' occurs as the first and third letter in the word 'cucumber'.
-So the pattern has '0' as the first and third number.
+repeated in a word. A word pattern is numbers delimited by periods.
+The first letter to appear in the word is assigned 0, the second letter 1,
+and so on. So the word pattern for 'cucumber' is '0.1.0.1.2.3.4.5' because the
+first letter 'c' occurs as the first and third letter in the word
+'cucumber'. So the pattern has '0' as the first and third number.
 
 The pattern for 'abc' or 'cba' is '0.1.2'
 The pattern for 'aaa' or 'bbb' is '0.0.0'
 The pattern for 'hello' is '0.1.2.2.3'
-The pattern for 'advise' or 'closet' is '0.1.2.3.4.5' (they have only unique
-letters in the word)
+The pattern for 'advise' or 'closet' is '0.1.2.3.4.5' (they have only
+unique letters in the word)
 
 In this program, a "candidate" is a possible English word that a ciphertext
 work can decrypt to.
@@ -21,10 +21,10 @@ For example, 'cucumber', 'mementos', and 'cocoanut' are candidates for the
 ciphertext word 'JHJHWDOV' (because all of them have the pattern
 '0.1.0.1.2.3.4.5')
 
-In this program, a "map" or "mapping" is a dictionary where the keys are the
-letters in LETTERS (e.g. 'A', 'B', 'C', etc) and the values are lists of
-letters that could possibly be the correct decryption. If the list is blank,
-this means that it is unknown what this letter could decrypt to.
+In this program, a "map" or "mapping" is a dictionary where the keys are
+the letters in LETTERS (e.g. 'A', 'B', 'C', etc) and the values are lists
+of letters that could possibly be the correct decryption. If the list is
+blank, this means that it is unknown what this letter could decrypt to.
 """
 
 # The import statement for wordPatterns is further down.
@@ -77,7 +77,7 @@ def main():
 
 def getWordPattern(word):
     # Returns a string of the pattern form of the given word.
-    # e.g. '0.1.2.3.4.1.2.3.5.6' for 'DUSTBUSTER' or '0.1.2.2.3' for 'DOGGY'
+    # e.g. '0.1.2.3.4.1.2.3.5.6' for 'DUSTBUSTER'
     word = word.upper()
     nextNum = 0
     letterNums = {}
@@ -129,14 +129,14 @@ def getNewBlankMapping():
 
 
 def addMappings(theMap, cipherWord, candidate):
-    # The theMap parameter is a "mapping" data structure that this function
-    # modifies. (See the comments at the top of this file.)
+    # The theMap parameter is a "mapping" data structure that this
+    # function modifies. (See the comments at the top of this file.)
     # The cipherWord parameter is a string value of the ciphertext word.
-    # The candidate parameter is a possible English word that the cipherWord
-    # could decrypt to.
+    # The candidate parameter is a possible English word that the
+    # cipherWord could decrypt to.
 
-    # This function modifies theMap so that the mappings of the cipherWord's
-    # letters to the candidate's letters are added to theMap.
+    # This function modifies theMap so that the mappings of the
+    # cipherWord's letters to the candidate's letters are added to theMap.
 
     for i in range(len(cipherWord)):
         if candidate[i] not in theMap[cipherWord[i]]:
@@ -150,8 +150,8 @@ def intersectMappings(mapA, mapB):
     result = getNewBlankMapping()
     for i in mapA.keys():
 
-        # An empty list means "any letter is possible". So just copy the other
-        # map entirely.
+        # An empty list means "any letter is possible". So just copy the
+        # other map entirely.
         if mapA[i] == []:
             result[i] = copy.copy(mapB[i])
         elif mapB[i] == []:
@@ -165,14 +165,14 @@ def intersectMappings(mapA, mapB):
 
 
 def removeSolvedLettersFromMapping(theMap):
-    # Letters in the mapping that map to only one letter are consider "solved"
-    # and can be removed from the other letters.
-    # For example, if 'A' maps to possible letters ['M', 'N'], and 'B' maps
-    # to ['N'], then we know that 'B' must map to 'N', so we can remove 'N'
-    # from the list of what 'A' could map to. So 'A' then maps to ['M'].
-    # Note that now that 'A' maps to only one letter, we can remove 'M'
-    # from the list of possible mappings for every other letter. (This is why
-    # there is a loop that keeps reducing the map.)
+    # Letters in the mapping that map to only one letter are consider
+    # "solved" and can be removed from the other letters.
+    # For example, if 'A' maps to possible letters ['M', 'N'], and 'B'
+    # maps to ['N'], then we know that 'B' must map to 'N', so we can
+    # remove 'N' from the list of what 'A' could map to. So 'A' then maps
+    # to ['M']. Note that now that 'A' maps to only one letter, we can
+    # remove 'M' from the list of possible mappings for every other
+    # letter. (This is why there is a loop that keeps reducing the map.)
     previousSolvedLetters = []
     solvedLetters = None
     while previousSolvedLetters != solvedLetters:
@@ -181,24 +181,24 @@ def removeSolvedLettersFromMapping(theMap):
         previousSolvedLetters = solvedLetters
         solvedLetters = []
 
-        # solvedLetters will be a list of English letters that have one and
-        # only one possible mapping in theMap
+        # solvedLetters will be a list of English letters that have one
+        # and only one possible mapping in theMap
         for i in theMap:
             if len(theMap[i]) == 1:
                 solvedLetters.append(theMap[i][0])
 
         # If a letter is solved, than it cannot possibly be a possible
-        # decryption letter for a different ciphertext letter, so we should
-        # remove it.
+        # decryption letter for a different ciphertext letter, so we
+        # should remove it.
         for i in theMap:
             for s in solvedLetters:
                 if len(theMap[i]) != 1 and s in theMap[i]:
                     theMap[i].remove(s)
 
-        # With a letter removed, it's possible that we may have reduced other
-        # ciphertext letters to one and only one solution, so keep looping
-        # until previousSolvedLetters == solvedLetters. At that point, we'll
-        # know we can't rmemove any more letters.
+        # With a letter removed, it's possible that we may have reduced
+        # other ciphertext letters to one and only one solution, so keep
+        # looping until previousSolvedLetters == solvedLetters. At that
+        # point, we'll know we can't rmemove any more letters.
     return theMap
 
 
@@ -232,7 +232,7 @@ def decryptWithMap(ciphertext, theMap):
     key = ['x'] * len(LETTERS)
     for letter in theMap.keys():
         if len(theMap[letter]) == 1:
-            # There is only one possible letter mapping, so add it to the key.
+            # If only one possible letter mapping, add it to the key.
             keyIndex = LETTERS.find(theMap[letter][0].upper())
             key[keyIndex] = letter.upper()
         else:
@@ -244,9 +244,9 @@ def decryptWithMap(ciphertext, theMap):
     return simpleSubCipher.decryptMessage(key, ciphertext)
 
 def checkForWordPatternsPy():
-    # If the wordPatterns.py file does not exist, create it based on the words
-    # in our dictionary text file, dictionary.txt.
-    # (You can download this file from http://inventwithpython.com/dictionary.txt)
+    # If the wordPatterns.py file does not exist, create it based on the
+    # words in our dictionary text file, dictionary.txt.
+    # (Download this file from http://invpy.com/dictionary.txt)
     if not os.path.exists('wordPatterns.py'):
         import pprint # import the "pretty print" module
         allPatterns = {}
@@ -256,7 +256,7 @@ def checkForWordPatternsPy():
         fp.close()
 
         for word in wordList:
-            word = word.strip() # get rid of newline at the end of the string
+            word = word.strip() # get rid of newline at the end
             pattern = getWordPattern(word)
 
             if pattern not in allPatterns:

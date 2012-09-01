@@ -13,7 +13,7 @@ key = 13
 mode = 'encrypt' # set to 'encrypt' or 'decrypt'
 
 # every possible symbol that can be encrypted
-LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+LETTERS = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
 
 # stores the encrypted/decrypted form of the message
 translated = ''
@@ -31,8 +31,8 @@ for symbol in message:
         elif mode == 'decrypt':
             num = num - key
 
-        # handle the wrap around if num is larger than the length of LETTERS
-        # or less than 0
+        # handle the wrap around if num is larger than the length of
+        # LETTERS or less than 0
         if num >= len(LETTERS):
             num = num - len(LETTERS)
         elif num < 0:

@@ -28,11 +28,11 @@ def decryptMessage(key, message):
     # The number of "shaded boxes" in the last "column" of the grid:
     numOfShadedBoxes = (numOfColumns * numOfRows) - len(message)
 
-    # Each string in plaintext represents a column in the transposition grid.
+    # Each string in plaintext represents a column in the grid.
     plaintext = [''] * numOfColumns
 
-    # The col and row variables point to where in the grid the next character
-    # in the encrypted message will go.
+    # The col and row variables point to where in the grid the next
+    # character in the encrypted message will go.
     col = 0
     row = 0
 

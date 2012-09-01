@@ -3,33 +3,11 @@
 
 import math
 
-def main():
-    print('  2 is prime: %s' % (isPrime(2)))
-    print('  5 is prime: %s' % (isPrime(5)))
-    print(' 11 is prime: %s' % (isPrime(11)))
-    print(' 16 is prime: %s' % (isPrime(16)))
-    print(' 17 is prime: %s' % (isPrime(17)))
-    print('101 is prime: %s' % (isPrime(101)))
-    print('126 is prime: %s' % (isPrime(126)))
-    print('147 is prime: %s' % (isPrime(147)))
-    print()
-    primes = primeSieve(1000)
-    print('  2 is prime: %s' % (2 in primes))
-    print('  5 is prime: %s' % (5 in primes))
-    print(' 11 is prime: %s' % (11 in primes))
-    print(' 16 is prime: %s' % (16 in primes))
-    print(' 17 is prime: %s' % (17 in primes))
-    print('101 is prime: %s' % (101 in primes))
-    print('126 is prime: %s' % (126 in primes))
-    print('147 is prime: %s' % (147 in primes))
-    print()
-    _testPrimeFunctions()
-
 
 def isPrime(num):
     # Returns True if num is a prime number, otherwise False.
 
-    # Note: Generally, isPrime() is slower than primeSieve()
+    # Note: Generally, isPrime() is slower than primeSieve().
 
     # all numbers less than 2 are not prime
     if num < 2:
@@ -64,26 +42,3 @@ def primeSieve(sieveSize):
             primes.append(i)
 
     return primes
-
-
-def _testPrimeFunctions():
-    TEST_SIZE = 20000
-    sievePrimes = primeSieve(TEST_SIZE)
-
-    print('Testing if both functions are consistent with each other...')
-    allCorrect = True
-    for i in range(TEST_SIZE):
-        if (i in sievePrimes and not isPrime(i)) or (i not in sievePrimes and isPrime(i)):
-            print('The two functions disagree if %s is prime.' % (i))
-            allCorrect = False
-
-    if allCorrect:
-        print('Test Passed: Both functions are consistent with each other.')
-    else:
-        print('ERROR! Both functions are not consistent with each other.')
-
-
-# If primeSieve.py is run (instead of imported as a module) call
-# the main() function.
-if __name__ == '__main__':
-    main()

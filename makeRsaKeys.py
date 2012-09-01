@@ -83,7 +83,6 @@ def generateKey(keySize=DEFAULT_KEY_SIZE):
     return (publicKey, privateKey)
 
 
-
 # If makeRsaKeys.py is run (instead of imported as a module) call
 # the main() function.
 if __name__ == '__main__':

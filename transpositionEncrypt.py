@@ -10,8 +10,8 @@ def main():
     translated = encryptMessage(myKey, myMessage)
 
     # Print the (encrypted) string in translated to the screen, with
-    # a | (called "pipe" character) after it in case there are spaces at the
-    # end of the encrypted message.
+    # a | (called "pipe" character) after it in case there are spaces at
+    # the end of the encrypted message.
     print(translated + '|')
 
     # Copy the (encrypted) string in translated to the clipboard.
@@ -19,7 +19,7 @@ def main():
 
 
 def encryptMessage(key, message):
-    # Each string in ciphertext represents a column in the transposition grid.
+    # Each string in ciphertext represents a column in the grid.
     ciphertext = [''] * key
 
     # Loop through each column in ciphertext.

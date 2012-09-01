@@ -4,7 +4,8 @@
 import sys
 
 # IMPORTANT: The block size MUST be less or equal than the key size!
-# (Note: The block size is in bytes, the key size is in bits. There are 8 bits in 1 byte.)
+# (Note: The block size is in bytes, the key size is in bits. There
+# are 8 bits in 1 byte.)
 DEFAULT_BLOCK_SIZE = 128
 BYTE_SIZE = 256 # One byte has 256 different values.
 
@@ -48,17 +49,17 @@ def getBlocksFromText(message, blockSize=DEFAULT_BLOCK_SIZE):
 
 
 def getTextFromBlocks(blockInts, messageLength, blockSize=DEFAULT_BLOCK_SIZE):
-    # Converts a list of block integers to the original message string. The
-    # original message length is needed to properly convert the last block
-    # integer.
+    # Converts a list of block integers to the original message string.
+    # The original message length is needed to properly convert the last
+    # block integer.
     message = []
 
     for blockInt in blockInts:
         blockMessage = []
         for i in range(blockSize-1, -1, -1):
             if len(message) + i < messageLength:
-                # Decode the message string for the 512 (or whatever blockSize is
-                # set to) characters from this block integer.
+                # Decode the message string for the 512 (or whatever
+                # blockSize is set to) characters from this block integer.
                 charNumber = blockInt // (BYTE_SIZE ** i)
                 blockInt = blockInt % (BYTE_SIZE ** i)
                 blockMessage.insert(0, bytes([charNumber]).decode('ascii'))
@@ -68,7 +69,7 @@ def getTextFromBlocks(blockInts, messageLength, blockSize=DEFAULT_BLOCK_SIZE):
 
 def encryptMessage(message, key, blockSize=DEFAULT_BLOCK_SIZE):
     # Converts the message string into a list of block integers, and then
-    # encrypt each block integer. Be sure to pass the PUBLIC key to encrypt.
+    # encrypt each block integer. Pass the PUBLIC key to encrypt.
     encryptedBlocks = []
     n, e = key
 

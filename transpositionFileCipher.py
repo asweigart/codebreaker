@@ -5,13 +5,13 @@ import time, os, sys, transpositionEncrypt, transpositionDecrypt
 
 def main():
     inputFilename = 'frankenstein.txt'
-    # BE CAREFUL! If a file with the outputFilename name already exists, this
-    # program will overwrite that file.
+    # BE CAREFUL! If a file with the outputFilename name already exists,
+    # this program will overwrite that file.
     outputFilename = 'frankenstein.encrypted.txt'
     myKey = 10
     myMode = 'encrypt' # set to 'encrypt' or 'decrypt'
 
-    # If the input file does not exist, then the program terminates early on.
+    # If the input file does not exist, then the program terminates early.
     if not os.path.exists(inputFilename):
         print('The file %s does not exist. Quitting...' % (inputFilename))
         sys.exit()
@@ -48,7 +48,7 @@ def main():
     print('%sed file is %s.' % (myMode.title(), outputFilename))
 
 
-# If transpositionCipherFile.py is run (instead of imported as a module) call
-# the main() function.
+# If transpositionCipherFile.py is run (instead of imported as a module)
+# call the main() function.
 if __name__ == '__main__':
     main()
