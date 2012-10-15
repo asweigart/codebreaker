@@ -47,11 +47,11 @@ def breakTransposition(message):
         englishPercentage = round(detectEnglish.getEnglishCount(decryptedText) * 100, 2)
 
         totalTime = round(time.time() - startTime, 3)
-        print('Key test time: %s seconds, ' % (totalTime), end='')
+        print('Test time: %s seconds, ' % (totalTime), end='')
         sys.stdout.flush() # flush printed text to the screen
 
         print('Percent English: %s%%' % (englishPercentage))
-        if detectEnglish.isEnglish(decryptedText, 20):
+        if englishPercentage > 20:
             print()
             print('Key ' + str(key) + ': ' + decryptedText[:100])
             print()

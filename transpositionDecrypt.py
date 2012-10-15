@@ -18,8 +18,8 @@ def main():
 
 def decryptMessage(key, message):
     # The transposition decrypt function will simulate the "columns" and
-    # "rows" of the grid that the plaintext is written on by using a Python
-    # list of strings. First, we need to calculate a few values.
+    # "rows" of the grid that the plaintext is written on by using a list
+    # of strings. First, we need to calculate a few values.
 
     # The number of "columns" our transposition grid:
     numOfColumns = math.ceil(len(message) / key)
@@ -36,8 +36,8 @@ def decryptMessage(key, message):
     col = 0
     row = 0
 
-    for i in range(len(message)):
-        plaintext[col] += message[i]
+    for symbol in message:
+        plaintext[col] += symbol
         col += 1 # point to next column
 
         # If there are no more columns OR we're at a shaded box, go back to

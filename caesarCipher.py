@@ -13,7 +13,7 @@ key = 13
 mode = 'encrypt' # set to 'encrypt' or 'decrypt'
 
 # every possible symbol that can be encrypted
-LETTERS = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
+LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 # stores the encrypted/decrypted form of the message
 translated = ''
