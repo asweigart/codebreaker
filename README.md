@@ -1,9 +1,9 @@
 codebreaker
 ===========
 
-"Become a Code Breaker with Python" programs
+Hacking Secret Ciphers with Python" programs
 
-This repo contains the source for the encryption and code breaking programs featured in the book "Become a Code Breaker with Python".
+This repo contains the source for the encryption and code breaking programs featured in the book "Hacking Secret Ciphers with Python".
 
 Here's a general description of each of the files:
 
@@ -66,6 +66,9 @@ rabinMiller.py
 
 README.md
     The file that you are reading right now, silly. :D
+
+reverseCipher.py
+    Encrypts with the reverse "cipher", which just reverse the string.
 
 rsaCipher.py
     Encrypts and decrypts using the RSA Cipher.
