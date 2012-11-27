@@ -1,5 +1,5 @@
 # Simple Substitution Cipher
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 import pyperclip, sys, random
 
@@ -17,7 +17,7 @@ def main():
         translated = encryptMessage(myKey, myMessage)
     elif myMode == 'decrypt':
         translated = decryptMessage(myKey, myMessage)
-
+    print('Using key %s' % (myKey))
     print('The %sed message is:' % (myMode))
     print(translated)
     pyperclip.copy(translated)
@@ -26,31 +26,32 @@ def main():
 
 
 def checkValidKey(key):
-    if len(key) != len(LETTERS):
-        sys.exit('The key must have the same number of symbols as the symbol set.')
-    if len(set(key)) != len(key):
-        sys.exit('The key cannot have duplicate symbols in it.')
-    if len(set(LETTERS)) != len(LETTERS):
-        sys.exit('The symbol set cannot have duplicate symbols in it.')
+    keyList = list(set(key))
+    lettersList = list(LETTERS)
+    keyList.sort()
+    lettersList.sort()
+    if keyList != lettersList or len(set(key)) != len(key):
+        sys.exit('There is an error in the key or symbol set.')
 
 
 def translateMessage(key, message, mode):
     translated = ''
-    message = message.upper()
-
-    SET_A = LETTERS
-    SET_B = key
+    CHARS_A = LETTERS
+    CHARS_B = key
     if mode == 'decrypt':
         # For decrypting, we can use the same code as encrypting. We
         # just need to swap where the key and LETTERS strings are used.
-        SET_A, SET_B = SET_B, SET_A
+        CHARS_A, CHARS_B = CHARS_B, CHARS_A
 
     # loop through each symbol in the message
     for symbol in message:
-        if symbol in SET_A:
+        if symbol.upper() in CHARS_A:
             # encrypt/decrypt the symbol
-            symIndex = SET_A.find(symbol)
-            translated += SET_B[symIndex]
+            symIndex = CHARS_A.find(symbol.upper())
+            if symbol.isupper():
+                translated += CHARS_B[symIndex].upper()
+            else:
+                translated += CHARS_B[symIndex].lower()
         else:
             # symbol is not in LETTERS, just add it
             translated += symbol
