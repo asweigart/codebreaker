@@ -1,5 +1,5 @@
 # Transposition File Breaker
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 import sys, time, os, sys, transpositionDecrypt, detectEnglish
 

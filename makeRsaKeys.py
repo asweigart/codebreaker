@@ -1,5 +1,5 @@
 # RSA Key Generator
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 import random, sys, os, rabinMiller, cryptomath
 

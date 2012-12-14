@@ -1,5 +1,5 @@
 # Affine Cipher Breaker
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 import pyperclip, affineCipher, detectEnglish, cryptomath
 
@@ -8,9 +8,9 @@ SILENT_MODE = False
 def main():
     # You might want to copy & paste this text from the source code at
     # http://invpy.com/affineBreaker.py
-    myMessage = 'H RZPEDYBO NZDKW WBTBOIB YZ MB RHKKBW VUYBKKVLBUY VG VY RZDKW WBRBVIB H QDPHU VUYZ MBKVBIVUL YQHY VY NHT QDPHU. -HKHU YDOVUL'
+    myMessage = """U&'<3dJ^Gjx'-3^MS'Sj0jxuj'G3'%j'<mMMjS'g{GjMMg9j{G'g"'gG'<3^MS'Sj<jguj'm'P^dm{'g{G3'%jMgjug{9'GPmG'gG'-m0'P^dm{LU'5&Mm{'_^xg{9"""
 
-    brokenCiphertext = breakAffine(myMessage.upper())
+    brokenCiphertext = breakAffine(myMessage)
 
     if brokenCiphertext != None:
         # The plaintext is displayed on the screen. For the convenience of
@@ -30,27 +30,27 @@ def breakAffine(message):
     print('(Press Ctrl-C or Ctrl-D to quit at any time.)')
 
     # brute force by looping through every possible key
-    for keyA in range(len(affineCipher.LETTERS)):
-        if cryptomath.gcd(keyA, len(affineCipher.LETTERS)) != 1:
+    for key in range(len(affineCipher.SYMBOLS) ** 2):
+        keyA = affineCipher.getKeyParts(key)[0]
+        if cryptomath.gcd(keyA, len(affineCipher.SYMBOLS)) != 1:
             continue
 
-        for keyB in range(len(affineCipher.LETTERS)):
-            decryptedText = affineCipher.decryptMessage(keyA, keyB, message)
-            if not SILENT_MODE:
-                print('Tried KeyA %s, KeyB %s... (%s)' % (keyA, keyB, decryptedText[:40]))
+        decryptedText = affineCipher.decryptMessage(key, message)
+        if not SILENT_MODE:
+            print('Tried Key %s... (%s)' % (key, decryptedText[:40]))
 
-            if detectEnglish.isEnglish(decryptedText):
-                # Check with the user if the decrypted key has been found.
-                print()
-                print('Possible encryption break:')
-                print('KeyA: %s, KeyB: %s' % (keyA, keyB))
-                print('Decrypted message: ' + decryptedText[:200])
-                print()
-                print('Enter D for done, or just press Enter to continue breaking:')
-                response = input('> ')
+        if detectEnglish.isEnglish(decryptedText):
+            # Check with the user if the decrypted key has been found.
+            print()
+            print('Possible encryption break:')
+            print('Key: %s' % (key))
+            print('Decrypted message: ' + decryptedText[:200])
+            print()
+            print('Enter D for done, or just press Enter to continue breaking:')
+            response = input('> ')
 
-                if response.strip().upper().startswith('D'):
-                    return decryptedText
+            if response.strip().upper().startswith('D'):
+                return decryptedText
     return None
 
 

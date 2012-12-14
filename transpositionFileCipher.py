@@ -1,5 +1,5 @@
 # Transposition Cipher Encrypt/Decrypt File
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 import time, os, sys, transpositionEncrypt, transpositionDecrypt
 

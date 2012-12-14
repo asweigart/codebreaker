@@ -1,5 +1,5 @@
 # Transposition Cipher Encryption
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 import pyperclip
 
@@ -7,15 +7,15 @@ def main():
     myMessage = 'Common sense is not so common.'
     myKey = 8
 
-    translated = encryptMessage(myKey, myMessage)
+    ciphertext = encryptMessage(myKey, myMessage)
 
-    # Print the (encrypted) string in translated to the screen, with
+    # Print the (encrypted) string in ciphertext to the screen, with
     # a | (called "pipe" character) after it in case there are spaces at
     # the end of the encrypted message.
-    print(translated + '|')
+    print(ciphertext + '|')
 
-    # Copy the (encrypted) string in translated to the clipboard.
-    pyperclip.copy(translated)
+    # Copy the encrypted string in ciphertext to the clipboard.
+    pyperclip.copy(ciphertext)
 
 
 def encryptMessage(key, message):

@@ -1,5 +1,5 @@
 # Simple Substitution Cipher Breaker
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 """
 In this program, a "word pattern" is a description of which letters are
@@ -36,8 +36,8 @@ LETTERS = simpleSubCipher.LETTERS
 def main():
     message = 'SY L NLX SR PYYACAO L YLWJ EISWI UPAR LULSXRJ ISR SXRJSXWJR, IA ESMM RWCTJSXSZA SJ WMPRAMH, LXO TXMARR JIA AQSOAXWA SR PQACEIAMNSXU, IA ESMM CAYTRA JP FAMSAQA SJ. SY, PX JIA PJIAC ILXO, IA SR PYYACAO RPNAJISXU EISWI LYYPCOR L CALRPX YPC LWJSXU SX LWWPCOLXWA JP ISR SXRJSXWJR, IA ESMM LWWABJ SJ AQAX PX JIA RMSUIJARJ AQSOAXWA. JIA PCSUSX PY NHJIR SR AGBMLSXAO SX JISR ELH. -FACJCLXO CTRRAMM'
 
-    nonLettersPattern = re.compile('[^A-Z\s]')
-    ciphertext = nonLettersPattern.sub('', message.upper()).split()
+    NONLETTERSPATTERN = re.compile('[^A-Z\s]')
+    ciphertext = NONLETTERSPATTERN.sub('', message.upper()).split()
 
     # allCandidates is a dict with keys of a single ciphertext word, and
     # values of the possible word patterns

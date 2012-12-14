@@ -1,5 +1,5 @@
 # Vigenere Cipher Breaker
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 import copy, math, itertools, re
 import vigenereCipher, pyperclip, freqFinder, detectEnglish
@@ -10,7 +10,7 @@ NUM_MOST_FREQ_LETTERS = 3
 SILENT_MODE = False
 FACTOR_CACHE = {} # a dictionary that stores lists of factors
 
-nonLettersPattern = re.compile('[^A-Z]')
+NONLETTERSPATTERN = re.compile('[^A-Z]')
 
 def main():
     # Instead of typing this ciphertext out, you can copy & paste it
@@ -126,7 +126,7 @@ def getNthLetter(nth, keyLength, message):
     #      getNthLetter(1, 5, 'ABCABCABC') returns 'AC'
 
     # Use a "regular expression" remove non-letters from the message.
-    message = nonLettersPattern.sub('', message)
+    message = NONLETTERSPATTERN.sub('', message)
 
     i = nth - 1
     letters = []

@@ -1,5 +1,8 @@
+# Cryptomath Module
+# http://inventwithpython.com/hacking (BSD Licensed)
+
 def gcd(a, b):
-    # Return the Greatest Common Divisor of a and b using Euclid's Algorithm
+    # Return the GCD of a and b using Euclid's Algorithm
     while a != 0:
         a, b = b % a, a
     return b
@@ -10,7 +13,7 @@ def findModInverse(a, m):
     # the number x such that a*x % m = 1
 
     if gcd(a, m) != 1:
-        return None # no mod inverse exists if a & m aren't relatively prime
+        return None # no mod inverse if a & m aren't relatively prime
 
     # Calculate using the Extended Euclidean Algorithm:
     u1, u2, u3 = 1, 0, a

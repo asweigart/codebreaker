@@ -1,22 +1,19 @@
 # Affine Cipher
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 import sys, pyperclip, cryptomath
-
-LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+SYMBOLS = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
 
 
 def main():
-    myMessage = 'A computer would deserve to be called intelligent if it could deceive a human into believing that it was human. -Alan Turing'
-    myKeyA, myKeyB = 5, 7
+    myMessage = """"A computer would deserve to be called intelligent if it could deceive a human into believing that it was human." -Alan Turing"""
+    myKey = 2023
     myMode = 'encrypt' # set to 'encrypt' or 'decrypt'
 
-    myMessage = myMessage.upper()
-
     if myMode == 'encrypt':
-        translated = encryptMessage(myKeyA, myKeyB, myMessage)
+        translated = encryptMessage(myKey, myMessage)
     elif myMode == 'decrypt':
-        translated = decryptMessage(myKeyA, myKeyB, myMessage)
+        translated = decryptMessage(myKey, myMessage)
 
     print('%sed text:' % (myMode.title()))
     print(translated)
@@ -24,43 +21,50 @@ def main():
     print('Full %sed text copied to clipboard.' % (myMode))
 
 
-def encryptMessage(keyA, keyB, message):
-    # key strength and validity checks
-    if keyA == 1:
-        sys.exit('The affine cipher becomes incredibly weak when keyA is set to 1. Choose a different key.')
-    if keyB == 0:
-        sys.exit('The affine cipher becomes incredibly weak when keyB is set to 0. Choose a different key.')
+def getKeyParts(key):
+    keyA = key // len(SYMBOLS)
+    keyB = key - (keyA * len(SYMBOLS))
+    return keyA, keyB
 
-    if cryptomath.gcd(keyA, len(LETTERS)) != 1:
-        sys.exit('The key (%s) and the size of the alphabet (%s) are not relatively prime. Choose a different key.' % (keyA, len(LETTERS)))
 
+def checkKeys(keyA, keyB, mode):
+    if keyA == 1 and mode == 'encrypt':
+        sys.exit('The affine cipher becomes incredibly weak when key A is set to 1. Choose a different key.')
+    if keyB == 0 and mode == 'encrypt':
+        sys.exit('The affine cipher becomes incredibly weak when key B is set to 0. Choose a different key.')
+    if keyA < 0 or keyB < 0 or keyB > len(SYMBOLS) - 1:
+        sys.exit('Key A must be greater than 0 and Key B must be between 0 and %s.' % (len(SYMBOLS) - 1))
+    if cryptomath.gcd(keyA, len(SYMBOLS)) != 1:
+        sys.exit('Key A (%s) and the symbol set size (%s) are not relatively prime. Choose a different key.' % (keyA, len(SYMBOLS)))
+
+
+def encryptMessage(key, message):
+    keyA, keyB = getKeyParts(key)
+    checkKeys(keyA, keyB, 'encrypt')
     ciphertext = ''
     for symbol in message:
-        if symbol in LETTERS:
+        if symbol in SYMBOLS:
             # encrypt this symbol
-            symIndex = LETTERS.find(symbol)
-            ciphertext += LETTERS[(symIndex * keyA + keyB) % len(LETTERS)]
+            symIndex = SYMBOLS.find(symbol)
+            ciphertext += SYMBOLS[(symIndex * keyA + keyB) % len(SYMBOLS)]
         else:
-            # just append this symbol unencrypted
-            ciphertext += symbol
+            ciphertext += symbol # just append this symbol unencrypted
     return ciphertext
 
 
-def decryptMessage(keyA, keyB, message):
-    if cryptomath.gcd(keyA, len(LETTERS)) != 1:
-        sys.exit('The key (%s) and the size of the alphabet (%s) are not relatively prime. Choose a different key.' % (keyA, len(LETTERS)))
-
+def decryptMessage(key, message):
+    keyA, keyB = getKeyParts(key)
+    checkKeys(keyA, keyB, 'decrypt')
+    keyA, keyB = getKeyParts(key)
+    modInverseOfKeyA = cryptomath.findModInverse(keyA, len(SYMBOLS))
     plaintext = ''
-    modInverseOfKeyA = cryptomath.findModInverse(keyA, len(LETTERS))
-
     for symbol in message:
-        if symbol in LETTERS:
+        if symbol in SYMBOLS:
             # decrypt this symbol
-            symIndex = LETTERS.find(symbol)
-            plaintext += LETTERS[(symIndex - keyB) * modInverseOfKeyA % len(LETTERS)]
+            symIndex = SYMBOLS.find(symbol)
+            plaintext += SYMBOLS[(symIndex - keyB) * modInverseOfKeyA % len(SYMBOLS)]
         else:
-            # just append this symbol unencrypted
-            plaintext += symbol
+            plaintext += symbol # just append this symbol undecrypted
     return plaintext
 
 

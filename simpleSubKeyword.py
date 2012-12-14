@@ -1,5 +1,5 @@
 # Simple Substitution Keyword Cipher
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 import pyperclip, simpleSubCipher
 

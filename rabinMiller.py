@@ -1,5 +1,5 @@
 # Primality Testing with the Rabin-Miller Algorithm
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 import random
 

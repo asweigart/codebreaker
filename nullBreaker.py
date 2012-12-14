@@ -1,5 +1,5 @@
 # Null Cipher Breaker
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 import nullCipher, pyperclip, detectEnglish, itertools
 
@@ -20,7 +20,7 @@ MAX_KEY_DIGITS = 5
 SILENT_MODE = False
 
 # This can be copy/pasted from http://invpy.com/nullBreaker.py
-myMessage = """y\ZWh,De,. n #{ItZ9 uL<sl6!e 2&a"\B w{Eo;l#rdvK,9\s i.Xt?WC mQ-ef>yanpushOz j9lu_H4stsd .Bawhmua_ogt <`I#w$ ctoh({'oo={sINUe 84i%G3t NLt2#Wo 7Zm*<^eacUnuG6 -=g-f:! nxQe$Qmit&Ah0#ner:O Gt!moc;rXGUe q/nKrgor"\ 9 \lecBs|10s.9i"""
+myMessage = """sn Wht eetan mnIeu  uedswsae aiaeh  wh ohh rdrh,  h ihotote muoeh  annesets jtwunetst - e-rwhe am jt   Inoo c,nh   oossssace oai o t oWth.no   miiteaton r  -s -ou  nwse. nito hwiieroe s imoiorot e o nsesorer  anletesmt s.ah"""
 
 
 def main():

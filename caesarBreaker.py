@@ -1,5 +1,5 @@
 # Caesar Cipher Breaker
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 message = 'GUVF VF ZL FRPERG ZRFFNTR.'
 LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'

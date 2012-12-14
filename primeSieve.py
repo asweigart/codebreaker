@@ -1,5 +1,5 @@
 # Prime Number Sieve
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 import math
 

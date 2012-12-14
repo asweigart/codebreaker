@@ -1,5 +1,5 @@
 # Transpositional Cipher Breaker
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 import pyperclip, detectEnglish, transpositionDecrypt
 
@@ -35,7 +35,7 @@ def breakTransposition(message):
             # Check with user to see if the decrypted key has been found.
             print()
             print('Possible encryption break:')
-            print('Key ' + str(key) + ': ' + decryptedText[:100])
+            print('Key %s: %s' % (key, decryptedText[:100]))
             print()
             print('Enter D for done, or just press Enter to continue breaking:')
             response = input('> ')

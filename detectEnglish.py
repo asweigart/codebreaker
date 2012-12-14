@@ -1,5 +1,5 @@
 # Detect English module
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 # To use, type this code:
 #   import detectEnglish
@@ -33,7 +33,7 @@ def getEnglishCount(message):
     for word in possibleWords:
         if word in ENGLISH_WORDS:
             matches += 1
-    return matches / len(possibleWords)
+    return float(matches) / len(possibleWords)
 
 
 def removeNonLetters(message):
@@ -49,5 +49,7 @@ def isEnglish(message, wordPercentage=20, letterPercentage=85):
     # 85% of all the characters in the message must be letters or spaces
     # (not punctuation or numbers).
     wordsMatch = getEnglishCount(message) * 100 >= wordPercentage
-    lettersMatch = len(removeNonLetters(message)) / len(message) * 100 >= letterPercentage
+    numLetters = len(removeNonLetters(message))
+    messageLettersPercentage = float(numLetters) / len(message) * 100
+    lettersMatch = messageLettersPercentage >= letterPercentage
     return wordsMatch and lettersMatch
