@@ -1,4 +1,4 @@
-# Transposition File Breaker
+# Transposition File Hacker
 # http://inventwithpython.com/hacking (BSD Licensed)
 
 import sys, time, os, sys, transpositionDecrypt, detectEnglish
@@ -15,7 +15,7 @@ def main():
     content = inputFile.read()
     inputFile.close()
 
-    brokenMessage = breakTransposition(content)
+    brokenMessage = hackTransposition(content)
 
     if brokenMessage != None:
         print('Writing decrypted text to %s.' % (outputFilename))
@@ -24,13 +24,13 @@ def main():
         outputFile.write(brokenMessage)
         outputFile.close()
     else:
-        print('Failed to break encryption.')
+        print('Failed to hack encryption.')
 
 
-# The breakTransposition() function's code was copy/pasted from
-# transpositionBreaker.py and had some modifications made.
-def breakTransposition(message):
-    print('Breaking...')
+# The hackTransposition() function's code was copy/pasted from
+# transpositionHacker.py and had some modifications made.
+def hackTransposition(message):
+    print('Hacking...')
     # Python programs can be stopped at any time by pressing Ctrl-C (on
     # Windows) or Ctrl-D (on Mac and Linux)
     print('(Press Ctrl-C or Ctrl-D to quit at any time.)')
@@ -62,7 +62,7 @@ def breakTransposition(message):
     return None
 
 
-# If transpositionFileBreaker.py is run (instead of imported as a module)
+# If transpositionFileHacker.py is run (instead of imported as a module)
 # call the main() function.
 if __name__ == '__main__':
     main()

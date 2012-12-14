@@ -1,4 +1,4 @@
-# Caesar Cipher Breaker
+# Caesar Cipher Hacker
 # http://inventwithpython.com/hacking (BSD Licensed)
 
 message = 'GUVF VF ZL FRPERG ZRFFNTR.'

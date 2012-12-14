@@ -1,4 +1,4 @@
-# Affine Cipher Breaker
+# Affine Cipher Hacker
 # http://inventwithpython.com/hacking (BSD Licensed)
 
 import pyperclip, affineCipher, detectEnglish, cryptomath
@@ -7,23 +7,23 @@ SILENT_MODE = False
 
 def main():
     # You might want to copy & paste this text from the source code at
-    # http://invpy.com/affineBreaker.py
+    # http://invpy.com/affineHacker.py
     myMessage = """U&'<3dJ^Gjx'-3^MS'Sj0jxuj'G3'%j'<mMMjS'g{GjMMg9j{G'g"'gG'<3^MS'Sj<jguj'm'P^dm{'g{G3'%jMgjug{9'GPmG'gG'-m0'P^dm{LU'5&Mm{'_^xg{9"""
 
-    brokenCiphertext = breakAffine(myMessage)
+    hackedMessage = hackAffine(myMessage)
 
-    if brokenCiphertext != None:
+    if hackedMessage != None:
         # The plaintext is displayed on the screen. For the convenience of
         # the user, we copy the text of the code to the clipboard.
-        print('Copying broken ciphertext to clipboard:')
-        print(brokenCiphertext)
-        pyperclip.copy(brokenCiphertext)
+        print('Copying hacked message to clipboard:')
+        print(hackedMessage)
+        pyperclip.copy(hackedMessage)
     else:
-        print('Failed to break encryption.')
+        print('Failed to hack encryption.')
 
 
-def breakAffine(message):
-    print('Breaking...')
+def hackAffine(message):
+    print('Hacking...')
 
     # Python programs can be stopped at any time by pressing Ctrl-C (on
     # Windows) or Ctrl-D (on Mac and Linux)
@@ -42,11 +42,11 @@ def breakAffine(message):
         if detectEnglish.isEnglish(decryptedText):
             # Check with the user if the decrypted key has been found.
             print()
-            print('Possible encryption break:')
+            print('Possible encryption hack:')
             print('Key: %s' % (key))
             print('Decrypted message: ' + decryptedText[:200])
             print()
-            print('Enter D for done, or just press Enter to continue breaking:')
+            print('Enter D for done, or just press Enter to continue hacking:')
             response = input('> ')
 
             if response.strip().upper().startswith('D'):
@@ -54,7 +54,7 @@ def breakAffine(message):
     return None
 
 
-# If affineBreaker.py is run (instead of imported as a module) call
+# If affineHacker.py is run (instead of imported as a module) call
 # the main() function.
 if __name__ == '__main__':
     main()

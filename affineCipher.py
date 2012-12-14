@@ -1,8 +1,8 @@
 # Affine Cipher
 # http://inventwithpython.com/hacking (BSD Licensed)
 
-import sys, pyperclip, cryptomath
-SYMBOLS = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
+import sys, pyperclip, cryptomath, random
+SYMBOLS = """ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"""
 
 
 def main():
@@ -14,7 +14,7 @@ def main():
         translated = encryptMessage(myKey, myMessage)
     elif myMode == 'decrypt':
         translated = decryptMessage(myKey, myMessage)
-
+    print('Key: %s' % (myKey))
     print('%sed text:' % (myMode.title()))
     print(translated)
     pyperclip.copy(translated)
@@ -24,7 +24,7 @@ def main():
 def getKeyParts(key):
     keyA = key // len(SYMBOLS)
     keyB = key - (keyA * len(SYMBOLS))
-    return keyA, keyB
+    return (keyA, keyB)
 
 
 def checkKeys(keyA, keyB, mode):
@@ -62,10 +62,18 @@ def decryptMessage(key, message):
         if symbol in SYMBOLS:
             # decrypt this symbol
             symIndex = SYMBOLS.find(symbol)
-            plaintext += SYMBOLS[(symIndex - keyB) * modInverseOfKeyA % len(SYMBOLS)]
+            plaintext += SYMBOLS[( (symIndex - keyB) % len(SYMBOLS)) * modInverseOfKeyA % len(SYMBOLS)]
         else:
             plaintext += symbol # just append this symbol undecrypted
     return plaintext
+
+
+def getRandomKey():
+    while True:
+        keyA = random.randint(2, len(SYMBOLS))
+        keyB = random.randint(2, len(SYMBOLS))
+        if cryptomath.gcd(keyA, len(SYMBOLS)) != 1:
+            return keyA * len(SYMBOLS) + keyB
 
 
 # If affineCipher.py is run (instead of imported as a module) call

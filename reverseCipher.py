@@ -1,5 +1,5 @@
 # Reverse Cipher
-# http://inventwithpython.com/codebreaker (BSD Licensed)
+# http://inventwithpython.com/hacking (BSD Licensed)
 
 message = 'Three can keep a secret, if two of them are dead.'
 translated = ''

@@ -1,25 +1,25 @@
-# Transpositional Cipher Breaker
+# Transpositional Cipher Hacker
 # http://inventwithpython.com/hacking (BSD Licensed)
 
 import pyperclip, detectEnglish, transpositionDecrypt
 
 def main():
     # You might want to copy & paste this text from the source code at
-    # http://invpy.com/transpositionBreaker.py
+    # http://invpy.com/transpositionHacker.py
     myMessage = """Cb b rssti aieih rooaopbrtnsceee er es no npfgcwu  plri ch nitaalr eiuengiteehb(e1  hilincegeoamn fubehgtarndcstudmd nM eu eacBoltaeteeoinebcdkyremdteghn.aa2r81a condari fmps" tad   l t oisn sit u1rnd stara nvhn fsedbh ee,n  e necrg6  8nmisv l nc muiftegiitm tutmg cm shSs9fcie ebintcaets h  aihda cctrhe ele 1O7 aaoem waoaatdahretnhechaopnooeapece9etfncdbgsoeb uuteitgna.rteoh add e,D7c1Etnpneehtn beete" evecoal lsfmcrl iu1cifgo ai. sl1rchdnheev sh meBd ies e9t)nh,htcnoecplrrh ,ide hmtlme. pheaLem,toeinfgn t e9yce da' eN eMp a ffn Fc1o ge eohg dere.eec s nfap yox hla yon. lnrnsreaBoa t,e eitsw il ulpbdofgBRe bwlmprraio po  droB wtinue r Pieno nc ayieeto'lulcih sfnc  ownaSserbereiaSm-eaiah, nnrttgcC  maciiritvledastinideI  nn rms iehn tsigaBmuoetcetias rn"""
 
-    brokenCiphertext = breakTransposition(myMessage)
+    hackedMessage = hackTransposition(myMessage)
 
-    if brokenCiphertext == None:
-        print('Failed to break encryption.')
+    if hackedMessage == None:
+        print('Failed to hack encryption.')
     else:
-        print('Copying broken ciphertext to clipboard:')
-        print(brokenCiphertext)
-        pyperclip.copy(brokenCiphertext)
+        print('Copying hacked message to clipboard:')
+        print(hackedMessage)
+        pyperclip.copy(hackedMessage)
 
 
-def breakTransposition(message):
-    print('Breaking...')
+def hackTransposition(message):
+    print('Hacking...')
 
     # Python programs can be stopped at any time by pressing Ctrl-C (on
     # Windows) or Ctrl-D (on Mac and Linux)
@@ -34,10 +34,10 @@ def breakTransposition(message):
         if detectEnglish.isEnglish(decryptedText):
             # Check with user to see if the decrypted key has been found.
             print()
-            print('Possible encryption break:')
+            print('Possible encryption hack:')
             print('Key %s: %s' % (key, decryptedText[:100]))
             print()
-            print('Enter D for done, or just press Enter to continue breaking:')
+            print('Enter D for done, or just press Enter to continue hacking:')
             response = input('> ')
 
             if response.strip().upper().startswith('D'):

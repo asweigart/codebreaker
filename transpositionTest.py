@@ -1,7 +1,7 @@
 # Transposition Cipher Test
 # http://inventwithpython.com/hacking (BSD Licensed)
 
-import transpositionEncrypt, transpositionDecrypt, random, sys
+import random, sys, transpositionEncrypt, transpositionDecrypt
 
 def main():
     random.seed(42) # set the random "seed" to a static value

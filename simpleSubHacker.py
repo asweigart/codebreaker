@@ -1,4 +1,4 @@
-# Simple Substitution Cipher Breaker
+# Simple Substitution Cipher Hacker
 # http://inventwithpython.com/hacking (BSD Licensed)
 
 """
@@ -57,11 +57,11 @@ def main():
             allCandidates[cipherWord][i] = allCandidates[cipherWord][i].upper()
 
     # determine the possible valid ciphertext translations
-    print('Breaking...')
+    print('Hacking...')
     # Python programs can be stopped at any time by pressing Ctrl-C (on
     # Windows) or Ctrl-D (on Mac and Linux)
     print('(Press Ctrl-C or Ctrl-D to quit at any time.)')
-    theMap = breakSimpleSub(getNewBlankMapping(), allCandidates)
+    theMap = hackSimpleSub(getNewBlankMapping(), allCandidates)
 
     # display the results to the user.
     print('Done.')
@@ -71,7 +71,7 @@ def main():
     print('Original ciphertext:')
     print(message)
     print()
-    print('Broken ciphertext:')
+    print('Hacked message:')
     print(decryptWithMap(message, theMap))
     print()
 
@@ -94,7 +94,7 @@ def getWordPattern(word):
 
 
 
-def breakSimpleSub(theMap, allCandidates):
+def hackSimpleSub(theMap, allCandidates):
     # allCandidate's format:
     #   { 'cipherword1': ['candidate1a', 'candidate1b', ...],
     #     'cipherword2': ['candidate2a', 'candidate2b', ...],

@@ -1,31 +1,31 @@
-# Null Cipher Breaker
+# Null Cipher Hacker
 # http://inventwithpython.com/hacking (BSD Licensed)
 
 import nullCipher, pyperclip, detectEnglish, itertools
 
-# There are two settings our breaking program needs to limit the range of
+# There are two settings our hacking program needs to limit the range of
 # the possible keys it checks.
 # MAX_KEY_NUMBER is the range of numbers it checks for each number in the
 # key. A MAX_KEY_NUMBER value of 9 means it will check 0 through 9.
 # MAX_KEY_DIGITS is the largest amount of numbers in the key. A value of 5
 # means that the key could be something like '1 2 3 4 5' or '1 1 1 1 1' or
 # '1 2 3 4', but not '1 2 3 4 5 6'
-# If these numbers are too large, then breaking the code will take a long
-# time. If these numbers are too small, then the breaking program won't be
-# able to break the encryption.
+# If these numbers are too large, then hacking the code will take a long
+# time. If these numbers are too small, then the hacking program won't be
+# able to hack the encryption.
 
 MAX_KEY_NUMBER = 9
 MAX_KEY_DIGITS = 5
 
 SILENT_MODE = False
 
-# This can be copy/pasted from http://invpy.com/nullBreaker.py
+# This can be copy/pasted from http://invpy.com/nullHacker.py
 myMessage = """sn Wht eetan mnIeu  uedswsae aiaeh  wh ohh rdrh,  h ihotote muoeh  annesets jtwunetst - e-rwhe am jt   Inoo c,nh   oossssace oai o t oWth.no   miiteaton r  -s -ou  nwse. nito hwiieroe s imoiorot e o nsesorer  anletesmt s.ah"""
 
 
 def main():
     # Calculate the number of keys that the current MAX_KEY_DIGITS and
-    # MAX_KEY_NUMBER values will cause the breaker program to go through.
+    # MAX_KEY_NUMBER values will cause the hacker program to go through.
     possibleKeys = 0 # start the number of keys at 0.
     for i in range(1, MAX_KEY_DIGITS + 1):
         # To find the total number of possible keys, add the total number
@@ -46,19 +46,19 @@ def main():
     # Python programs can be stopped at any time by pressing Ctrl-C (on
     # Windows) or Ctrl-D (on Mac and Linux)
     print('(Press Ctrl-C or Ctrl-D to quit at any time.)')
-    print('Breaking...')
+    print('Hacking...')
 
-    brokenMessage = breakNull(myMessage)
+    brokenMessage = hackNull(myMessage)
 
     if brokenMessage != None:
         print('Copying broken message to clipboard:')
         print(brokenMessage)
         pyperclip.copy(brokenMessage)
     else:
-        print('Failed to break encryption.')
+        print('Failed to hack encryption.')
 
 
-def breakNull(ciphertext):
+def hackNull(ciphertext):
     # The program needs to try keys of length 1 (such as '5'), of length 2
     # (such as '5 3'), and so on up to length MAX_KEY_DIGITS.
     for keyLength in range(1, MAX_KEY_DIGITS + 1):
@@ -75,16 +75,16 @@ def breakNull(ciphertext):
 
             if detectEnglish.isEnglish(decryptedText):
                 print()
-                print('Possible encryption break:')
+                print('Possible encryption hack:')
                 print('Key: %s' % (key))
                 print('Decrypted message: ' + decryptedText[:200])
                 print()
-                print('Enter D for done, or just press Enter to continue breaking:')
+                print('Enter D for done, or just press Enter to continue hacking:')
                 response = input('> ')
 
                 if response.strip().upper().startswith('D'):
                     return decryptedText
-    return None # failed to break encryption
+    return None # failed to hack encryption
 
 
 if __name__ == '__main__':

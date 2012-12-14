@@ -24,7 +24,7 @@ def main():
         print('Encrypted text:')
         print(encryptedText)
 
-    if mode == 'decrypt':
+    elif mode == 'decrypt':
         pubKeyFilename = 'al_sweigart_pubkey.txt'
         print('Reading from %s and decrypting...' % (filename))
         decryptedText = readFromFileAndDecrypt(filename, pubKeyFilename)

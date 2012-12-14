@@ -1,4 +1,4 @@
-# Vigenere Cipher Breaker
+# Vigenere Cipher Hacker
 # http://inventwithpython.com/hacking (BSD Licensed)
 
 import copy, math, itertools, re
@@ -14,16 +14,16 @@ NONLETTERSPATTERN = re.compile('[^A-Z]')
 
 def main():
     # Instead of typing this ciphertext out, you can copy & paste it
-    # from http://invpy.com/vigenereBreaker.py
-    ciphertext = """ADIZ AVTZQECI TMZUBB WSA M PMILQEV HALPQAVTAKUOI, LGOUQDAF, KDMKTSVMZTSL, IZR XOEXGHZR KKUSITAAF. VZ WSA TWBHDG UBALMMZHDAD QZ HCE VMHSGOHUQBO OX KAAKULMD GXIWVOS, KRGDURDNY I RCMMSTUGVTAWZ CA TZM OCICWXFG JF "STSCMILPY" OID "UWYDPTSBUCI" WABT HCE LCDWIG EIOVDNW. BGFDNY QE KDDWTK QJNKQPSMEV BA PZ TZM ROOHWZ AT XOEXGHZR KKUSICW IZR VRLQRWXIST UBOEDTUUZNUM. PIMIFO ICMLV EMF DI, LCDWIG OWDYZD XWD HCE YWHSMNEMZH XOVM MBY CQXTSM SUPACG (GUKE) OO BDMFQCLWG BOMK, TZUHVIF'A OCYETZQOFIFO OSITJM. RCM A LQYS CE OIE VZAV WR VPT 8, LPQ GZCLQAB MEKXABNITTQ TJR YMDAVN FIHOG CJGBHVNSTKGDS. ZM PSQIKMP O IUEJQF JF LMOVIIICQG AOJ JDSVKAVS UZREIZ QDPZMDG, DNUTGRDNY BTS HELPAR JF LPQ PJMTM, MB ZLWKFFJMWKTOIIUIX AVCZQZS OHSB OCPLV NUBY SWBFWIGK NAF OHW MZWBMS UMQCIFM. MTOEJ BTS RAJ PQ KJRCMP OO TZM ZOOIGVMZ KHQAUQVL DINCMALWDM, RHWZQ VZ CJMMHZD GVQ CA TZM RWMSL LQGDGFA RCM A KBAFZD-HZAUMAE KAAKULMD, HCE SKQ. WI 1948 TMZUBB JGQZSY MSF ZSRMSV'E QJMHCFWIG DINCMALWDM VT EIZQCEKBQF PNADQFNILG, IVZRW PQ ONSAAFSY IF BTS YENMXCKMWVF CA TZM YOICZMEHZR UWYDPTWZE OID TMOOHE AVFSMEKBQR DN EIFVZMSBUQVL TQAZJGQ. PQ KMOLM M DVPWZ AB OHW KTSHIUIX PVSAA AT HOJXTCBEFMEWN, AFL BFZDAKFSY OKKUZGALQZU XHWUUQVL JMMQOIGVE GPCZ IE HCE TMXCPSGD-LVVBGBUBNKQ ZQOXTAWZ, KCIUP ISME XQDGO OTAQFQEV QZ HCE 1960K. BGFDNY'A TCHOKMJIVLABK FZSMTFSY IF I OFDMAVMZ KRGAQQPTAWZ WI 1952, WZMZ VJMGAQLPAD IOHN WWZQ GOIDT UZGEYIX WI TZM GBDTWL WWIGVWY. VZ AUKQDOEV BDSVTEMZH RILP RSHADM TCMMGVQG (XHWUUQVL UIEHMALQAB) VS SV MZOEJVMHDVW BA DMIKWZ. HPRAVS RDEV QZ 1954, XPSL WHSM TOW ISZKK JQTJRW PUG 42ID TQDHCDSG, RFJM UGMBDDW XAWNOFQZU. VN AVCIZSL LQHZREQZSY TZIF VDS VMMHC WSA EIDCALQ; VDS EWFVZR SVP GJMW WFVZRK JQZDENMP VDS VMMHC WSA MQXIVMZHVL. GV 10 ESKTWUNSM 2009, FGTXCRIFO MB DNLMDBZT UIYDVIYV, NFDTAAT DMIEM YWIIKBQF BOJLAB WRGEZ AVDW IZ CAFAKUOG PMJXWX AHWXCBY GV NSCADN AT OHW JDWOIKP SCQEJVYSIT XWD "HCE SXBOGLAVS KVY ZM ION TJMMHZD." SA AT HAQ 2012 I BFDVSBQ AZMTMD'G WIDT ION BWNAFZ TZM TCPSW WR ZJRVA IVDCZ EAIGD YZMBO TMZUBB A KBMHPTGZK DVRVWZ WA EFIOHZD."""
-    brokenCiphertext = breakVigenere(ciphertext)
+    # from http://invpy.com/vigenereHacker.py
+    ciphertext = """Adiz Avtzqeci Tmzubb wsa m Pmilqev halpqavtakuoi, lgouqdaf, kdmktsvmztsl, izr xoexghzr kkusitaaf. Vz wsa twbhdg ubalmmzhdad qz hce vmhsgohuqbo ox kaakulmd gxiwvos, krgdurdny i rcmmstugvtawz ca tzm ocicwxfg jf "stscmilpy" oid "uwydptsbuci" wabt hce Lcdwig eiovdnw. Bgfdny qe kddwtk qjnkqpsmev ba pz tzm roohwz at xoexghzr kkusicw izr vrlqrwxist uboedtuuznum. Pimifo Icmlv Emf DI, Lcdwig owdyzd xwd hce Ywhsmnemzh Xovm mby Cqxtsm Supacg (GUKE) oo Bdmfqclwg Bomk, Tzuhvif'a ocyetzqofifo ositjm. Rcm a lqys ce oie vzav wr Vpt 8, lpq gzclqab mekxabnittq tjr Ymdavn fihog cjgbhvnstkgds. Zm psqikmp o iuejqf jf lmoviiicqg aoj jdsvkavs Uzreiz qdpzmdg, dnutgrdny bts helpar jf lpq pjmtm, mb zlwkffjmwktoiiuix avczqzs ohsb ocplv nuby swbfwigk naf ohw Mzwbms umqcifm. Mtoej bts raj pq kjrcmp oo tzm Zooigvmz Khqauqvl Dincmalwdm, rhwzq vz cjmmhzd gvq ca tzm rwmsl lqgdgfa rcm a kbafzd-hzaumae kaakulmd, hce SKQ. Wi 1948 Tmzubb jgqzsy Msf Zsrmsv'e Qjmhcfwig Dincmalwdm vt Eizqcekbqf Pnadqfnilg, ivzrw pq onsaafsy if bts yenmxckmwvf ca tzm Yoiczmehzr uwydptwze oid tmoohe avfsmekbqr dn eifvzmsbuqvl tqazjgq. Pq kmolm m dvpwz ab ohw ktshiuix pvsaa at hojxtcbefmewn, afl bfzdakfsy okkuzgalqzu xhwuuqvl jmmqoigve gpcz ie hce Tmxcpsgd-Lvvbgbubnkq zqoxtawz, kciup isme xqdgo otaqfqev qz hce 1960k. Bgfdny'a tchokmjivlabk fzsmtfsy if i ofdmavmz krgaqqptawz wi 1952, wzmz vjmgaqlpad iohn wwzq goidt uzgeyix wi tzm Gbdtwl Wwigvwy. Vz aukqdoev bdsvtemzh rilp rshadm tcmmgvqg (xhwuuqvl uiehmalqab) vs sv mzoejvmhdvw ba dmikwz. Hpravs rdev qz 1954, xpsl whsm tow iszkk jqtjrw pug 42id tqdhcdsg, rfjm ugmbddw xawnofqzu. Vn avcizsl lqhzreqzsy tzif vds vmmhc wsa eidcalq; vds ewfvzr svp gjmw wfvzrk jqzdenmp vds vmmhc wsa mqxivmzhvl. Gv 10 Esktwunsm 2009, fgtxcrifo mb Dnlmdbzt uiydviyv, Nfdtaat Dmiem Ywiikbqf Bojlab Wrgez avdw iz cafakuog pmjxwx ahwxcby gv nscadn at ohw Jdwoikp scqejvysit xwd "hce sxboglavs kvy zm ion tjmmhzd." Sa at Haq 2012 i bfdvsbq azmtmd'g widt ion bwnafz tzm Tcpsw wr Zjrva ivdcz eaigd yzmbo Tmzubb a kbmhptgzk dvrvwz wa efiohzd."""
+    hackedMessage = hackVigenere(ciphertext)
 
-    if brokenCiphertext != None:
-        print('Copying broken ciphertext to clipboard:')
-        print(brokenCiphertext)
-        pyperclip.copy(brokenCiphertext)
+    if hackedMessage != None:
+        print('Copying hacked message to clipboard:')
+        print(hackedMessage)
+        pyperclip.copy(hackedMessage)
     else:
-        print('Failed to break encryption.')
+        print('Failed to hack encryption.')
 
 
 
@@ -136,13 +136,13 @@ def getNthLetter(nth, keyLength, message):
     return ''.join(letters)
 
 
-def breakVigenere(ciphertext):
+def hackVigenere(ciphertext):
     # First, we need to do Kasiski Examination to figure out what the
     # length of the ciphertext's encryption key is.
     if not SILENT_MODE:
         print('Determining most likely key lengths with Kasiski Examination...')
 
-    allLikelyKeyLengths = kasiskiExamination(ciphertext)
+    allLikelyKeyLengths = kasiskiExamination(ciphertext.upper())
     if not SILENT_MODE:
         print('Kasiski Examination results say the most likely key lengths are: ', end='')
         for keyLength in allLikelyKeyLengths:
@@ -151,26 +151,36 @@ def breakVigenere(ciphertext):
         print()
 
     for keyLength in allLikelyKeyLengths:
-        print('Attempting break with key length %s (%s possible keys)...' % (keyLength, NUM_MOST_FREQ_LETTERS ** keyLength))
-        brokenCiphertext = attemptBreakWithKeyLength(ciphertext, keyLength)
-        if brokenCiphertext != None:
+        print('Attempting hack with key length %s (%s possible keys)...' % (keyLength, NUM_MOST_FREQ_LETTERS ** keyLength))
+        hackedMessage = attemptHackWithKeyLength(ciphertext.upper(), keyLength)
+        if hackedMessage != None:
             break
 
     # If none of the key lengths we found using Kasiski Examination
     # worked, start brute forcing through key lengths.
-    if brokenCiphertext == None:
+    if hackedMessage == None:
         if not SILENT_MODE:
-            print('Unable to break message with likely key length(s). Brute forcing key length...')
+            print('Unable to hack message with likely key length(s). Brute forcing key length...')
         for keyLength in range(1, MAX_KEY_LENGTH + 1):
             # don't re-check key lengths already tried from Kasiski
             if keyLength not in allLikelyKeyLengths:
                 if not SILENT_MODE:
-                    print('Attempting break with key length %s (%s possible keys)...' % (keyLength, NUM_MOST_FREQ_LETTERS ** keyLength))
-                brokenCiphertext = attemptBreakWithKeyLength(ciphertext, keyLength)
-                if brokenCiphertext != None:
+                    print('Attempting hack with key length %s (%s possible keys)...' % (keyLength, NUM_MOST_FREQ_LETTERS ** keyLength))
+                hackedMessage = attemptHackWithKeyLength(ciphertext.upper(), keyLength)
+                if hackedMessage != None:
                     break
 
-    return brokenCiphertext
+    if hackedMessage != None:
+        # Set the broken ciphertext to the original casing.
+        origCase = []
+        for i in range(len(ciphertext)):
+            if ciphertext[i].isupper():
+                origCase.append(hackedMessage[i].upper())
+            else:
+                origCase.append(hackedMessage[i].lower())
+        hackedMessage = ''.join(origCase)
+
+    return hackedMessage
 
 
 def kasiskiExamination(ciphertext):
@@ -202,7 +212,7 @@ def kasiskiExamination(ciphertext):
     return allLikelyKeyLengths
 
 
-def attemptBreakWithKeyLength(ciphertext, mostLikelyKeyLength):
+def attemptHackWithKeyLength(ciphertext, mostLikelyKeyLength):
     # Determine the most likely letters for each letter in the key.
 
     # allFreqScores is a list of mostLikelyKeyLength number of lists.
@@ -250,10 +260,10 @@ def attemptBreakWithKeyLength(ciphertext, mostLikelyKeyLength):
             if detectEnglish.isEnglish(decryptedText):
                 # Check with the user to see if the key has been found.
                 print()
-                print('Possible encryption break:')
+                print('Possible encryption hack:')
                 print('Key ' + str(possibleKey) + ': ' + decryptedText[:200])
                 print()
-                print('Enter D for done, or just press Enter to continue breaking:')
+                print('Enter D for done, or just press Enter to continue hacking:')
                 response = input('> ')
 
                 if response.strip().upper().startswith('D'):
@@ -264,7 +274,7 @@ def attemptBreakWithKeyLength(ciphertext, mostLikelyKeyLength):
     return None
 
 
-# If vigenereBreaker.py is run (instead of imported as a module) call
+# If vigenereHacker.py is run (instead of imported as a module) call
 # the main() function.
 if __name__ == '__main__':
     main()
