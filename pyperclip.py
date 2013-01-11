@@ -54,6 +54,7 @@ def winGetClipboard():
     return data
 
 def winSetClipboard(text):
+    text = str(text)
     GMEM_DDESHARE = 0x2000
     ctypes.windll.user32.OpenClipboard(0)
     ctypes.windll.user32.EmptyClipboard()
@@ -75,6 +76,7 @@ def winSetClipboard(text):
     ctypes.windll.user32.CloseClipboard()
 
 def macSetClipboard(text):
+    text = str(text)
     outf = os.popen('pbcopy', 'w')
     outf.write(text)
     outf.close()
@@ -90,6 +92,7 @@ def gtkGetClipboard():
 
 def gtkSetClipboard(text):
     global cb
+    text = str(text)
     cb = gtk.Clipboard()
     cb.set_text(text)
     cb.store()
@@ -98,9 +101,11 @@ def qtGetClipboard():
     return str(cb.text())
 
 def qtSetClipboard(text):
+    text = str(text)
     cb.setText(text)
 
 def xclipSetClipboard(text):
+    text = str(text)
     outf = os.popen('xclip -selection c', 'w')
     outf.write(text)
     outf.close()
@@ -112,6 +117,7 @@ def xclipGetClipboard():
     return content
 
 def xselSetClipboard(text):
+    text = str(text)
     outf = os.popen('xsel -i', 'w')
     outf.write(text)
     outf.close()

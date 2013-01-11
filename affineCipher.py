@@ -23,7 +23,7 @@ def main():
 
 def getKeyParts(key):
     keyA = key // len(SYMBOLS)
-    keyB = key - (keyA * len(SYMBOLS))
+    keyB = key % len(SYMBOLS)
     return (keyA, keyB)
 
 
@@ -55,9 +55,9 @@ def encryptMessage(key, message):
 def decryptMessage(key, message):
     keyA, keyB = getKeyParts(key)
     checkKeys(keyA, keyB, 'decrypt')
-    keyA, keyB = getKeyParts(key)
-    modInverseOfKeyA = cryptomath.findModInverse(keyA, len(SYMBOLS))
     plaintext = ''
+    modInverseOfKeyA = cryptomath.findModInverse(keyA, len(SYMBOLS))
+
     for symbol in message:
         if symbol in SYMBOLS:
             # decrypt this symbol

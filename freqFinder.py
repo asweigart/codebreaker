@@ -26,20 +26,6 @@ def getLetterCount(message):
     return letterToCount
 
 
-def getLetterFreq(message):
-    # Returns a dictionary with keys of single letters and values of the
-    # percentage of their frequency in the message parameter.
-    counts = getLetterCount(message)
-    totalCount = 0
-    for letter in counts:
-        totalCount += counts[letter]
-
-    letterToFreq = {}
-    for letter in counts:
-        letterToFreq[letter] = round(counts[letter] * 100 / totalCount, 2)
-    return letterToFreq
-
-
 def getFrequencyOrder(message):
     # Returns a string of the alphabet letters arranged in order of most
     # frequently occurring in the message parameter.

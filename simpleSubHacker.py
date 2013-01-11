@@ -5,8 +5,8 @@
 In this program, a "word pattern" is a description of which letters are
 repeated in a word. A word pattern is numbers delimited by periods.
 The first letter to appear in the word is assigned 0, the second letter 1,
-and so on. So the word pattern for 'cucumber' is '0.1.0.1.2.3.4.5' because the
-first letter 'c' occurs as the first and third letter in the word
+and so on. So the word pattern for 'cucumber' is '0.1.0.1.2.3.4.5' because
+the first letter 'c' occurs as the first and third letter in the word
 'cucumber'. So the pattern has '0' as the first and third number.
 
 The pattern for 'abc' or 'cba' is '0.1.2'
@@ -15,8 +15,8 @@ The pattern for 'hello' is '0.1.2.2.3'
 The pattern for 'advise' or 'closet' is '0.1.2.3.4.5' (they have only
 unique letters in the word)
 
-In this program, a "candidate" is a possible English word that a ciphertext
-work can decrypt to.
+In this program, a "candidate" is a possible English word that a
+ciphertext work can decrypt to.
 For example, 'cucumber', 'mementos', and 'cocoanut' are candidates for the
 ciphertext word 'JHJHWDOV' (because all of them have the pattern
 '0.1.0.1.2.3.4.5')
@@ -27,14 +27,17 @@ of letters that could possibly be the correct decryption. If the list is
 blank, this means that it is unknown what this letter could decrypt to.
 """
 
-# The import statement for wordPatterns is further down.
-import os, simpleSubCipher, re, copy
+import os, simpleSubCipher, re, copy, makeWordPatterns
+
+if not os.path.exists('wordPatterns.py'):
+    makeWordPatterns.main() # create the wordPatterns.py file
+import wordPatterns
 
 LETTERS = simpleSubCipher.LETTERS
 
 
 def main():
-    message = 'SY L NLX SR PYYACAO L YLWJ EISWI UPAR LULSXRJ ISR SXRJSXWJR, IA ESMM RWCTJSXSZA SJ WMPRAMH, LXO TXMARR JIA AQSOAXWA SR PQACEIAMNSXU, IA ESMM CAYTRA JP FAMSAQA SJ. SY, PX JIA PJIAC ILXO, IA SR PYYACAO RPNAJISXU EISWI LYYPCOR L CALRPX YPC LWJSXU SX LWWPCOLXWA JP ISR SXRJSXWJR, IA ESMM LWWABJ SJ AQAX PX JIA RMSUIJARJ AQSOAXWA. JIA PCSUSX PY NHJIR SR AGBMLSXAO SX JISR ELH. -FACJCLXO CTRRAMM'
+    message = 'Sy l nlx sr pyyacao l ylwj eiswi upar lulsxrj isr sxrjsxwjr, ia esmm rwctjsxsza sj wmpramh, lxo txmarr jia aqsoaxwa sr pqaceiamnsxu, ia esmm caytra jp famsaqa sj. Sy, px jia pjiac ilxo, ia sr pyyacao rpnajisxu eiswi lyypcor l calrpx ypc lwjsxu sx lwwpcolxwa jp isr sxrjsxwjr, ia esmm lwwabj sj aqax px jia rmsuijarj aqsoaxwa. Jia pcsusx py nhjir sr agbmlsxao sx jisr elh. -Facjclxo Ctrramm'
 
     NONLETTERSPATTERN = re.compile('[^A-Z\s]')
     ciphertext = NONLETTERSPATTERN.sub('', message.upper()).split()
@@ -47,7 +50,7 @@ def main():
     #                        ...etc }
     allCandidates = {}
     for cipherWord in ciphertext:
-        pattern = getWordPattern(cipherWord)
+        pattern = makeWordPatterns.getWordPattern(cipherWord)
         if pattern not in wordPatterns.allPatterns:
             continue
         allCandidates[cipherWord] = copy.copy(wordPatterns.allPatterns[pattern])
@@ -61,7 +64,7 @@ def main():
     # Python programs can be stopped at any time by pressing Ctrl-C (on
     # Windows) or Ctrl-D (on Mac and Linux)
     print('(Press Ctrl-C or Ctrl-D to quit at any time.)')
-    theMap = hackSimpleSub(getNewBlankMapping(), allCandidates)
+    theMap = hackSimpleSub(getBlankMapping(), allCandidates)
 
     # display the results to the user.
     print('Done.')
@@ -75,24 +78,6 @@ def main():
     print(decryptWithMap(message, theMap))
     print()
 
-def getWordPattern(word):
-    # Returns a string of the pattern form of the given word.
-    # e.g. '0.1.2.3.4.1.2.3.5.6' for 'DUSTBUSTER'
-    word = word.upper()
-    nextNum = 0
-    letterNums = {}
-    wordPattern = []
-
-    for letter in word:
-        if letter in letterNums:
-            wordPattern.append(str(letterNums[letter]))
-        else:
-            wordPattern.append(str(nextNum))
-            letterNums[letter] = nextNum
-            nextNum += 1
-    return '.'.join(wordPattern)
-
-
 
 def hackSimpleSub(theMap, allCandidates):
     # allCandidate's format:
@@ -102,12 +87,12 @@ def hackSimpleSub(theMap, allCandidates):
 
     for cipherWord in allCandidates.keys():
         # get a new mapping for each ciphertext word
-        newMap = getNewBlankMapping()
+        newMap = getBlankMapping()
 
         # create a map that has all the letters' possible candidate
         # decryptions added to it
         for candidate in allCandidates[cipherWord]:
-            newMap = addMappings(newMap, cipherWord, candidate)
+            newMap = addLettersToMapping(newMap, cipherWord, candidate)
 
         # intersect this new map with the existing map
         theMap = intersectMappings(theMap, newMap)
@@ -118,17 +103,17 @@ def hackSimpleSub(theMap, allCandidates):
     return theMap
 
 
-def getNewBlankMapping():
+def getBlankMapping():
     # Returns a dict where the keys are single-character strings of the
     # uppercase letters, and the values are blank lists.
     # E.g. {'A': [], 'B': [], 'C': [], ...etc}
     theMap = {}
-    for i in LETTERS:
-        theMap[i] = []
+    for letter in LETTERS:
+        theMap[letter] = []
     return theMap
 
 
-def addMappings(theMap, cipherWord, candidate):
+def addLettersToMapping(theMap, cipherWord, candidate):
     # The theMap parameter is a "mapping" data structure that this
     # function modifies. (See the comments at the top of this file.)
     # The cipherWord parameter is a string value of the ciphertext word.
@@ -147,21 +132,23 @@ def addMappings(theMap, cipherWord, candidate):
 def intersectMappings(mapA, mapB):
     # To intersect two maps, create a blank map, and that add only the
     # candidate decryption letters if they exist in both maps.
-    result = getNewBlankMapping()
-    for i in mapA.keys():
+    intersectedMap = getBlankMapping()
+    for letter in mapA.keys():
 
         # An empty list means "any letter is possible". So just copy the
         # other map entirely.
-        if mapA[i] == []:
-            result[i] = copy.copy(mapB[i])
-        elif mapB[i] == []:
-            result[i] = copy.copy(mapA[i])
+        if mapA[letter] == []:
+            intersectedMap[letter] = copy.copy(mapB[letter])
+        elif mapB[letter] == []:
+            intersectedMap[letter] = copy.copy(mapA[letter])
 
         else:
-            for j in mapA[i]:
-                if j in mapB[i]:
-                    result[i].append(j)
-    return result
+            # If a letter in mapA[letter] exists in mapB[letter], add
+            # that letter to intersectedMap[letter].
+            for mappedLetter in mapA[letter]:
+                if mappedLetter in mapB[letter]:
+                    intersectedMap[letter].append(mappedLetter)
+    return intersectedMap
 
 
 def removeSolvedLettersFromMapping(theMap):
@@ -243,37 +230,6 @@ def decryptWithMap(ciphertext, theMap):
     # decryption.
     return simpleSubCipher.decryptMessage(key, ciphertext)
 
-def checkForWordPatternsPy():
-    # If the wordPatterns.py file does not exist, create it based on the
-    # words in our dictionary text file, dictionary.txt.
-    # (Download this file from http://invpy.com/dictionary.txt)
-    if not os.path.exists('wordPatterns.py'):
-        import pprint # import the "pretty print" module
-        allPatterns = {}
-
-        fp = open('dictionary.txt')
-        wordList = fp.readlines()
-        fp.close()
-
-        for word in wordList:
-            word = word.strip() # get rid of newline at the end
-            pattern = getWordPattern(word)
-
-            if pattern not in allPatterns:
-                allPatterns[pattern] = [word]
-            else:
-                allPatterns[pattern].append(word)
-
-        # This is code that writes code. The wordPatterns.py file contains
-        # one very, very large assignment statement.
-        fp = open('wordPatterns.py', 'w')
-        fp.write('allPatterns = ')
-        fp.write(pprint.pformat(allPatterns))
-        fp.close()
-
-# Import our wordPatterns.py file.
-checkForWordPatternsPy()
-import wordPatterns
 
 if __name__ == '__main__':
     main()

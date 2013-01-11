@@ -42,3 +42,4 @@ def primeSieve(sieveSize):
             primes.append(i)
 
     return primes
+import pyperclip; pyperclip.copy(primeSieve(1000))
