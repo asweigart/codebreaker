@@ -7,152 +7,115 @@ repeated in a word. A word pattern is numbers delimited by periods.
 The first letter to appear in the word is assigned 0, the second letter 1,
 and so on. So the word pattern for 'cucumber' is '0.1.0.1.2.3.4.5' because
 the first letter 'c' occurs as the first and third letter in the word
-'cucumber'. So the pattern has '0' as the first and third number.
+'cucumber'. So the pattern has '0' as the first and third number. The 'u'
+occurs as the second and fourth letter, so '1' is used for the second and
+fourth number.
+The numbers are delimited by periods to separate them.
 
-The pattern for 'abc' or 'cba' is '0.1.2'
-The pattern for 'aaa' or 'bbb' is '0.0.0'
-The pattern for 'hello' is '0.1.2.2.3'
-The pattern for 'advise' or 'closet' is '0.1.2.3.4.5' (they have only
+The word pattern for 'abc' or 'cba' is '0.1.2'
+The word pattern for 'aaa' or 'bbb' is '0.0.0'
+The word pattern for 'hello' is '0.1.2.2.3'
+The word pattern for 'advise' or 'closet' is '0.1.2.3.4.5' (they have only
 unique letters in the word)
 
 In this program, a "candidate" is a possible English word that a
 ciphertext work can decrypt to.
 For example, 'cucumber', 'mementos', and 'cocoanut' are candidates for the
-ciphertext word 'JHJHWDOV' (because all of them have the pattern
+ciphertext word 'JHJHWDOV' (because all of these words have the pattern
 '0.1.0.1.2.3.4.5')
 
-In this program, a "map" or "mapping" is a dictionary where the keys are
-the letters in LETTERS (e.g. 'A', 'B', 'C', etc) and the values are lists
-of letters that could possibly be the correct decryption. If the list is
-blank, this means that it is unknown what this letter could decrypt to.
+In this program, a "map" or "letter mapping" is a dictionary where the
+keys are single-letter strings (e.g. 'A', 'B', 'C', etc) and the values
+are lists of single-letter strings that could possibly be the correct
+decryption for the letter in the key. If the list is blank, this means
+that it is unknown what this letter could decrypt to.
 """
 
-import os, simpleSubCipher, re, copy, makeWordPatterns
+import os, re, copy, pprint, pyperclip, simpleSubCipher, makeWordPatterns
 
 if not os.path.exists('wordPatterns.py'):
     makeWordPatterns.main() # create the wordPatterns.py file
 import wordPatterns
 
-LETTERS = simpleSubCipher.LETTERS
-
+LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+nonLettersOrSpacePattern = re.compile('[^A-Z\s]')
 
 def main():
     message = 'Sy l nlx sr pyyacao l ylwj eiswi upar lulsxrj isr sxrjsxwjr, ia esmm rwctjsxsza sj wmpramh, lxo txmarr jia aqsoaxwa sr pqaceiamnsxu, ia esmm caytra jp famsaqa sj. Sy, px jia pjiac ilxo, ia sr pyyacao rpnajisxu eiswi lyypcor l calrpx ypc lwjsxu sx lwwpcolxwa jp isr sxrjsxwjr, ia esmm lwwabj sj aqax px jia rmsuijarj aqsoaxwa. Jia pcsusx py nhjir sr agbmlsxao sx jisr elh. -Facjclxo Ctrramm'
 
-    NONLETTERSPATTERN = re.compile('[^A-Z\s]')
-    ciphertext = NONLETTERSPATTERN.sub('', message.upper()).split()
-
-    # allCandidates is a dict with keys of a single ciphertext word, and
-    # values of the possible word patterns
-    # e.g. allCandidates == {'PYYACAO': ['alleged', 'ammeter', ...etc],
-    #                        'EISWI': ['aerie', 'aging', 'algol', ...etc],
-    #                        'LULSXRJ': ['abalone', 'abashed', ...etc],
-    #                        ...etc }
-    allCandidates = {}
-    for cipherWord in ciphertext:
-        pattern = makeWordPatterns.getWordPattern(cipherWord)
-        if pattern not in wordPatterns.allPatterns:
-            continue
-        allCandidates[cipherWord] = copy.copy(wordPatterns.allPatterns[pattern])
-
-        # convert candidate words to uppercase
-        for i in range(len(allCandidates[cipherWord])):
-            allCandidates[cipherWord][i] = allCandidates[cipherWord][i].upper()
-
-    # determine the possible valid ciphertext translations
+    # Determine the possible valid ciphertext translations.
     print('Hacking...')
-    # Python programs can be stopped at any time by pressing Ctrl-C (on
-    # Windows) or Ctrl-D (on Mac and Linux)
-    print('(Press Ctrl-C or Ctrl-D to quit at any time.)')
-    theMap = hackSimpleSub(getBlankMapping(), allCandidates)
+    letterMapping = hackSimpleSub(message)
 
-    # display the results to the user.
-    print('Done.')
-    print()
-    printMapping(theMap)
+    # Display the results to the user.
+    print('Mapping:')
+    pprint.pprint(letterMapping)
     print()
     print('Original ciphertext:')
     print(message)
     print()
-    print('Hacked message:')
-    print(decryptWithMap(message, theMap))
-    print()
-
-
-def hackSimpleSub(theMap, allCandidates):
-    # allCandidate's format:
-    #   { 'cipherword1': ['candidate1a', 'candidate1b', ...],
-    #     'cipherword2': ['candidate2a', 'candidate2b', ...],
-    #     ...}
-
-    for cipherWord in allCandidates.keys():
-        # get a new mapping for each ciphertext word
-        newMap = getBlankMapping()
-
-        # create a map that has all the letters' possible candidate
-        # decryptions added to it
-        for candidate in allCandidates[cipherWord]:
-            newMap = addLettersToMapping(newMap, cipherWord, candidate)
-
-        # intersect this new map with the existing map
-        theMap = intersectMappings(theMap, newMap)
-
-    # remove any solved letters from the other possible mappings
-    theMap = removeSolvedLettersFromMapping(theMap)
-
-    return theMap
+    print('Copying hacked message to clipboard:')
+    hackedMessage = decryptWithLetterMapping(message, letterMapping)
+    pyperclip.copy(hackedMessage)
+    print(hackedMessage)
 
 
 def getBlankMapping():
-    # Returns a dict where the keys are single-character strings of the
-    # uppercase letters, and the values are blank lists.
+    # Returns a dict where the keys are uppercase single-letter strings
+    # and the values are blank lists.
     # E.g. {'A': [], 'B': [], 'C': [], ...etc}
-    theMap = {}
+    #
+    # We will call the single-letter strings in the keys "cipher letters"
+    # and the single-letter strings in the value's list "possible
+    # decryption letters".
+    letterMapping = {}
     for letter in LETTERS:
-        theMap[letter] = []
-    return theMap
+        letterMapping[letter] = []
+    return letterMapping
 
 
-def addLettersToMapping(theMap, cipherWord, candidate):
-    # The theMap parameter is a "mapping" data structure that this
-    # function modifies. (See the comments at the top of this file.)
+def addLettersToMapping(letterMapping, cipherWord, candidate):
+    # The letterMapping parameter is a "letter mapping" data structure
+    # that this function modifies.
     # The cipherWord parameter is a string value of the ciphertext word.
     # The candidate parameter is a possible English word that the
     # cipherWord could decrypt to.
 
-    # This function modifies theMap so that the mappings of the
-    # cipherWord's letters to the candidate's letters are added to theMap.
+    # This function adds the letters of the candidate as possible new
+    # decryptions for the letters of the cipher word to the letter mapping
+    # data structure.
 
+    letterMapping = copy.deepcopy(letterMapping)
     for i in range(len(cipherWord)):
-        if candidate[i] not in theMap[cipherWord[i]]:
-            theMap[cipherWord[i]].append(candidate[i])
-    return theMap
+        if candidate[i] not in letterMapping[cipherWord[i]]:
+            letterMapping[cipherWord[i]].append(candidate[i])
+    return letterMapping
 
 
 def intersectMappings(mapA, mapB):
     # To intersect two maps, create a blank map, and that add only the
-    # candidate decryption letters if they exist in both maps.
-    intersectedMap = getBlankMapping()
-    for letter in mapA.keys():
+    # possible decryption letters if they exist in BOTH maps.
+    intersectedMapping = getBlankMapping()
+    for letter in LETTERS:
 
-        # An empty list means "any letter is possible". So just copy the
-        # other map entirely.
+        # An empty list means "any letter is possible". In this case just
+        # copy the other map entirely.
         if mapA[letter] == []:
-            intersectedMap[letter] = copy.copy(mapB[letter])
+            intersectedMapping[letter] = copy.copy(mapB[letter])
         elif mapB[letter] == []:
-            intersectedMap[letter] = copy.copy(mapA[letter])
+            intersectedMapping[letter] = copy.copy(mapA[letter])
 
         else:
             # If a letter in mapA[letter] exists in mapB[letter], add
-            # that letter to intersectedMap[letter].
+            # that letter to intersectedMapping[letter].
             for mappedLetter in mapA[letter]:
                 if mappedLetter in mapB[letter]:
-                    intersectedMap[letter].append(mappedLetter)
-    return intersectedMap
+                    intersectedMapping[letter].append(mappedLetter)
+    return intersectedMapping
 
 
-def removeSolvedLettersFromMapping(theMap):
-    # Letters in the mapping that map to only one letter are consider
+def removeSolvedLettersFromMapping(letterMapping):
+    # Cipher letters in the mapping that map to only one letter are
     # "solved" and can be removed from the other letters.
     # For example, if 'A' maps to possible letters ['M', 'N'], and 'B'
     # maps to ['N'], then we know that 'B' must map to 'N', so we can
@@ -164,70 +127,86 @@ def removeSolvedLettersFromMapping(theMap):
     solvedLetters = None
     while previousSolvedLetters != solvedLetters:
         # This loop will break when solvedLetters is not changed by the
-        # reduction process (and is the same as previousSolvedLetters).
+        # reduction process inside this loop (meaning it is the same
+        # as previousSolvedLetters).
         previousSolvedLetters = solvedLetters
         solvedLetters = []
 
         # solvedLetters will be a list of English letters that have one
-        # and only one possible mapping in theMap
-        for i in theMap:
-            if len(theMap[i]) == 1:
-                solvedLetters.append(theMap[i][0])
+        # and only one possible mapping in letterMapping
+        for letter in LETTERS:
+            if len(letterMapping[letter]) == 1:
+                solvedLetters.append(letterMapping[letter][0])
 
         # If a letter is solved, than it cannot possibly be a possible
         # decryption letter for a different ciphertext letter, so we
         # should remove it.
-        for i in theMap:
+        for letter in LETTERS:
             for s in solvedLetters:
-                if len(theMap[i]) != 1 and s in theMap[i]:
-                    theMap[i].remove(s)
+                if len(letterMapping[letter]) != 1 and s in letterMapping[letter]:
+                    letterMapping[letter].remove(s)
 
         # With a letter removed, it's possible that we may have reduced
         # other ciphertext letters to one and only one solution, so keep
         # looping until previousSolvedLetters == solvedLetters. At that
-        # point, we'll know we can't rmemove any more letters.
-    return theMap
+        # point, we'll know we can't remove any more letters.
+    return letterMapping
 
 
-def printMapping(theMap):
-    # Display a mapping data structure on the screen.
-    print('Mapping:')
-    print('    ' + ' '.join(list(LETTERS)))
-    print('    ' + ' '.join('=' * len(LETTERS)))
+def hackSimpleSub(message):
+    letterMapping = getBlankMapping()
 
-    for i in range(len(LETTERS)):
-        print('    ', end='')
-        foundAnyLetters = False
-        for j in LETTERS:
-            # theMap[j] points to a list of single-character strings that
-            # are potential solutions for the ciphertext letter in j.
-            if len(theMap[j]) > i:
-                foundAnyLetters = True
-                print(theMap[j][i] + ' ', end='')
-            else:
-                print('  ', end='')
-        print()
-        if foundAnyLetters == False:
-            break
+    # allCandidates is a dict with keys of a single ciphertext word, and
+    # values of the possible word patterns.
+    # e.g. allCandidates == {'PYYACAO': ['alleged', 'ammeter', ...etc],
+    #                        'EISWI': ['aerie', 'aging', 'algol', ...etc],
+    #                        'LULSXRJ': ['abalone', 'abashed', ...etc],
+    #                        ...etc }
+    allCandidates = {}
+    message = nonLettersOrSpacePattern.sub('', message.upper()).split()
+    for cipherWord in message:
+        if cipherWord in allCandidates:
+            continue # we've already done this word, so continue
+        pattern = makeWordPatterns.getWordPattern(cipherWord)
+        if pattern not in wordPatterns.allPatterns:
+            continue
+        allCandidates[cipherWord] = copy.copy(wordPatterns.allPatterns[pattern])
+
+    for cipherWord in allCandidates.keys():
+        # Get a new mapping for each ciphertext word.
+        newMap = getBlankMapping()
+
+        # Create a map that has all the letters' possible candidate
+        # decryptions.
+        for candidate in allCandidates[cipherWord]:
+            newMap = addLettersToMapping(newMap, cipherWord, candidate)
+
+        # Intersect this new map with the existing map.
+        letterMapping = intersectMappings(letterMapping, newMap)
+
+    # Remove any solved letters from the other possible mappings.
+    letterMapping = removeSolvedLettersFromMapping(letterMapping)
+
+    return letterMapping
 
 
-def decryptWithMap(ciphertext, theMap):
-    # This function will do a simple sub decryption of ciphertext with the
-    # information in theMap, instead of a simple sub key.
+def decryptWithLetterMapping(ciphertext, letterMapping):
+    # Return a string of the ciphertext decrypted with the letter mapping,
+    # with any ambiguous decrypted letters replaced with a _ underscore.
 
-    # First create a simple sub key from the theMap mapping.
+    # First create a simple sub key from the letterMapping mapping.
     key = ['x'] * len(LETTERS)
-    for letter in theMap.keys():
-        if len(theMap[letter]) == 1:
+    for letter in LETTERS:
+        if len(letterMapping[letter]) == 1:
             # If only one possible letter mapping, add it to the key.
-            keyIndex = LETTERS.find(theMap[letter][0].upper())
-            key[keyIndex] = letter.upper()
+            keyIndex = LETTERS.find(letterMapping[letter][0])
+            key[keyIndex] = letter
         else:
-            ciphertext = ciphertext.replace(letter, '_')
+            ciphertext = ciphertext.replace(letter.lower(), '_')
+            ciphertext = ciphertext.replace(letter.upper(), '_')
     key = ''.join(key)
 
-    # Then decrypt the original ciphertext with this key and return the
-    # decryption.
+    # With the key we've created, decrypt the message.
     return simpleSubCipher.decryptMessage(key, ciphertext)
 
 

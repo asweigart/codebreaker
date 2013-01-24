@@ -2,7 +2,7 @@
 # http://inventwithpython.com/hacking (BSD Licensed)
 
 import copy, math, itertools, re
-import vigenereCipher, pyperclip, freqFinder, detectEnglish
+import vigenereCipher, pyperclip, freqAnalysis, detectEnglish
 LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 MAX_KEY_LENGTH = 16
@@ -10,7 +10,8 @@ NUM_MOST_FREQ_LETTERS = 3
 SILENT_MODE = False
 FACTOR_CACHE = {} # a dictionary that stores lists of factors
 
-NONLETTERSPATTERN = re.compile('[^A-Z]')
+nonLettersPattern = re.compile('[^A-Z]')
+
 
 def main():
     # Instead of typing this ciphertext out, you can copy & paste it
@@ -24,7 +25,6 @@ def main():
         pyperclip.copy(hackedMessage)
     else:
         print('Failed to hack encryption.')
-
 
 
 def findRepeatSequences(ciphertext):
@@ -103,7 +103,7 @@ def getMostCommonFactors(seqFactors):
             factorsByCount.append( (factor, factorCounts[factor]) )
 
     # sort the list by the factor count
-    factorsByCount.sort(key=lambda x: x[1], reverse=True)
+    factorsByCount.sort(key=freqAnalysis.getItemAtIndexOne, reverse=True)
 
     # Third, go through the factorsByCount list and cut off the list
     # after you find a factor that is not within 50% of the size of the
@@ -118,6 +118,35 @@ def getMostCommonFactors(seqFactors):
     return factorsByCount
 
 
+def kasiskiExamination(ciphertext):
+    # Find out the sequences of 3 to 5 letters that occurr multiple times
+    # in the ciphertext. repeatedSeqs has a value like:
+    # {'EXG': [192], 'NAF': [339, 972, 633], ... }
+    repeatedSeqs = findRepeatSequences(ciphertext)
+
+    # seqFactors keys are sequences, values are list of factors of the
+    # spacings. seqFactos has a value like: {'GFD': [2, 3, 4, 6, 9, 12,
+    # 18, 23, 36, 46, 69, 92, 138, 207], 'ALW': [2, 3, 4, 6, ...], ...}
+    seqFactors = {}
+    for seq in repeatedSeqs:
+        seqFactors[seq] = []
+        for spacing in repeatedSeqs[seq]:
+            seqFactors[seq].extend(getFactors(spacing))
+
+    # factorsByCount is a list of tuples: (factor, factorCount)
+    # factorsByCount has a value like: [(3, 497), (2, 487), (6, 453), ...]
+    factorsByCount = getMostCommonFactors(seqFactors)
+
+    # Now we extract the factor counts from factorsByCount and put them
+    # in variables named allLikelyKeyLengths and allLikelyKeyLengthsStr
+    # so that they are easier to use later.
+    allLikelyKeyLengths = []
+    for i in range(len(factorsByCount)):
+        allLikelyKeyLengths.append(factorsByCount[i][0])
+
+    return allLikelyKeyLengths
+
+
 def getNthLetter(nth, keyLength, message):
     # Returns every Nth letter for each keyLength set of letters in text.
     # E.g. getNthLetter(1, 3, 'ABCABCABC') returns 'AAA'
@@ -126,7 +155,7 @@ def getNthLetter(nth, keyLength, message):
     #      getNthLetter(1, 5, 'ABCABCABC') returns 'AC'
 
     # Use a "regular expression" remove non-letters from the message.
-    message = NONLETTERSPATTERN.sub('', message)
+    message = nonLettersPattern.sub('', message)
 
     i = nth - 1
     letters = []
@@ -134,6 +163,68 @@ def getNthLetter(nth, keyLength, message):
         letters.append(message[i])
         i += keyLength
     return ''.join(letters)
+
+
+def attemptHackWithKeyLength(ciphertext, mostLikelyKeyLength):
+    # Determine the most likely letters for each letter in the key.
+
+    # allFreqScores is a list of mostLikelyKeyLength number of lists.
+    # These inner lists are the freqScores list.
+    allFreqScores = []
+    for nth in range(1, mostLikelyKeyLength + 1):
+        nthLetters = getNthLetter(nth, mostLikelyKeyLength, ciphertext)
+
+        # freqScores is a list of tuples like:
+        # [(<letter>, <Eng. Freq. match score>), ... ]
+        # This list is sorted by match score (a lower score means a better
+        # match. See the englishFreqMatchScore() comments in freqAnalysis).
+        freqScores = []
+        for possibleKey in LETTERS:
+            translated = vigenereCipher.decryptMessage(possibleKey, nthLetters)
+            freqScores.append((possibleKey, freqAnalysis.englishFreqMatchScore(translated)))
+
+        # Sort by match score
+        freqScores.sort(key=freqAnalysis.getItemAtIndexOne, reverse=True)
+
+        allFreqScores.append(freqScores[:NUM_MOST_FREQ_LETTERS])
+
+    if not SILENT_MODE:
+        for i in range(len(allFreqScores)):
+            # use i+1 so the first letter is not called the "0th" letter
+            print('Possible letters for letter %s of the key: ' % (i + 1), end='')
+            for freqScore in allFreqScores[i]:
+                print('%s ' % freqScore[0], end='')
+            print()
+
+    # Try every combination of the most likely letters for each position
+    # in the key.
+    for indexes in itertools.product(range(NUM_MOST_FREQ_LETTERS), repeat=mostLikelyKeyLength):
+        # Create a possible key from the letters in allFreqScores
+        possibleKey = ''
+        for i in range(mostLikelyKeyLength):
+            possibleKey += allFreqScores[i][indexes[i]][0]
+
+        if not SILENT_MODE:
+            print('Attempting with key: %s' % (possibleKey))
+
+        decryptedText = vigenereCipher.decryptMessage(possibleKey, ciphertext)
+
+        if freqAnalysis.englishTrigramMatch(decryptedText):
+            if detectEnglish.isEnglish(decryptedText):
+                # Check with the user to see if the key has been found.
+                print()
+                print('Possible encryption hack:')
+                print('Key ' + str(possibleKey) + ': ' + decryptedText[:200])
+                print()
+                print('Enter D for done, or just press Enter to continue hacking:')
+                response = input('> ')
+
+                if response.strip().upper().startswith('D'):
+                    return decryptedText
+
+    # No English-looking decryption found with any of the possible keys,
+    # so return None.
+    return None
 
 
 def hackVigenere(ciphertext):
@@ -181,97 +272,6 @@ def hackVigenere(ciphertext):
         hackedMessage = ''.join(origCase)
 
     return hackedMessage
-
-
-def kasiskiExamination(ciphertext):
-    # Find out the sequences of 3 to 5 letters that occurr multiple times
-    # in the ciphertext. repeatedSeqs has a value like:
-    # {'EXG': [192], 'NAF': [339, 972, 633], ... }
-    repeatedSeqs = findRepeatSequences(ciphertext)
-
-    # seqFactors keys are sequences, values are list of factors of the
-    # spacings. seqFactos has a value like: {'GFD': [2, 3, 4, 6, 9, 12,
-    # 18, 23, 36, 46, 69, 92, 138, 207], 'ALW': [2, 3, 4, 6, ...], ...}
-    seqFactors = {}
-    for seq in repeatedSeqs:
-        seqFactors[seq] = []
-        for spacing in repeatedSeqs[seq]:
-            seqFactors[seq].extend(getFactors(spacing))
-
-    # factorsByCount is a list of tuples: (factor, factorCount)
-    # factorsByCount has a value like: [(3, 497), (2, 487), (6, 453), ...]
-    factorsByCount = getMostCommonFactors(seqFactors)
-
-    # Now we extract the factor counts from factorsByCount and put them
-    # in variables named allLikelyKeyLengths and allLikelyKeyLengthsStr
-    # so that they are easier to use later.
-    allLikelyKeyLengths = []
-    for i in range(len(factorsByCount)):
-        allLikelyKeyLengths.append(factorsByCount[i][0])
-
-    return allLikelyKeyLengths
-
-
-def attemptHackWithKeyLength(ciphertext, mostLikelyKeyLength):
-    # Determine the most likely letters for each letter in the key.
-
-    # allFreqScores is a list of mostLikelyKeyLength number of lists.
-    # These inner lists are the freqScores list.
-    allFreqScores = []
-    for nth in range(1, mostLikelyKeyLength + 1):
-        nthLetters = getNthLetter(nth, mostLikelyKeyLength, ciphertext)
-
-        # freqScores is a list of tuples like:
-        # [(<letter>, <Eng. Freq. match score>), ... ]
-        # This list is sorted by match score (a lower score means a better
-        # match. See the englishFreqMatch() comments in freqFinder).
-        freqScores = []
-        for possibleKey in LETTERS:
-            translated = vigenereCipher.decryptMessage(possibleKey, nthLetters)
-            freqScores.append((possibleKey, freqFinder.englishFreqMatch(translated)))
-
-        # Sort by match score
-        freqScores.sort(key=lambda x: x[1], reverse=True)
-
-        allFreqScores.append(freqScores[:NUM_MOST_FREQ_LETTERS])
-
-    if not SILENT_MODE:
-        for i in range(len(allFreqScores)):
-            # use i+1 so the first letter is not called the "0th" letter
-            print('Possible letters for letter %s of the key: ' % (i + 1), end='')
-            for freqScore in allFreqScores[i]:
-                print('%s ' % freqScore[0], end='')
-            print()
-
-    # Try every combination of the most likely letters for each position
-    # in the key.
-    for indexes in itertools.product(range(NUM_MOST_FREQ_LETTERS), repeat=mostLikelyKeyLength):
-        # Create a possible key from the letters in allFreqScores
-        possibleKey = ''
-        for i in range(mostLikelyKeyLength):
-            possibleKey += allFreqScores[i][indexes[i]][0]
-
-        if not SILENT_MODE:
-            print('Attempting with key: %s' % (possibleKey))
-
-        decryptedText = vigenereCipher.decryptMessage(possibleKey, ciphertext)
-
-        if freqFinder.englishTrigramMatch(decryptedText):
-            if detectEnglish.isEnglish(decryptedText):
-                # Check with the user to see if the key has been found.
-                print()
-                print('Possible encryption hack:')
-                print('Key ' + str(possibleKey) + ': ' + decryptedText[:200])
-                print()
-                print('Enter D for done, or just press Enter to continue hacking:')
-                response = input('> ')
-
-                if response.strip().upper().startswith('D'):
-                    return decryptedText
-
-    # No English-looking decryption found with any of the possible keys,
-    # so return None.
-    return None
 
 
 # If vigenereHacker.py is run (instead of imported as a module) call
