@@ -68,7 +68,7 @@ def getFactors(num):
     # If we've calculated the factors before, they'll be in FACTOR_CACHE.
     # In that case, just return a copy of the list of factors.
     if num in FACTOR_CACHE:
-        return copy.copy(FACTOR_CACHE[num])
+        return copy.deepcopy(FACTOR_CACHE[num])
 
     factors = [] # the list of factors found
 
@@ -81,7 +81,7 @@ def getFactors(num):
 
     FACTOR_CACHE[num] = factors # add thist list to FACTOR_CACHE
 
-    return copy.copy(factors) # return a copy of this list of factors
+    return copy.deepcopy(factors) # return a copy of this list of factors
 
 
 def getMostCommonFactors(seqFactors):
