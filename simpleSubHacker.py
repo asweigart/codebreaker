@@ -74,21 +74,21 @@ def getBlankCipherletterMapping():
     return letterMapping
 
 
-def addLettersToMapping(letterMapping, cipherWord, candidate):
+def addLettersToMapping(letterMapping, cipherword, candidate):
     # The letterMapping parameter is a "cipherletter mapping" data structure
     # that the return value starts as a copy of.
-    # The cipherWord parameter is a string value of the ciphertext word.
+    # The cipherword parameter is a string value of the ciphertext word.
     # The candidate parameter is a possible English word that the
-    # cipherWord could decrypt to.
+    # cipherword could decrypt to.
 
-    # This function adds the letters of the candidate as possible new
-    # decryptions for the letters of the cipher word to the letter mapping
-    # data structure.
+    # This function adds the letters of the candidate as potential
+    # decryption letters for the cipherletters in the cipherletter
+    # mapping.
 
     letterMapping = copy.deepcopy(letterMapping)
-    for i in range(len(cipherWord)):
-        if candidate[i] not in letterMapping[cipherWord[i]]:
-            letterMapping[cipherWord[i]].append(candidate[i])
+    for i in range(len(cipherword)):
+        if candidate[i] not in letterMapping[cipherword[i]]:
+            letterMapping[cipherword[i]].append(candidate[i])
     return letterMapping
 
 
@@ -150,27 +150,25 @@ def removeSolvedLettersFromMapping(letterMapping):
 
 
 def hackSimpleSub(message):
-    interMapping = getBlankCipherletterMapping()
-    message = nonLettersOrSpacePattern.sub('', message.upper()).split()
-    for cipherWord in message:
+    intersectedMap = getBlankCipherletterMapping()
+    message = nonLettersOrSpacePattern.sub('', message).upper().split()
+    for cipherword in message:
         # Get a new cipherletter mapping for each ciphertext word.
         newMap = getBlankCipherletterMapping()
 
-        wordPattern = makeWordPatterns.getWordPattern(cipherWord)
+        wordPattern = makeWordPatterns.getWordPattern(cipherword)
         if wordPattern not in wordPatterns.allPatterns:
             continue # This word was not in our dictionary, so continue.
 
         # Add the letters of each candidate to the mapping.
         for candidate in wordPatterns.allPatterns[wordPattern]:
-            newMap = addLettersToMapping(newMap, cipherWord, candidate)
+            newMap = addLettersToMapping(newMap, cipherword, candidate)
 
         # Intersect the new mapping with the existing intersected mapping.
-        interMapping = intersectMappings(interMapping, newMap)
+        intersectedMap = intersectMappings(intersectedMap, newMap)
 
     # Remove any solved letters from the other lists.
-    interMapping = removeSolvedLettersFromMapping(interMapping)
-
-    return interMapping
+    return removeSolvedLettersFromMapping(intersectedMap)
 
 
 def decryptWithCipherletterMapping(ciphertext, letterMapping):
@@ -179,14 +177,14 @@ def decryptWithCipherletterMapping(ciphertext, letterMapping):
 
     # First create a simple sub key from the letterMapping mapping.
     key = ['x'] * len(LETTERS)
-    for letter in LETTERS:
-        if len(letterMapping[letter]) == 1:
+    for cipherletter in LETTERS:
+        if len(letterMapping[cipherletter]) == 1:
             # If there's only one letter, add it to the key.
-            keyIndex = LETTERS.find(letterMapping[letter][0])
-            key[keyIndex] = letter
+            keyIndex = LETTERS.find(letterMapping[cipherletter][0])
+            key[keyIndex] = cipherletter
         else:
-            ciphertext = ciphertext.replace(letter.lower(), '_')
-            ciphertext = ciphertext.replace(letter.upper(), '_')
+            ciphertext = ciphertext.replace(cipherletter.lower(), '_')
+            ciphertext = ciphertext.replace(cipherletter.upper(), '_')
     key = ''.join(key)
 
     # With the key we've created, decrypt the message.
