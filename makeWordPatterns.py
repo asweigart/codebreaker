@@ -32,7 +32,7 @@ def main():
     fp.close()
 
     for word in wordList:
-        # Get the pattern for each word in wordList.
+        # Get the pattern for each string in wordList.
         pattern = getWordPattern(word)
 
         if pattern not in allPatterns:

@@ -1,36 +1,6 @@
 # Simple Substitution Cipher Hacker
 # http://inventwithpython.com/hacking (BSD Licensed)
 
-"""
-In this program, a "word pattern" is a description of which letters are
-repeated in a word. A word pattern is numbers delimited by periods.
-The first letter to appear in the word is assigned 0, the second letter 1,
-and so on. So the word pattern for 'cucumber' is '0.1.0.1.2.3.4.5' because
-the first letter 'c' occurs as the first and third letter in the word
-'cucumber'. So the pattern has '0' as the first and third number. The 'u'
-occurs as the second and fourth letter, so '1' is used for the second and
-fourth number.
-The numbers are delimited by periods to separate them.
-
-The word pattern for 'abc' or 'cba' is '0.1.2'
-The word pattern for 'aaa' or 'bbb' is '0.0.0'
-The word pattern for 'hello' is '0.1.2.2.3'
-The word pattern for 'advise' or 'closet' is '0.1.2.3.4.5' (they have only
-unique letters in the word)
-
-In this program, a "candidate" is a possible English word that a
-ciphertext work can decrypt to.
-For example, 'cucumber', 'mementos', and 'cocoanut' are candidates for the
-ciphertext word 'JHJHWDOV' (because all of these words have the pattern
-'0.1.0.1.2.3.4.5')
-
-In this program, a "cipherletter mapping" is a dictionary where the
-keys are single-letter strings (e.g. 'A', 'B', 'C', etc) and the values
-are lists of single-letter strings that could possibly be the correct
-decryption for the letter in the key. If the list is blank, this means
-that it is unknown what this letter could decrypt to.
-"""
-
 import os, re, copy, pprint, pyperclip, simpleSubCipher, makeWordPatterns
 
 if not os.path.exists('wordPatterns.py'):
@@ -41,7 +11,7 @@ LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 nonLettersOrSpacePattern = re.compile('[^A-Za-z\s]')
 
 def main():
-    message = 'Sy l nlx sr pyyacao l ylwj eiswi upar lulsxrj isr sxrjsxwjr, ia esmm rwctjsxsza sj wmpramh, lxo txmarr jia aqsoaxwa sr pqaceiamnsxu, ia esmm caytra jp famsaqa sj. Sy, px jia pjiac ilxo, ia sr pyyacao rpnajisxu eiswi lyypcor l calrpx ypc lwjsxu sx lwwpcolxwa jp isr sxrjsxwjr, ia esmm lwwabj sj aqax px jia rmsuijarj aqsoaxwa. Jia pcsusx py nhjir sr agbmlsxao sx jisr elh. -Facjclxo Ctrramm'
+    message = 'ATXIRWTFIU  FJFXTLTQU'#'Sy l nlx sr pyyacao l ylwj eiswi upar lulsxrj isr sxrjsxwjr, ia esmm rwctjsxsza sj wmpramh, lxo txmarr jia aqsoaxwa sr pqaceiamnsxu, ia esmm caytra jp famsaqa sj. Sy, px jia pjiac ilxo, ia sr pyyacao rpnajisxu eiswi lyypcor l calrpx ypc lwjsxu sx lwwpcolxwa jp isr sxrjsxwjr, ia esmm lwwabj sj aqax px jia rmsuijarj aqsoaxwa. Jia pcsusx py nhjir sr agbmlsxao sx jisr elh. -Facjclxo Ctrramm'
 
     # Determine the possible valid ciphertext translations.
     print('Hacking...')
