@@ -45,8 +45,8 @@ def getBlankCipherletterMapping():
 
 
 def addLettersToMapping(letterMapping, cipherword, candidate):
-    # The letterMapping parameter is a "cipherletter mapping" data structure
-    # that the return value starts as a copy of.
+    # The letterMapping parameter is a "cipherletter mapping" dictionary
+    # value that the return value of this function starts as a copy of.
     # The cipherword parameter is a string value of the ciphertext word.
     # The candidate parameter is a possible English word that the
     # cipherword could decrypt to.
