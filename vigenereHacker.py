@@ -77,8 +77,8 @@ def getFactors(num):
     for i in range(2, int(math.sqrt(num))): # skip the factors 1 and num
         if num % i == 0:
             factors.append(i)
-            factors.append(int(num / i))
-
+            if i != int(num / i):
+                factors.append(int(num / i))
     FACTOR_CACHE[num] = factors # add thist list to FACTOR_CACHE
 
     return copy.deepcopy(factors) # return a copy of this list of factors
