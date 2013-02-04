@@ -27,28 +27,24 @@ def main():
         print('Failed to hack encryption.')
 
 
-def findRepeatSequences(ciphertext):
-    # Goes through the ciphertext and finds any 3 to 5 letter sequences
+def findRepeatSequencesSpacings(message):
+    # Goes through the message and finds any 3 to 5 letter sequences
     # that are repeated. Returns a dict with the keys of the sequence and
     # value of a list of spacings (number of letters between the repeats.)
 
-    # Take out all of the non-letter characters from the ciphertext.
-    letterList = [] # start with a blank list
-    for letter in ciphertext:
-        if letter.isalpha():
-            letterList.append(letter) # only add letters to the list
-    ciphertext = ''.join(letterList) # create one string from the list
+    # Use a "regular expression" remove non-letters from the message.
+    message = nonLettersPattern.sub('', message.upper())
 
-    # Compile a list of seqLen-letter sequences found in the ciphertext.
+    # Compile a list of seqLen-letter sequences found in the message.
     seqSpacings = {}
     for seqLen in range(3, 5):
-        for seqStart in range(len(ciphertext) - seqLen):
+        for seqStart in range(len(message) - seqLen):
             # Determine what the sequence is, and store it in seq
-            seq = ciphertext[seqStart:seqStart+seqLen]
+            seq = message[seqStart:seqStart+seqLen]
 
-            # Look for this sequence in the rest of the ciphertext
-            for i in range(seqStart + seqLen, len(ciphertext) - seqLen):
-                if ciphertext[i:i + seqLen] == seq:
+            # Look for this sequence in the rest of the message
+            for i in range(seqStart + seqLen, len(message) - seqLen):
+                if message[i:i + seqLen] == seq:
                     # Found a repeated sequence.
                     if seq not in seqSpacings:
                         # First time a repeat was found, create a blank
@@ -122,7 +118,7 @@ def kasiskiExamination(ciphertext):
     # Find out the sequences of 3 to 5 letters that occurr multiple times
     # in the ciphertext. repeatedSeqs has a value like:
     # {'EXG': [192], 'NAF': [339, 972, 633], ... }
-    repeatedSeqs = findRepeatSequences(ciphertext)
+    repeatedSeqs = findRepeatSequencesSpacings(ciphertext)
 
     # seqFactors keys are sequences, values are list of factors of the
     # spacings. seqFactos has a value like: {'GFD': [2, 3, 4, 6, 9, 12,
@@ -212,9 +208,9 @@ def attemptHackWithKeyLength(ciphertext, mostLikelyKeyLength):
         if freqAnalysis.englishTrigramMatch(decryptedText):
             if detectEnglish.isEnglish(decryptedText):
                 # Check with the user to see if the key has been found.
-                print()
-                print('Possible encryption hack:')
-                print('Key ' + str(possibleKey) + ': ' + decryptedText[:200])
+                #print()
+                print('Possible encryption hack with key %s:' % (possibleKey))
+                print(decryptedText[:200])
                 print()
                 print('Enter D for done, or just press Enter to continue hacking:')
                 response = input('> ')
@@ -222,27 +218,23 @@ def attemptHackWithKeyLength(ciphertext, mostLikelyKeyLength):
                 if response.strip().upper().startswith('D'):
                     return decryptedText
 
-    # No English-looking decryption found with any of the possible keys,
-    # so return None.
+    # No English-looking decryption found, so return None.
     return None
 
 
 def hackVigenere(ciphertext):
     # First, we need to do Kasiski Examination to figure out what the
     # length of the ciphertext's encryption key is.
+    allLikelyKeyLengths = kasiskiExamination(ciphertext)
     if not SILENT_MODE:
-        print('Determining most likely key lengths with Kasiski Examination...')
-
-    allLikelyKeyLengths = kasiskiExamination(ciphertext.upper())
-    if not SILENT_MODE:
-        print('Kasiski Examination results say the most likely key lengths are: ', end='')
+        keyLengthStr = ''
         for keyLength in allLikelyKeyLengths:
-            print('%s ' % (keyLength), end='')
-        print()
-        print()
+            keyLengthStr += '%s ' % (keyLength)
+        print('Kasiski Examination results say the most likely key lengths are: ' + keyLengthStr + '\n')
 
     for keyLength in allLikelyKeyLengths:
-        print('Attempting hack with key length %s (%s possible keys)...' % (keyLength, NUM_MOST_FREQ_LETTERS ** keyLength))
+        if not SILENT_MODE:
+            print('Attempting hack with key length %s (%s possible keys)...' % (keyLength, NUM_MOST_FREQ_LETTERS ** keyLength))
         hackedMessage = attemptHackWithKeyLength(ciphertext.upper(), keyLength)
         if hackedMessage != None:
             break
