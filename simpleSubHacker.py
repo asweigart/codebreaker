@@ -31,17 +31,8 @@ def main():
 
 
 def getBlankCipherletterMapping():
-    # Returns a dict where the keys are uppercase single-letter strings
-    # and the values are blank lists.
-    # E.g. {'A': [], 'B': [], 'C': [], ...etc}
-    #
-    # We will call the single-letter strings in the keys "cipher letters"
-    # and the single-letter strings in the value's list "possible
-    # decryption letters".
-    letterMapping = {}
-    for letter in LETTERS:
-        letterMapping[letter] = []
-    return letterMapping
+    # Returns a dictionary value that is a blank cipherletter mapping.
+    return {'A': [], 'B': [], 'C': [], 'D': [], 'E': [], 'F': [], 'G': [], 'H': [], 'I': [], 'J': [], 'K': [], 'L': [], 'M': [], 'N': [], 'O': [], 'P': [], 'Q': [], 'R': [], 'S': [], 'T': [], 'U': [], 'V': [], 'W': [], 'X': [], 'Y': [], 'Z': []}
 
 
 def addLettersToMapping(letterMapping, cipherword, candidate):
