@@ -1,30 +1,39 @@
 # Vigenere Cipher Dictionary Hacker
 # http://inventwithpython.com/codebreaker (BSD Licensed)
 
-import detectEnglish, vigenereCipher
+import detectEnglish, vigenereCipher, pyperclip
 
 def main():
-    ciphertext = ''
+    ciphertext = """Tzx isnz eccjxkg nfq lol mys bbqq I lxcz."""
+    hackedMessage = hackVigenere(ciphertext)
 
+    if hackedMessage != None:
+        print('Copying hacked message to clipboard:')
+        print(hackedMessage)
+        pyperclip.copy(hackedMessage)
+    else:
+        print('Failed to hack encryption.')
+
+
+def hackVigenere(ciphertext):
     fp = open('dictionary.txt')
-    for word in fp.readline():
-        word = word.upper().strip() # remove the newline at the end
-        plaintext = vigenereCipher.decryptMessage(ciphertext, word)
-        if detectEnglish.isEnglish(plaintext):
-            # Check with the user to see if the decrypted key has been found.
-            print()
-            print('Possible encryption break:')
-            print('Key ' + str(possibleKey) + ': ' + decryptedText[:100])
-            print()
-            print('Enter D for done, or just press Enter to continue breaking:')
-            response = input('> ')
-
-            if response.upper().startswith('D'):
-                return decryptedText
-
+    words = fp.readlines()
     fp.close()
 
+    for word in words:
+        word = word.strip() # remove the newline at the end
+        decryptedText = vigenereCipher.decryptMessage(word, ciphertext)
+        if detectEnglish.isEnglish(decryptedText, wordPercentage=40):
+                # Check with user to see if the decrypted key has been found.
+                print()
+                print('Possible encryption break:')
+                print('Key ' + str(word) + ': ' + decryptedText[:100])
+                print()
+                print('Enter D for done, or just press Enter to continue breaking:')
+                response = input('> ')
 
+                if response.upper().startswith('D'):
+                    return decryptedText
 
 if __name__ == '__main__':
     main()

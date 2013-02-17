@@ -8,7 +8,7 @@ if not os.path.exists('wordPatterns.py'):
 import wordPatterns
 
 LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-nonLettersOrSpacePattern = re.compile('[^A-Za-z\s]')
+nonLettersOrSpacePattern = re.compile('[^A-Z\s]')
 
 def main():
     message = 'Sy l nlx sr pyyacao l ylwj eiswi upar lulsxrj isr sxrjsxwjr, ia esmm rwctjsxsza sj wmpramh, lxo txmarr jia aqsoaxwa sr pqaceiamnsxu, ia esmm caytra jp famsaqa sj. Sy, px jia pjiac ilxo, ia sr pyyacao rpnajisxu eiswi lyypcor l calrpx ypc lwjsxu sx lwwpcolxwa jp isr sxrjsxwjr, ia esmm lwwabj sj aqax px jia rmsuijarj aqsoaxwa. Jia pcsusx py nhjir sr agbmlsxao sx jisr elh. -Facjclxo Ctrramm'
@@ -82,7 +82,7 @@ def removeSolvedLettersFromMapping(letterMapping):
     # maps to ['N'], then we know that 'B' must map to 'N', so we can
     # remove 'N' from the list of what 'A' could map to. So 'A' then maps
     # to ['M']. Note that now that 'A' maps to only one letter, we can
-    # remove 'M' from the list of possible mappings for every other
+    # remove 'M' from the list of letters for every other
     # letter. (This is why there is a loop that keeps reducing the map.)
     letterMapping = copy.deepcopy(letterMapping)
     loopAgain = True
@@ -112,7 +112,7 @@ def removeSolvedLettersFromMapping(letterMapping):
 
 def hackSimpleSub(message):
     intersectedMap = getBlankCipherletterMapping()
-    message = nonLettersOrSpacePattern.sub('', message).upper().split()
+    message = nonLettersOrSpacePattern.sub('', message.upper()).split()
     for cipherword in message:
         # Get a new cipherletter mapping for each ciphertext word.
         newMap = getBlankCipherletterMapping()

@@ -1,16 +1,14 @@
 # Vigenere Cipher Hacker
 # http://inventwithpython.com/hacking (BSD Licensed)
 
-import copy, math, itertools, re
+import copy, itertools, re
 import vigenereCipher, pyperclip, freqAnalysis, detectEnglish
+
 LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-
-MAX_KEY_LENGTH = 16
-NUM_MOST_FREQ_LETTERS = 3
-SILENT_MODE = False
-FACTOR_CACHE = {} # a dictionary that stores lists of factors
-
-nonLettersPattern = re.compile('[^A-Z]')
+MAX_KEY_LENGTH = 16 # will not attempt keys longer than this
+NUM_MOST_FREQ_LETTERS = 3 # attempts this many letters per subkey
+SILENT_MODE = False # if set to True, program doesn't print attempts
+NONLETTERS_PATTERN = re.compile('[^A-Z]')
 
 
 def main():
@@ -32,24 +30,22 @@ def findRepeatSequencesSpacings(message):
     # that are repeated. Returns a dict with the keys of the sequence and
     # value of a list of spacings (number of letters between the repeats.)
 
-    # Use a "regular expression" remove non-letters from the message.
-    message = nonLettersPattern.sub('', message.upper())
+    # Use a "regular expression" to remove non-letters from the message.
+    message = NONLETTERS_PATTERN.sub('', message.upper())
 
     # Compile a list of seqLen-letter sequences found in the message.
-    seqSpacings = {}
-    for seqLen in range(3, 5):
+    seqSpacings = {} # keys are sequences, values are list of int spacings
+    for seqLen in range(3, 6):
         for seqStart in range(len(message) - seqLen):
             # Determine what the sequence is, and store it in seq
-            seq = message[seqStart:seqStart+seqLen]
+            seq = message[seqStart:seqStart + seqLen]
 
             # Look for this sequence in the rest of the message
             for i in range(seqStart + seqLen, len(message) - seqLen):
                 if message[i:i + seqLen] == seq:
                     # Found a repeated sequence.
                     if seq not in seqSpacings:
-                        # First time a repeat was found, create a blank
-                        # list for it in seqSpacings.
-                        seqSpacings[seq] = []
+                        seqSpacings[seq] = [] # initalize blank list
 
                     # Append the spacing distance between the repeated
                     # sequence and the original sequence.
@@ -57,32 +53,38 @@ def findRepeatSequencesSpacings(message):
     return seqSpacings
 
 
-def getFactors(num):
-    # Returns a list of factors of num.
-    # For example, getFactors(28) returns [2, 14, 4, 7]
+def getUsefulFactors(num):
+    # Returns a list of useful factors of num. By "useful" we mean factors
+    # that do not include 1. For example, getUsefulFactors(144)
+    # returns [2, 72, 3, 48, 4, 36, 6, 24, 8, 18, 9, 16, 12]
 
-    # If we've calculated the factors before, they'll be in FACTOR_CACHE.
-    # In that case, just return a copy of the list of factors.
-    if num in FACTOR_CACHE:
-        return copy.deepcopy(FACTOR_CACHE[num])
+    if num < 2:
+        return [] # numbers less than 2 have no useful factors
 
     factors = [] # the list of factors found
 
-    # When finding factors, you only need to check the integers up to the
-    # square root of the number.
-    for i in range(2, int(math.sqrt(num))): # skip the factors 1 and num
+    # When finding factors, you only need to check the integers up to
+    # MAX_KEY_LENGTH.
+    for i in range(2, MAX_KEY_LENGTH + 1): # don't test 1
         if num % i == 0:
             factors.append(i)
-            if i != int(num / i):
-                factors.append(int(num / i))
-    FACTOR_CACHE[num] = factors # add thist list to FACTOR_CACHE
+            factors.append(int(num / i))
+    if 1 in factors:
+        factors.remove(1)
+    return list(set(factors))
 
-    return copy.deepcopy(factors) # return a copy of this list of factors
+
+def getItemAtIndexOne(x):
+    return x[1]
 
 
 def getMostCommonFactors(seqFactors):
-    # First, get a count of many times a factor occurs in seqFactors
+    # First, get a count of many times a factor occurs in seqFactors.
     factorCounts = {} # key is a factor, value is how often if occurs
+
+    # seqFactors keys are sequences, values are list of factors of the
+    # spacings. seqFactos has a value like: {'GFD': [2, 3, 4, 6, 9, 12,
+    # 18, 23, 36, 46, 69, 92, 138, 207], 'ALW': [2, 3, 4, 6, ...], ...}
     for seq in seqFactors:
         factorList = seqFactors[seq]
         for factor in factorList:
@@ -96,17 +98,19 @@ def getMostCommonFactors(seqFactors):
     for factor in factorCounts:
         # exclude factors larger than MAX_KEY_LENGTH
         if factor < MAX_KEY_LENGTH:
+            # factorsByCount is a list of tuples: (factor, factorCount)
+            # factorsByCount has a value like: [(3, 497), (2, 487), ...]
             factorsByCount.append( (factor, factorCounts[factor]) )
 
-    # sort the list by the factor count
-    factorsByCount.sort(key=freqAnalysis.getItemAtIndexOne, reverse=True)
+    # Sort the list by the factor count.
+    factorsByCount.sort(key=getItemAtIndexOne, reverse=True)
 
     # Third, go through the factorsByCount list and cut off the list
-    # after you find a factor that is not within 50% of the size of the
-    # previous factor count.
-    markCount = factorsByCount[0][1]
+    # after you find a factor that is not at least 50% of the previous
+    # factor count.
+    lastCount = factorsByCount[0][1]
     for i in range(1, len(factorsByCount)):
-        if markCount * 0.5 > factorsByCount[i][1]:
+        if factorsByCount[i][1] < lastCount * 0.5:
             # set factorsByCount to thelist up to i (and cut the rest)
             factorsByCount = factorsByCount[:i]
             break
@@ -116,21 +120,18 @@ def getMostCommonFactors(seqFactors):
 
 def kasiskiExamination(ciphertext):
     # Find out the sequences of 3 to 5 letters that occurr multiple times
-    # in the ciphertext. repeatedSeqs has a value like:
+    # in the ciphertext. repeatedSeqSpacings has a value like:
     # {'EXG': [192], 'NAF': [339, 972, 633], ... }
-    repeatedSeqs = findRepeatSequencesSpacings(ciphertext)
+    repeatedSeqSpacings = findRepeatSequencesSpacings(ciphertext)
 
-    # seqFactors keys are sequences, values are list of factors of the
-    # spacings. seqFactos has a value like: {'GFD': [2, 3, 4, 6, 9, 12,
-    # 18, 23, 36, 46, 69, 92, 138, 207], 'ALW': [2, 3, 4, 6, ...], ...}
+    # See getMostCommonFactors() for a description of seqFactors.
     seqFactors = {}
-    for seq in repeatedSeqs:
+    for seq in repeatedSeqSpacings:
         seqFactors[seq] = []
-        for spacing in repeatedSeqs[seq]:
-            seqFactors[seq].extend(getFactors(spacing))
+        for spacing in repeatedSeqSpacings[seq]:
+            seqFactors[seq].extend(getUsefulFactors(spacing))
 
-    # factorsByCount is a list of tuples: (factor, factorCount)
-    # factorsByCount has a value like: [(3, 497), (2, 487), (6, 453), ...]
+    # See getMostCommonFactors() for a description of factorsByCount.
     factorsByCount = getMostCommonFactors(seqFactors)
 
     # Now we extract the factor counts from factorsByCount and put them
@@ -148,10 +149,10 @@ def getNthLetter(nth, keyLength, message):
     # E.g. getNthLetter(1, 3, 'ABCABCABC') returns 'AAA'
     #      getNthLetter(2, 3, 'ABCABCABC') returns 'BBB'
     #      getNthLetter(3, 3, 'ABCABCABC') returns 'CCC'
-    #      getNthLetter(1, 5, 'ABCABCABC') returns 'AC'
+    #      getNthLetter(1, 5, 'ABCDEFGHI') returns 'AF'
 
     # Use a "regular expression" remove non-letters from the message.
-    message = nonLettersPattern.sub('', message)
+    message = NONLETTERS_PATTERN.sub('', message)
 
     i = nth - 1
     letters = []
@@ -172,25 +173,25 @@ def attemptHackWithKeyLength(ciphertext, mostLikelyKeyLength):
 
         # freqScores is a list of tuples like:
         # [(<letter>, <Eng. Freq. match score>), ... ]
-        # This list is sorted by match score (a lower score means a better
-        # match. See the englishFreqMatchScore() comments in freqAnalysis).
+        # List is sorted by match score (lower score means better match.
+        # See the englishFreqMatchScore() comments in freqAnalysis.py).
         freqScores = []
         for possibleKey in LETTERS:
             translated = vigenereCipher.decryptMessage(possibleKey, nthLetters)
             freqScores.append((possibleKey, freqAnalysis.englishFreqMatchScore(translated)))
 
         # Sort by match score
-        freqScores.sort(key=freqAnalysis.getItemAtIndexOne, reverse=True)
+        freqScores.sort(key=getItemAtIndexOne, reverse=True)
 
         allFreqScores.append(freqScores[:NUM_MOST_FREQ_LETTERS])
 
     if not SILENT_MODE:
         for i in range(len(allFreqScores)):
-            # use i+1 so the first letter is not called the "0th" letter
+            # use i + 1 so the first letter is not called the "0th" letter
             print('Possible letters for letter %s of the key: ' % (i + 1), end='')
             for freqScore in allFreqScores[i]:
                 print('%s ' % freqScore[0], end='')
-            print()
+            print() # print a newline
 
     # Try every combination of the most likely letters for each position
     # in the key.
@@ -205,18 +206,16 @@ def attemptHackWithKeyLength(ciphertext, mostLikelyKeyLength):
 
         decryptedText = vigenereCipher.decryptMessage(possibleKey, ciphertext)
 
-        if freqAnalysis.englishTrigramMatch(decryptedText):
-            if detectEnglish.isEnglish(decryptedText):
-                # Check with the user to see if the key has been found.
-                #print()
-                print('Possible encryption hack with key %s:' % (possibleKey))
-                print(decryptedText[:200])
-                print()
-                print('Enter D for done, or just press Enter to continue hacking:')
-                response = input('> ')
+        if detectEnglish.isEnglish(decryptedText):
+            # Check with user to see if the key has been found.
+            print('Possible encryption hack with key %s:' % (possibleKey))
+            print(decryptedText[:200]) # only show first 200 characters
+            print()
+            print('Enter D for done, or just press Enter to continue hacking:')
+            response = input('> ')
 
-                if response.strip().upper().startswith('D'):
-                    return decryptedText
+            if response.strip().upper().startswith('D'):
+                return decryptedText
 
     # No English-looking decryption found, so return None.
     return None
