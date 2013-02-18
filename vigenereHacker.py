@@ -5,9 +5,9 @@ import copy, itertools, re
 import vigenereCipher, pyperclip, freqAnalysis, detectEnglish
 
 LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-MAX_KEY_LENGTH = 16 # will not attempt keys longer than this
-NUM_MOST_FREQ_LETTERS = 3 # attempts this many letters per subkey
 SILENT_MODE = False # if set to True, program doesn't print attempts
+NUM_MOST_FREQ_LETTERS = 3 # attempts this many letters per subkey
+MAX_KEY_LENGTH = 16 # will not attempt keys longer than this
 NONLETTERS_PATTERN = re.compile('[^A-Z]')
 
 
@@ -50,12 +50,13 @@ def findRepeatSequencesSpacings(message):
                     # Append the spacing distance between the repeated
                     # sequence and the original sequence.
                     seqSpacings[seq].append(i - seqStart)
+
     return seqSpacings
 
 
 def getUsefulFactors(num):
     # Returns a list of useful factors of num. By "useful" we mean factors
-    # that do not include 1. For example, getUsefulFactors(144)
+    # less than MAX_KEY_LENGTH + 1. For example, getUsefulFactors(144)
     # returns [2, 72, 3, 48, 4, 36, 6, 24, 8, 18, 9, 16, 12]
 
     if num < 2:
@@ -69,8 +70,7 @@ def getUsefulFactors(num):
         if num % i == 0:
             factors.append(i)
             factors.append(int(num / i))
-    if 1 in factors:
-        factors.remove(1)
+
     return list(set(factors))
 
 
@@ -97,23 +97,13 @@ def getMostCommonFactors(seqFactors):
     factorsByCount = []
     for factor in factorCounts:
         # exclude factors larger than MAX_KEY_LENGTH
-        if factor < MAX_KEY_LENGTH:
+        if factor <= MAX_KEY_LENGTH:
             # factorsByCount is a list of tuples: (factor, factorCount)
             # factorsByCount has a value like: [(3, 497), (2, 487), ...]
             factorsByCount.append( (factor, factorCounts[factor]) )
 
     # Sort the list by the factor count.
     factorsByCount.sort(key=getItemAtIndexOne, reverse=True)
-
-    # Third, go through the factorsByCount list and cut off the list
-    # after you find a factor that is not at least 50% of the previous
-    # factor count.
-    lastCount = factorsByCount[0][1]
-    for i in range(1, len(factorsByCount)):
-        if factorsByCount[i][1] < lastCount * 0.5:
-            # set factorsByCount to thelist up to i (and cut the rest)
-            factorsByCount = factorsByCount[:i]
-            break
 
     return factorsByCount
 
@@ -138,23 +128,23 @@ def kasiskiExamination(ciphertext):
     # in variables named allLikelyKeyLengths and allLikelyKeyLengthsStr
     # so that they are easier to use later.
     allLikelyKeyLengths = []
-    for i in range(len(factorsByCount)):
-        allLikelyKeyLengths.append(factorsByCount[i][0])
+    for twoIntTuple in factorsByCount:
+        allLikelyKeyLengths.append(twoIntTuple[0])
 
     return allLikelyKeyLengths
 
 
-def getNthLetter(nth, keyLength, message):
+def getNthSubkeysLetter(n, keyLength, message):
     # Returns every Nth letter for each keyLength set of letters in text.
-    # E.g. getNthLetter(1, 3, 'ABCABCABC') returns 'AAA'
-    #      getNthLetter(2, 3, 'ABCABCABC') returns 'BBB'
-    #      getNthLetter(3, 3, 'ABCABCABC') returns 'CCC'
-    #      getNthLetter(1, 5, 'ABCDEFGHI') returns 'AF'
+    # E.g. getNthSubkeysLetter(1, 3, 'ABCABCABC') returns 'AAA'
+    #      getNthSubkeysLetter(2, 3, 'ABCABCABC') returns 'BBB'
+    #      getNthSubkeysLetter(3, 3, 'ABCABCABC') returns 'CCC'
+    #      getNthSubkeysLetter(1, 5, 'ABCDEFGHI') returns 'AF'
 
     # Use a "regular expression" remove non-letters from the message.
     message = NONLETTERS_PATTERN.sub('', message)
 
-    i = nth - 1
+    i = n - 1
     letters = []
     while i < len(message):
         letters.append(message[i])
@@ -164,12 +154,12 @@ def getNthLetter(nth, keyLength, message):
 
 def attemptHackWithKeyLength(ciphertext, mostLikelyKeyLength):
     # Determine the most likely letters for each letter in the key.
-
+    ciphertextUp = ciphertext.upper()
     # allFreqScores is a list of mostLikelyKeyLength number of lists.
-    # These inner lists are the freqScores list.
+    # These inner lists are the freqScores lists.
     allFreqScores = []
     for nth in range(1, mostLikelyKeyLength + 1):
-        nthLetters = getNthLetter(nth, mostLikelyKeyLength, ciphertext)
+        nthLetters = getNthSubkeysLetter(nth, mostLikelyKeyLength, ciphertextUp)
 
         # freqScores is a list of tuples like:
         # [(<letter>, <Eng. Freq. match score>), ... ]
@@ -177,9 +167,9 @@ def attemptHackWithKeyLength(ciphertext, mostLikelyKeyLength):
         # See the englishFreqMatchScore() comments in freqAnalysis.py).
         freqScores = []
         for possibleKey in LETTERS:
-            translated = vigenereCipher.decryptMessage(possibleKey, nthLetters)
-            freqScores.append((possibleKey, freqAnalysis.englishFreqMatchScore(translated)))
-
+            decryptedText = vigenereCipher.decryptMessage(possibleKey, nthLetters)
+            keyAndFreqMatchTuple = (possibleKey, freqAnalysis.englishFreqMatchScore(decryptedText))
+            freqScores.append(keyAndFreqMatchTuple)
         # Sort by match score
         freqScores.sort(key=getItemAtIndexOne, reverse=True)
 
@@ -204,9 +194,18 @@ def attemptHackWithKeyLength(ciphertext, mostLikelyKeyLength):
         if not SILENT_MODE:
             print('Attempting with key: %s' % (possibleKey))
 
-        decryptedText = vigenereCipher.decryptMessage(possibleKey, ciphertext)
+        decryptedText = vigenereCipher.decryptMessage(possibleKey, ciphertextUp)
 
         if detectEnglish.isEnglish(decryptedText):
+            # Set the hacked ciphertext to the original casing.
+            origCase = []
+            for i in range(len(ciphertext)):
+                if ciphertext[i].isupper():
+                    origCase.append(decryptedText[i].upper())
+                else:
+                    origCase.append(decryptedText[i].lower())
+            decryptedText = ''.join(origCase)
+
             # Check with user to see if the key has been found.
             print('Possible encryption hack with key %s:' % (possibleKey))
             print(decryptedText[:200]) # only show first 200 characters
@@ -234,7 +233,7 @@ def hackVigenere(ciphertext):
     for keyLength in allLikelyKeyLengths:
         if not SILENT_MODE:
             print('Attempting hack with key length %s (%s possible keys)...' % (keyLength, NUM_MOST_FREQ_LETTERS ** keyLength))
-        hackedMessage = attemptHackWithKeyLength(ciphertext.upper(), keyLength)
+        hackedMessage = attemptHackWithKeyLength(ciphertext, keyLength)
         if hackedMessage != None:
             break
 
@@ -248,20 +247,9 @@ def hackVigenere(ciphertext):
             if keyLength not in allLikelyKeyLengths:
                 if not SILENT_MODE:
                     print('Attempting hack with key length %s (%s possible keys)...' % (keyLength, NUM_MOST_FREQ_LETTERS ** keyLength))
-                hackedMessage = attemptHackWithKeyLength(ciphertext.upper(), keyLength)
+                hackedMessage = attemptHackWithKeyLength(ciphertext, keyLength)
                 if hackedMessage != None:
                     break
-
-    if hackedMessage != None:
-        # Set the broken ciphertext to the original casing.
-        origCase = []
-        for i in range(len(ciphertext)):
-            if ciphertext[i].isupper():
-                origCase.append(hackedMessage[i].upper())
-            else:
-                origCase.append(hackedMessage[i].lower())
-        hackedMessage = ''.join(origCase)
-
     return hackedMessage
 
 

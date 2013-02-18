@@ -21,6 +21,54 @@ import unittest, subprocess, pyperclip, hashlib, os
 
 
 FOX_MESSAGE = "The quick brown fox jumped over the yellow lazy dog.".upper()
+ENGLISH_SENTENCES = """I promised her a delicious dinner.
+Tony made him some coffee.
+That singer granted him his wish.
+Those guards offer her some money.
+That barber read the children a story.
+That pilot told her the shortest way.
+They give him a book.
+That barber brings her some perfume.
+That teacher pays him this salary.
+Those librarians left her a ticket.
+I told them a joke.
+They write her a letter.
+Those news announcers saved her a seat.
+I read the children a story.
+They promise her a delicious dinner.
+Ginger tells them many lies.
+John showed them a photograph.
+I left her a ticket.
+I read the children a story.
+I teach them English.
+I asked him a question.
+They gave him a book.
+Into the circuitry speculates her therapy.
+That news announcer gives him a magazine.
+They ordered her a new dress.
+They sold him a ticket.
+A folded master influences the content apathy.
+They have him drive.
+Does every drum offer a driven foot?
+Can the convict secure the gulf?
+They called him a taxi.
+How can a roof disappear?
+Dick found the book interesting.
+When can the subsidiary officer unite the gesture?
+They find the box empty.
+The remedy originates outside the guide!
+Those cashiers heard the girl crying.
+They tried to pieces of the underlying Unix Haters mailing list for the older Arpanet; stuff at the disk and whimpers, Gee, are cascading over your recent versions of several dimensions, and little toy machines a generally suggested that that sexual encounters my knowledge of Line.
+Rob how to take over to lanning the extra little feature and, the are real time for free space and just those too typical of them. Not something else it.
+And so maybe maybe I substitute this a small publishing. Here rarely log in hardware and on the top, of Unix trade shows you think to be much, about how to be loaded, version of acid and have could sided with to. If I When we can be some of a very well, sort; of whom Not is series I wanted who, was not a Null The basic. Thomas or something else could figure give the above would. Annoyed at all the point the end message to control for beta and users log in Unix and retraction, Since only be mov strstr strstr clr strstr mov strstr be: prepared for that packets can to get At one of.
+In years, when the various useless. Hmmm; that's right out that Solaris drove them and it works? Aaaiiiiiigghhhhhhh!
+Unix internals to simply not written and Bsd on your mailboxes; mail; delivery still waiting for some utilities used punished. This option was an encryption is intolerable on making Life most recently Received have cat process and I've just gone.
+To say we do you are native Macintosh any zero. The difference between failures every copy of U so it would have anything which brings the morbidly curious asymmetry that, bring having to do have to another It Already almost useless gibberish to body that's not to put up some when telnetting to wait! Well; deserved day unless you pull the apparently to a server situation evokes a Grand Exalted DNS resolution to happen to me us; here refer to track when that it to use the problem but lofty, political ideals (and now I'll have gotten it seems entirely and portable assembler that either stdout: and a result really a function prototypes must accept any use rehash and converts it appears that are most of any design).
+I know! Well reasonable people we can't get some brief has to. It's bitching about sendmail happily hacking with fudge Join the best so you're to assume that I have other than point to recover or even IBM terminal? Just another flame to search for at the executable: after direction. If (you have some fields may have real deadling it's unix box of the and C construct the power maybe not the Smtp mail envelope: was Always must have to bounce in the output: that acts like Tcp gateway machine I read it gives you a couple of The suggestions but some weasle finds its Unix time it from the stdio library then winding up in Or strictly with me back through the file failed to have a complete and it's your cshrc).
+With television while finishing production: of the for improving Financial freedom At the sponsors or cordless phone Number: Tel. Now, is A one. Until you has a Moment zu werden. Apr codon sendmail alias database Apr localhost dd this is proud of only son Incest fantasies are ordered all Lists for his servant as our affiliate Marketing executives with an backups so many other literary works. London's most estimate importantly, Your capability and our exclusive turnkey, system Is that Allows you can help Content Id. Td Font size: that. Here's how to Change it works and the web site for this program more value, your account will be accessible for a week after you've this program via E account.
+O o; s I am sharing the program Has changed feel there is a part message: in weeks, later Share, in the you would produce and millions of The link; below and movies Cds. The Bank And the search Engine results option.
+Simply and Chargebacks CamsCash new home or those X lola run actually exists. Now Have received already you will not guaranteed. Application name address: to healthy! Get started offering a Clue friend: Update adviser Broker, one: Or new Cd. We did not trying to do you; would you want to wait for all There now Click Of great and secrets on A fan second Time. K, trademark of course or all coming all Winning must accept our R Ihr Nosi Team endif if you're the. Best of Our travel with me.""".split('\n')
+
 
 def checkForText(filename, text):
     fp = open(filename)
@@ -30,7 +78,7 @@ def checkForText(filename, text):
     return text in content
 
 
-class CodeBreakerPyLint(unittest.TestCase):
+class CodeHackerPyLint(unittest.TestCase):
     def runPylintOnFile(self, filename):
         proc = subprocess.Popen('run_pylint.bat %s"' % (filename), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         procOut = proc.communicate()[0].decode('ascii')
@@ -42,8 +90,8 @@ class CodeBreakerPyLint(unittest.TestCase):
     def test_caesarCipherPy(self):
         self.runPylintOnFile('caesarCipher.py')
 
-    def test_caesarBreakerPy(self):
-        self.runPylintOnFile('caesarBreaker.py')
+    def test_caesarHackerPy(self):
+        self.runPylintOnFile('caesarHacker.py')
 
     def test_transpositionEncryptPy(self):
         self.runPylintOnFile('transpositionEncrypt.py')
@@ -54,11 +102,11 @@ class CodeBreakerPyLint(unittest.TestCase):
     def test_transpositionFileCipherPy(self):
         self.runPylintOnFile('transpositionFileCipher.py')
 
-    def test_transpositionBreakerPy(self):
-        self.runPylintOnFile('transpositionBreaker.py')
+    def test_transpositionHackerPy(self):
+        self.runPylintOnFile('transpositionHacker.py')
 
-    def test_transpositionFileBreakerPy(self):
-        self.runPylintOnFile('transpositionFileBreaker.py')
+    def test_transpositionFileHackerPy(self):
+        self.runPylintOnFile('transpositionFileHacker.py')
 
     def test_transpositionTestPy(self):
         self.runPylintOnFile('transpositionTest.py')
@@ -75,35 +123,35 @@ class CodeBreakerPyLint(unittest.TestCase):
     def test_affineCipherPy(self):
         self.runPylintOnFile('affineCipher.py')
 
-    def test_affineBreakerPy(self):
-        self.runPylintOnFile('affineBreaker.py')
+    def test_affineHackerPy(self):
+        self.runPylintOnFile('affineHacker.py')
 
     def test_simpleSubCipherPy(self):
         self.runPylintOnFile('simpleSubCipher.py')
 
-    def test_simpleSubBreakerPy(self):
-        self.runPylintOnFile('simpleSubBreaker.py')
+    def test_simpleSubHackerPy(self):
+        self.runPylintOnFile('simpleSubHacker.py')
 
     def test_simpleSubKeywordPy(self):
         self.runPylintOnFile('simpleSubKeyword.py')
 
-    def test_simpleSubDictionaryBreakerPy(self):
-        self.runPylintOnFile('simpleSubDictionaryBreaker.py')
+    def test_simpleSubDictionaryHackerPy(self):
+        self.runPylintOnFile('simpleSubDictionaryHacker.py')
 
     def test_nullCipherPy(self):
         self.runPylintOnFile('nullCipher.py')
 
-    def test_nullBreakerPy(self):
-        self.runPylintOnFile('nullBreaker.py')
+    def test_nullHackerPy(self):
+        self.runPylintOnFile('nullHacker.py')
 
     def test_vigenereCipherPy(self):
         self.runPylintOnFile('vigenereCipher.py')
 
-    def test_vigenereBreakerrPy(self):
-        self.runPylintOnFile('vigenereBreaker.py')
+    def test_vigenereHackerPy(self):
+        self.runPylintOnFile('vigenereHacker.py')
 
-    def test_freqFinderPy(self):
-        self.runPylintOnFile('freqFinder.py')
+    def test_freqAnalysisPy(self):
+        self.runPylintOnFile('freqAnalysis.py')
 
     def test_cryptomathPy(self):
         self.runPylintOnFile('cryptomath.py')
@@ -147,12 +195,12 @@ class CodeBreakerUnitTests(unittest.TestCase):
         self.assertEqual(pyperclip.paste().decode('ascii'), 'GUVF VF ZL FRPERG ZRFFNTR.')
 
 
-    def test_caesarBreakerProgram(self):
-        proc = subprocess.Popen('c:\\python32\\python.exe caesarBreaker.py', stdout=subprocess.PIPE)
+    def test_caesarHackerProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe caesarHacker.py', stdout=subprocess.PIPE)
         procOut = proc.communicate()[0].decode('ascii')
 
         # check that it is encrypting the right string
-        self.assertTrue(checkForText('caesarBreaker.py', "message = 'GUVF VF ZL FRPERG ZRFFNTR.'"))
+        self.assertTrue(checkForText('caesarHacker.py', "message = 'GUVF VF ZL FRPERG ZRFFNTR.'"))
 
         # breaking the ciphertext 'GUVF VF ZL FRPERG ZRFFNTR.'
         expectedOutput = """Key #0: GUVF VF ZL FRPERG ZRFFNTR.
@@ -209,12 +257,12 @@ Key #25: HVWG WG AM GSQFSH ASGGOUS.
         self.assertEqual(procOut, 'Common sense is not so common.|\n')
         self.assertEqual(pyperclip.paste().decode('ascii'), 'Common sense is not so common.')
 
-    def test_transpositionBreakerProgram(self):
-        proc = subprocess.Popen('c:\\python32\\python.exe transpositionBreaker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    def test_transpositionHackerProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe transpositionHacker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         procOut = proc.communicate('D\n'.encode('ascii'))[0].decode('ascii')
 
         # Make sure output is correct
-        expectedOutput = """Breaking...
+        expectedOutput = """Hacking...
 (Press Ctrl-C or Ctrl-D to quit at any time.)
 Trying key #1...
 Trying key #2...
@@ -227,11 +275,11 @@ Trying key #8...
 Trying key #9...
 Trying key #10...
 
-Possible encryption break:
+Possible encryption hack:
 Key 10: Charles Babbage, FRS (26 December 1791 - 18 October 1871) was an English mathematician, philosopher,
 
-Enter D for done, or just press Enter to continue breaking:
-> Copying broken ciphertext to clipboard:
+Enter D for done, or just press Enter to continue hacking:
+> Copying hacked message to clipboard:
 Charles Babbage, FRS (26 December 1791 - 18 October 1871) was an English mathematician, philosopher, inventor and mechanical engineer who originated the concept of a programmable computer. Considered a "father of the computer", Babbage is credited with inventing the first mechanical computer that eventually led to more complex designs. Parts of his uncompleted mechanisms are on display in the London Science Museum. In 1991, a perfectly functioning difference engine was constructed from Babbage's original plans. Built to tolerances achievable in the 19th century, the success of the finished engine indicated that Babbage's machine would have worked. Nine years later, the Science Museum completed the printer Babbage had designed for the difference engine.
 """
 
@@ -241,9 +289,9 @@ Charles Babbage, FRS (26 December 1791 - 18 October 1871) was an English mathema
         self.assertEqual(pyperclip.paste().decode('ascii'), expectedClipboard)
 
         # run again, this time skipping that first decrypted output
-        proc = subprocess.Popen('c:\\python32\\python.exe transpositionBreaker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        proc = subprocess.Popen('c:\\python32\\python.exe transpositionHacker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         procOut = proc.communicate('\n'.encode('ascii'))[0].decode('ascii')
-        self.assertTrue('Failed to break encryption.' in procOut)
+        self.assertTrue('Failed to hack encryption.' in procOut)
 
 
 
@@ -276,15 +324,15 @@ Encrypted file is frankenstein.encrypted.txt.
         self.assertTrue(expectedOutputPiece2 in procOut)
 
 
-    def test_transpositionFileBreakerProgram(self):
+    def test_transpositionFileHackerProgram(self):
         if not os.path.exists('frankenstein.encrypted.txt'):
             # Make the encrypted file by running this test:
             self.test_transpositionFileCipherProgram()
 
-        proc = subprocess.Popen('c:\\python32\\python.exe transpositionFileBreaker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        proc = subprocess.Popen('c:\\python32\\python.exe transpositionFileHacker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         procOut = proc.communicate('D\n'.encode('ascii'))[0].decode('ascii')
 
-        expectedOutputPiece1 = """Breaking...
+        expectedOutputPiece1 = """Hacking...
 (Press Ctrl-C or Ctrl-D to quit at any time.)
 """
         expectedOutputPiece2 = """Key 10: Project Gutenberg's Frankenstein, by Mary Wollstonecraft (Godwin) Shelley
@@ -310,58 +358,94 @@ Enter D for done, or just press Enter to continue:
 
 
     def test_detectEnglishModule(self):
-        import detectEnglish
+        import detectEnglish, random
+        random.seed(42)
 
         self.assertTrue(detectEnglish.isEnglish(FOX_MESSAGE))
+        for sentence in ENGLISH_SENTENCES:
+            self.assertTrue(detectEnglish.isEnglish(sentence))
+
+            sentence = list(sentence)
+            random.shuffle(sentence)
+            sentence = ''.join(sentence)
+            self.assertFalse(detectEnglish.isEnglish(sentence))
 
 
     def test_affineCipherProgram(self):
         proc = subprocess.Popen('c:\\python32\\python.exe affineCipher.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         procOut = proc.communicate()[0].decode('ascii')
 
-        expectedClipboard = 'H RZPEDYBO NZDKW WBTBOIB YZ MB RHKKBW VUYBKKVLBUY VG VY RZDKW WBRBVIB H QDPHU VUYZ MBKVBIVUL YQHY VY NHT QDPHU. -HKHU YDOVUL'
+        expectedClipboard = 'fX<*h>}(rTH<Rh()?<?T]TH=T<rh<tT<*_))T?<ISrT))I~TSr<Ii<Ir<*h()?<?T*TI=T<_<4(>_S<ISrh<tT)IT=IS~<r4_r<Ir<R_]<4(>_SEf<0X)_S<k(HIS~'
 
-        self.assertEqual(procOut, 'Encrypted text:\nH RZPEDYBO NZDKW WBTBOIB YZ MB RHKKBW VUYBKKVLBUY VG VY RZDKW WBRBVIB H QDPHU VUYZ MBKVBIVUL YQHY VY NHT QDPHU. -HKHU YDOVUL\nFull encrypted text copied to clipboard.\n')
+        self.assertEqual(procOut, 'Key: 2023\nEncrypted text:\nfX<*h>}(rTH<Rh()?<?T]TH=T<rh<tT<*_))T?<ISrT))I~TSr<Ii<Ir<*h()?<?T*TI=T<_<4(>_S<ISrh<tT)IT=IS~<r4_r<Ir<R_]<4(>_SEf<0X)_S<k(HIS~\nFull encrypted text copied to clipboard.\n')
         self.assertEqual(pyperclip.paste().decode('ascii'), expectedClipboard)
 
-    def test_affineCipherModule(self):
-        import affineCipher
 
-        encrypted = affineCipher.encryptMessage(5, 23, FOX_MESSAGE)
-        decrypted = affineCipher.decryptMessage(5, 23, encrypted)
+    def test_affineCipherModule(self):
+        import affineCipher, cryptomath
+
+        encrypted = affineCipher.encryptMessage(5031, FOX_MESSAGE)
+        decrypted = affineCipher.decryptMessage(5031, encrypted)
 
         self.assertEqual(FOX_MESSAGE, decrypted)
-        self.assertEqual(encrypted, 'OGR ZTLHV CEPDK WPI QTFURM PYRE OGR NRAAPD AXSN MPB.')
+        self.assertEqual(encrypted, 'Hq4{j|F+O{V?a&-{haZ{z|X64_{aQ4?{Hq4{/4$$a&{$"c/{_a=[')
+
+        # Test with many different keys:
+        for keyA in range(2, len(affineCipher.SYMBOLS)):
+            for keyB in range(1, len(affineCipher.SYMBOLS)):
+                if keyA == 1 or keyB == 0 or cryptomath.gcd(keyA, len(affineCipher.SYMBOLS)) != 1:
+                    continue
+                key = keyA * len(affineCipher.SYMBOLS) + keyB
+                enc = affineCipher.encryptMessage(key, FOX_MESSAGE)
+                dec = affineCipher.decryptMessage(key, enc)
+                self.assertEqual(dec, FOX_MESSAGE)
+
 
         # Test with bad keys:
-        self.assertRaises(SystemExit, affineCipher.encryptMessage, 1, 23, FOX_MESSAGE)
-        self.assertRaises(SystemExit, affineCipher.encryptMessage, 5, 0, FOX_MESSAGE)
-        self.assertRaises(SystemExit, affineCipher.encryptMessage, 26, 23, FOX_MESSAGE)
-        self.assertRaises(SystemExit, affineCipher.encryptMessage, 26, 23, FOX_MESSAGE)
+        self.assertRaises(SystemExit, affineCipher.encryptMessage, len(affineCipher.SYMBOLS) * 1 + 23, FOX_MESSAGE)
+        self.assertRaises(SystemExit, affineCipher.encryptMessage, len(affineCipher.SYMBOLS) * 5 + 0, FOX_MESSAGE)
+        self.assertRaises(SystemExit, affineCipher.encryptMessage, len(affineCipher.SYMBOLS) * 25 + 23, FOX_MESSAGE)
+        self.assertRaises(SystemExit, affineCipher.encryptMessage, len(affineCipher.SYMBOLS) * 25 + 23, FOX_MESSAGE)
 
-    def test_affineBreakerProgram(self):
-        proc = subprocess.Popen('c:\\python32\\python.exe affineBreaker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    def test_affineHackerProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe affineHacker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         procOut = proc.communicate('D\n'.encode('ascii'))[0].decode('ascii')
 
-        expectedOutput = 'Breaking...\n(Press Ctrl-C or Ctrl-D to quit at any time.)\nTried KeyA 1, KeyB 0... (H RZPEDYBO NZDKW WBTBOIB YZ MB RHKKBW VU)\nTried KeyA 1, KeyB 1... (G QYODCXAN MYCJV VASANHA XY LA QGJJAV UT)\nTried KeyA 1, KeyB 2... (F PXNCBWZM LXBIU UZRZMGZ WX KZ PFIIZU TS)\nTried KeyA 1, KeyB 3... (E OWMBAVYL KWAHT TYQYLFY VW JY OEHHYT SR)\nTried KeyA 1, KeyB 4... (D NVLAZUXK JVZGS SXPXKEX UV IX NDGGXS RQ)\nTried KeyA 1, KeyB 5... (C MUKZYTWJ IUYFR RWOWJDW TU HW MCFFWR QP)\nTried KeyA 1, KeyB 6... (B LTJYXSVI HTXEQ QVNVICV ST GV LBEEVQ PO)\nTried KeyA 1, KeyB 7... (A KSIXWRUH GSWDP PUMUHBU RS FU KADDUP ON)\nTried KeyA 1, KeyB 8... (Z JRHWVQTG FRVCO OTLTGAT QR ET JZCCTO NM)\nTried KeyA 1, KeyB 9... (Y IQGVUPSF EQUBN NSKSFZS PQ DS IYBBSN ML)\nTried KeyA 1, KeyB 10... (X HPFUTORE DPTAM MRJREYR OP CR HXAARM LK)\nTried KeyA 1, KeyB 11... (W GOETSNQD COSZL LQIQDXQ NO BQ GWZZQL KJ)\nTried KeyA 1, KeyB 12... (V FNDSRMPC BNRYK KPHPCWP MN AP FVYYPK JI)\nTried KeyA 1, KeyB 13... (U EMCRQLOB AMQXJ JOGOBVO LM ZO EUXXOJ IH)\nTried KeyA 1, KeyB 14... (T DLBQPKNA ZLPWI INFNAUN KL YN DTWWNI HG)\nTried KeyA 1, KeyB 15... (S CKAPOJMZ YKOVH HMEMZTM JK XM CSVVMH GF)\nTried KeyA 1, KeyB 16... (R BJZONILY XJNUG GLDLYSL IJ WL BRUULG FE)\nTried KeyA 1, KeyB 17... (Q AIYNMHKX WIMTF FKCKXRK HI VK AQTTKF ED)\nTried KeyA 1, KeyB 18... (P ZHXMLGJW VHLSE EJBJWQJ GH UJ ZPSSJE DC)\nTried KeyA 1, KeyB 19... (O YGWLKFIV UGKRD DIAIVPI FG TI YORRID CB)\nTried KeyA 1, KeyB 20... (N XFVKJEHU TFJQC CHZHUOH EF SH XNQQHC BA)\nTried KeyA 1, KeyB 21... (M WEUJIDGT SEIPB BGYGTNG DE RG WMPPGB AZ)\nTried KeyA 1, KeyB 22... (L VDTIHCFS RDHOA AFXFSMF CD QF VLOOFA ZY)\nTried KeyA 1, KeyB 23... (K UCSHGBER QCGNZ ZEWERLE BC PE UKNNEZ YX)\nTried KeyA 1, KeyB 24... (J TBRGFADQ PBFMY YDVDQKD AB OD TJMMDY XW)\nTried KeyA 1, KeyB 25... (I SAQFEZCP OAELX XCUCPJC ZA NC SILLCX WV)\nTried KeyA 3, KeyB 0... (L XRFKBIJW NRBMQ QJPJWUJ IR EJ XLMMJQ HY)\nTried KeyA 3, KeyB 1... (C OIWBSZAN EISDH HAGANLA ZI VA OCDDAH YP)\nTried KeyA 3, KeyB 2... (T FZNSJQRE VZJUY YRXRECR QZ MR FTUURY PG)\nTried KeyA 3, KeyB 3... (K WQEJAHIV MQALP PIOIVTI HQ DI WKLLIP GX)\nTried KeyA 3, KeyB 4... (B NHVARYZM DHRCG GZFZMKZ YH UZ NBCCZG XO)\nTried KeyA 3, KeyB 5... (S EYMRIPQD UYITX XQWQDBQ PY LQ ESTTQX OF)\nTried KeyA 3, KeyB 6... (J VPDIZGHU LPZKO OHNHUSH GP CH VJKKHO FW)\nTried KeyA 3, KeyB 7... (A MGUZQXYL CGQBF FYEYLJY XG TY MABBYF WN)\nTried KeyA 3, KeyB 8... (R DXLQHOPC TXHSW WPVPCAP OX KP DRSSPW NE)\nTried KeyA 3, KeyB 9... (I UOCHYFGT KOYJN NGMGTRG FO BG UIJJGN EV)\nTried KeyA 3, KeyB 10... (Z LFTYPWXK BFPAE EXDXKIX WF SX LZAAXE VM)\nTried KeyA 3, KeyB 11... (Q CWKPGNOB SWGRV VOUOBZO NW JO CQRROV MD)\nTried KeyA 3, KeyB 12... (H TNBGXEFS JNXIM MFLFSQF EN AF THIIFM DU)\nTried KeyA 3, KeyB 13... (Y KESXOVWJ AEOZD DWCWJHW VE RW KYZZWD UL)\nTried KeyA 3, KeyB 14... (P BVJOFMNA RVFQU UNTNAYN MV IN BPQQNU LC)\nTried KeyA 3, KeyB 15... (G SMAFWDER IMWHL LEKERPE DM ZE SGHHEL CT)\nTried KeyA 3, KeyB 16... (X JDRWNUVI ZDNYC CVBVIGV UD QV JXYYVC TK)\nTried KeyA 3, KeyB 17... (O AUINELMZ QUEPT TMSMZXM LU HM AOPPMT KB)\nTried KeyA 3, KeyB 18... (F RLZEVCDQ HLVGK KDJDQOD CL YD RFGGDK BS)\nTried KeyA 3, KeyB 19... (W ICQVMTUH YCMXB BUAUHFU TC PU IWXXUB SJ)\nTried KeyA 3, KeyB 20... (N ZTHMDKLY PTDOS SLRLYWL KT GL ZNOOLS JA)\nTried KeyA 3, KeyB 21... (E QKYDUBCP GKUFJ JCICPNC BK XC QEFFCJ AR)\nTried KeyA 3, KeyB 22... (V HBPULSTG XBLWA ATZTGET SB OT HVWWTA RI)\nTried KeyA 3, KeyB 23... (M YSGLCJKX OSCNR RKQKXVK JS FK YMNNKR IZ)\nTried KeyA 3, KeyB 24... (D PJXCTABO FJTEI IBHBOMB AJ WB PDEEBI ZQ)\nTried KeyA 3, KeyB 25... (U GAOTKRSF WAKVZ ZSYSFDS RA NS GUVVSZ QH)\nTried KeyA 5, KeyB 0... (R TFDGLKVI NFLCU UVJVIMV KF SV TRCCVU ZE)\nTried KeyA 5, KeyB 1... (W YKILQPAN SKQHZ ZAOANRA PK XA YWHHAZ EJ)\nTried KeyA 5, KeyB 2... (B DPNQVUFS XPVME EFTFSWF UP CF DBMMFE JO)\nTried KeyA 5, KeyB 3... (G IUSVAZKX CUARJ JKYKXBK ZU HK IGRRKJ OT)\nTried KeyA 5, KeyB 4... (L NZXAFEPC HZFWO OPDPCGP EZ MP NLWWPO TY)\nTried KeyA 5, KeyB 5... (Q SECFKJUH MEKBT TUIUHLU JE RU SQBBUT YD)\nTried KeyA 5, KeyB 6... (V XJHKPOZM RJPGY YZNZMQZ OJ WZ XVGGZY DI)\nTried KeyA 5, KeyB 7... (A COMPUTER WOULD DESERVE TO BE CALLED IN)\n\nPossible encryption break:\nKeyA: 5, KeyB: 7\nDecrypted message: A COMPUTER WOULD DESERVE TO BE CALLED INTELLIGENT IF IT COULD DECEIVE A HUMAN INTO BELIEVING THAT IT WAS HUMAN. -ALAN TURING\n\nEnter D for done, or just press Enter to continue breaking:\n> Copying broken ciphertext to clipboard:\nA COMPUTER WOULD DESERVE TO BE CALLED INTELLIGENT IF IT COULD DECEIVE A HUMAN INTO BELIEVING THAT IT WAS HUMAN. -ALAN TURING\n'
-        expectedClipboard = 'A COMPUTER WOULD DESERVE TO BE CALLED INTELLIGENT IF IT COULD DECEIVE A HUMAN INTO BELIEVING THAT IT WAS HUMAN. -ALAN TURING'
+        expectedOutput = """Tried Key 2181... (lCPD.q<#t`XP?.#cRPR`f`X1`Pt.P6`PD(cc`RP9)
+Tried Key 2182... (_6C7!d/ugSKC2!uVECESYSK$SCg!C)SC7zVVSEC,)
+Tried Key 2183... (R)6*sW"hZF>6%shI868FLF>vF6Zs6{F6*mIIF86~)
+Tried Key 2184... (E{)|fJt[M91)wf[<+)+9?91i9)Mf)n9)|`<<9+)q)
+Tried Key 2185... (XwV:FDGLK<IVNFLC;V;<J<IM<VKFV9<V:8CC<;V@)
+Tried Key 2186... (y9w[gehml]jwogmd\w\]k]jn]wlgwZ]w[Ydd]\wa)
+Tried Key 2187... (;Z9|)'*/.~,91)/&}9}~-~,0~9.)9{~9|z&&~}9#)
+Tried Key 2188... (\{Z>JHKPO@MZRJPG?Z?@N@MQ@ZOJZ=@Z><GG@?ZD)
+Tried Key 2189... (}={_kilqpan{skqh`{`aoanra{pk{^a{_]hha`{e)
+Tried Key 2190... (?^=!-+.32#0=5-3*"="#1#04#=2-= #=!~**#"=')
+Tried Key 2191... (` ^BNLOTSDQ^VNTKC^CDRDQUD^SN^AD^B@KKDC^H)
+Tried Key 2192... ("A computer would deserve to be called i)
 
-        self.assertEqual(procOut, expectedOutput)
+Possible encryption hack:
+Key: 2192
+Decrypted message: "A computer would deserve to be called intelligent if it could deceive a human into believing that it was human." -Alan Turing
+
+Enter D for done, or just press Enter to continue hacking:"""
+        expectedClipboard = '"A computer would deserve to be called intelligent if it could deceive a human into believing that it was human." -Alan Turing'
+
+        self.assertTrue(expectedOutput in procOut)
         self.assertEqual(pyperclip.paste().decode('ascii'), expectedClipboard)
 
         # run again, this time skipping that first decrypted output
-        proc = subprocess.Popen('c:\\python32\\python.exe affineBreaker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        proc = subprocess.Popen('c:\\python32\\python.exe affineHacker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         procOut = proc.communicate('\n'.encode('ascii'))[0].decode('ascii')
-        self.assertTrue('Failed to break encryption.' in procOut)
+        self.assertTrue('Failed to hack encryption.' in procOut)
 
 
     def test_simpleSubCipherProgram(self):
         proc = subprocess.Popen('c:\\python32\\python.exe simpleSubCipher.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         procOut = proc.communicate()[0].decode('ascii')
 
-        expectedClipboard = 'SY L NLX SR PYYACAO L YLWJ EISWI UPAR LULSXRJ ISR SXRJSXWJR, IA ESMM RWCTJSXSZA SJ WMPRAMH, LXO TXMARR JIA AQSOAXWA SR PQACEIAMNSXU, IA ESMM CAYTRA JP FAMSAQA SJ. SY, PX JIA PJIAC ILXO, IA SR PYYACAO RPNAJISXU EISWI LYYPCOR L CALRPX YPC LWJSXU SX LWWPCOLXWA JP ISR SXRJSXWJR, IA ESMM LWWABJ SJ AQAX PX JIA RMSUIJARJ AQSOAXWA. JIA PCSUSX PY NHJIR SR AGBMLSXAO SX JISR ELH. -FACJCLXO CTRRAMM'
-
-        expectedOutput = 'The encrypted message is:\nSY L NLX SR PYYACAO L YLWJ EISWI UPAR LULSXRJ ISR SXRJSXWJR, IA ESMM RWCTJSXSZA SJ WMPRAMH, LXO TXMARR JIA AQSOAXWA SR PQACEIAMNSXU, IA ESMM CAYTRA JP FAMSAQA SJ. SY, PX JIA PJIAC ILXO, IA SR PYYACAO RPNAJISXU EISWI LYYPCOR L CALRPX YPC LWJSXU SX LWWPCOLXWA JP ISR SXRJSXWJR, IA ESMM LWWABJ SJ AQAX PX JIA RMSUIJARJ AQSOAXWA. JIA PCSUSX PY NHJIR SR AGBMLSXAO SX JISR ELH. -FACJCLXO CTRRAMM\n\nThis message has been copied to the clipboard.\n'
+        expectedClipboard = 'Sy l nlx sr pyyacao l ylwj eiswi upar lulsxrj isr sxrjsxwjr, ia esmm rwctjsxsza sj wmpramh, lxo txmarr jia aqsoaxwa sr pqaceiamnsxu, ia esmm caytra jp famsaqa sj. Sy, px jia pjiac ilxo, ia sr pyyacao rpnajisxu eiswi lyypcor l calrpx ypc lwjsxu sx lwwpcolxwa jp isr sxrjsxwjr, ia esmm lwwabj sj aqax px jia rmsuijarj aqsoaxwa. Jia pcsusx py nhjir sr agbmlsxao sx jisr elh. -Facjclxo Ctrramm'
+        expectedOutput = 'Using key LFWOAYUISVKMNXPBDCRJTQEGHZ\nThe encrypted message is:\nSy l nlx sr pyyacao l ylwj eiswi upar lulsxrj isr sxrjsxwjr, ia esmm rwctjsxsza sj wmpramh, lxo txmarr jia aqsoaxwa sr pqaceiamnsxu, ia esmm caytra jp famsaqa sj. Sy, px jia pjiac ilxo, ia sr pyyacao rpnajisxu eiswi lyypcor l calrpx ypc lwjsxu sx lwwpcolxwa jp isr sxrjsxwjr, ia esmm lwwabj sj aqax px jia rmsuijarj aqsoaxwa. Jia pcsusx py nhjir sr agbmlsxao sx jisr elh. -Facjclxo Ctrramm\n\nThis message has been copied to the clipboard.\n'
 
         self.assertEqual(procOut, expectedOutput)
         self.assertEqual(pyperclip.paste().decode('ascii'), expectedClipboard)
@@ -380,11 +464,11 @@ Enter D for done, or just press Enter to continue:
         self.assertNotEqual(encrypted, encrypted2)
 
 
-    def test_simpleSubBreakerProgram(self):
-        proc = subprocess.Popen('c:\\python32\\python.exe simpleSubBreaker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    def test_simpleSubHackerProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe simpleSubHacker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         procOut = proc.communicate()[0].decode('ascii')
 
-        expectedOutput = 'Breaking...\n(Press Ctrl-C or Ctrl-D to quit at any time.)\nDone.\n\nMapping:\n    A B C D E F G H I J K L M N O P Q R S T U V W X Y Z\n    = = = = = = = = = = = = = = = = = = = = = = = = = =\n    E B R   K B B B H T   A L M D O V S I U G   C N F Z \n      W     W P Q K                                     \n      P         X P                                     \n                Y W                                     \n                P X                                     \n                W Y                                     \n                                                        \n\nOriginal ciphertext:\nSY L NLX SR PYYACAO L YLWJ EISWI UPAR LULSXRJ ISR SXRJSXWJR, IA ESMM RWCTJSXSZA SJ WMPRAMH, LXO TXMARR JIA AQSOAXWA SR PQACEIAMNSXU, IA ESMM CAYTRA JP FAMSAQA SJ. SY, PX JIA PJIAC ILXO, IA SR PYYACAO RPNAJISXU EISWI LYYPCOR L CALRPX YPC LWJSXU SX LWWPCOLXWA JP ISR SXRJSXWJR, IA ESMM LWWABJ SJ AQAX PX JIA RMSUIJARJ AQSOAXWA. JIA PCSUSX PY NHJIR SR AGBMLSXAO SX JISR ELH. -FACJCLXO CTRRAMM\n\nBroken ciphertext:\nIF A MAN IS OFFERED A FACT _HICH GOES AGAINST HIS INSTINCTS, HE _ILL SCRUTINIZE IT CLOSEL_, AND UNLESS THE EVIDENCE IS OVER_HELMING, HE _ILL REFUSE TO _ELIEVE IT. IF, ON THE OTHER HAND, HE IS OFFERED SOMETHING _HICH AFFORDS A REASON FOR ACTING IN ACCORDANCE TO HIS INSTINCTS, HE _ILL ACCE_T IT EVEN ON THE SLIGHTEST EVIDENCE. THE ORIGIN OF M_THS IS E__LAINED IN THIS _A_. -_ERTRAND RUSSELL\n\n'
+        expectedOutput = 'Hacking...\n(Press Ctrl-C or Ctrl-D to quit at any time.)\nDone.\n\nMapping:\n    A B C D E F G H I J K L M N O P Q R S T U V W X Y Z\n    = = = = = = = = = = = = = = = = = = = = = = = = = =\n    E B R   K B B B H T   A L M D O V S I U G   C N F Z \n      W     W P Q K                                     \n      P         X P                                     \n                Y W                                     \n                P X                                     \n                W Y                                     \n                                                        \n\nOriginal ciphertext:\nSY L NLX SR PYYACAO L YLWJ EISWI UPAR LULSXRJ ISR SXRJSXWJR, IA ESMM RWCTJSXSZA SJ WMPRAMH, LXO TXMARR JIA AQSOAXWA SR PQACEIAMNSXU, IA ESMM CAYTRA JP FAMSAQA SJ. SY, PX JIA PJIAC ILXO, IA SR PYYACAO RPNAJISXU EISWI LYYPCOR L CALRPX YPC LWJSXU SX LWWPCOLXWA JP ISR SXRJSXWJR, IA ESMM LWWABJ SJ AQAX PX JIA RMSUIJARJ AQSOAXWA. JIA PCSUSX PY NHJIR SR AGBMLSXAO SX JISR ELH. -FACJCLXO CTRRAMM\n\nBroken ciphertext:\nIF A MAN IS OFFERED A FACT _HICH GOES AGAINST HIS INSTINCTS, HE _ILL SCRUTINIZE IT CLOSEL_, AND UNLESS THE EVIDENCE IS OVER_HELMING, HE _ILL REFUSE TO _ELIEVE IT. IF, ON THE OTHER HAND, HE IS OFFERED SOMETHING _HICH AFFORDS A REASON FOR ACTING IN ACCORDANCE TO HIS INSTINCTS, HE _ILL ACCE_T IT EVEN ON THE SLIGHTEST EVIDENCE. THE ORIGIN OF M_THS IS E__LAINED IN THIS _A_. -_ERTRAND RUSSELL\n\n'
 
         self.assertEqual(procOut, expectedOutput)
 
@@ -393,8 +477,8 @@ Enter D for done, or just press Enter to continue:
         proc = subprocess.Popen('c:\\python32\\python.exe simpleSubKeyword.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         procOut = proc.communicate()[0].decode('ascii')
 
-        expectedOutput = 'The key used is:\nALPHNUMERICBDFGJKOQSTVWXYZ\nThe encrypted message is:\nYGTO PGVNO RQ LBGWF.\n\nThis message has been copied to the clipboard.\n'
-        expectedClipboard = """YGTO PGVNO RQ LBGWF."""
+        expectedOutput = 'The key used is:\nALPHNUMERICBDFGJKOQSTVWXYZ\nThe encrypted message is:\nYgto pgvno rq lbgwf.\n\nThis message has been copied to the clipboard.\n'
+        expectedClipboard = """Ygto pgvno rq lbgwf."""
 
         self.assertEqual(procOut, expectedOutput)
         self.assertEqual(pyperclip.paste().decode('ascii'), expectedClipboard)
@@ -409,16 +493,16 @@ Enter D for done, or just press Enter to continue:
         self.assertEqual(FOX_MESSAGE, decrypted)
         self.assertNotEqual(encrypted, encrypted2)
 
-    def test_nullBreakerProgram(self):
-        proc = subprocess.Popen('c:\\python32\\python.exe nullBreaker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    def test_nullHackerProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe nullHacker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         procOut = proc.communicate('D\n'.encode('ascii'))[0].decode('ascii')
 
         expectedClipboard = 'When I use a word, it means just what I choose it to mean -- neither more nor less.'
 
         self.assertEqual(pyperclip.paste().decode('ascii'), expectedClipboard)
 
-    def test_simpleSubDictionaryBreakerProgram(self):
-        proc = subprocess.Popen('c:\\python32\\python.exe simpleSubDictionaryBreaker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    def test_simpleSubDictionaryHackerProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe simpleSubDictionaryHacker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         procOut = proc.communicate('D\n'.encode('ascii'))[0].decode('ascii')
 
         expectedClipboard = 'CONFIDANTE: ONE ENTRUSTED BY A WITH THE SECRETS OF B CONFIDED TO HERSELF BY C. -AMBROSE BIERCE'
@@ -446,12 +530,12 @@ Enter D for done, or just press Enter to continue:
         self.assertEqual(FOX_MESSAGE, decrypted)
         self.assertNotEqual(encrypted, encrypted2)
 
-    def test_vigenereBreakerProgram(self):
-        proc = subprocess.Popen('c:\\python32\\python.exe vigenereBreaker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    def test_vigenereHackerProgram(self):
+        proc = subprocess.Popen('c:\\python32\\python.exe vigenereHacker.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         procOut = proc.communicate('D\n'.encode('ascii'))[0].decode('ascii')
 
-        expectedClipboard = """ALAN MATHISON TURING WAS A BRITISH MATHEMATICIAN, LOGICIAN, CRYPTANALYST, AND COMPUTER SCIENTIST. HE WAS HIGHLY INFLUENTIAL IN THE DEVELOPMENT OF COMPUTER SCIENCE, PROVIDING A FORMALISATION OF THE CONCEPTS OF "ALGORITHM" AND "COMPUTATION" WITH THE TURING MACHINE. TURING IS WIDELY CONSIDERED TO BE THE FATHER OF COMPUTER SCIENCE AND ARTIFICIAL INTELLIGENCE. DURING WORLD WAR II, TURING WORKED FOR THE GOVERNMENT CODE AND CYPHER SCHOOL (GCCS) AT BLETCHLEY PARK, BRITAIN'S CODEBREAKING CENTRE. FOR A TIME HE WAS HEAD OF HUT 8, THE SECTION RESPONSIBLE FOR GERMAN NAVAL CRYPTANALYSIS. HE DEVISED A NUMBER OF TECHNIQUES FOR BREAKING GERMAN CIPHERS, INCLUDING THE METHOD OF THE BOMBE, AN ELECTROMECHANICAL MACHINE THAT COULD FIND SETTINGS FOR THE ENIGMA MACHINE. AFTER THE WAR HE WORKED AT THE NATIONAL PHYSICAL LABORATORY, WHERE HE CREATED ONE OF THE FIRST DESIGNS FOR A STORED-PROGRAM COMPUTER, THE ACE. IN 1948 TURING JOINED MAX NEWMAN'S COMPUTING LABORATORY AT MANCHESTER UNIVERSITY, WHERE HE ASSISTED IN THE DEVELOPMENT OF THE MANCHESTER COMPUTERS AND BECAME INTERESTED IN MATHEMATICAL BIOLOGY. HE WROTE A PAPER ON THE CHEMICAL BASIS OF MORPHOGENESIS, AND PREDICTED OSCILLATING CHEMICAL REACTIONS SUCH AS THE BELOUSOV-ZHABOTINSKY REACTION, WHICH WERE FIRST OBSERVED IN THE 1960S. TURING'S HOMOSEXUALITY RESULTED IN A CRIMINAL PROSECUTION IN 1952, WHEN HOMOSEXUAL ACTS WERE STILL ILLEGAL IN THE UNITED KINGDOM. HE ACCEPTED TREATMENT WITH FEMALE HORMONES (CHEMICAL CASTRATION) AS AN ALTERNATIVE TO PRISON. TURING DIED IN 1954, JUST OVER TWO WEEKS BEFORE HIS 42ND BIRTHDAY, FROM CYANIDE POISONING. AN INQUEST DETERMINED THAT HIS DEATH WAS SUICIDE; HIS MOTHER AND SOME OTHERS BELIEVED HIS DEATH WAS ACCIDENTAL. ON 10 SEPTEMBER 2009, FOLLOWING AN INTERNET CAMPAIGN, BRITISH PRIME MINISTER GORDON BROWN MADE AN OFFICIAL PUBLIC APOLOGY ON BEHALF OF THE BRITISH GOVERNMENT FOR "THE APPALLING WAY HE WAS TREATED." AS OF MAY 2012 A PRIVATE MEMBER'S BILL WAS BEFORE THE HOUSE OF LORDS WHICH WOULD GRANT TURING A STATUTORY PARDON IF ENACTED."""
-        expectedOutput = 'Determining most likely key lengths with Kasiski Examination...\nKasiski Examination results say the most likely key lengths are: 3 2 6 4 12 \n\nAttempting break with key length 3 (27 possible keys)...\nPossible letters for letter 1 of the key: A L M \nPossible letters for letter 2 of the key: S N O \nPossible letters for letter 3 of the key: V I Z \nAttempting with key: ASV\nAttempting with key: ASI\nAttempting with key: ASZ\nAttempting with key: ANV\nAttempting with key: ANI\nAttempting with key: ANZ\nAttempting with key: AOV\nAttempting with key: AOI\nAttempting with key: AOZ\nAttempting with key: LSV\nAttempting with key: LSI\nAttempting with key: LSZ\nAttempting with key: LNV\nAttempting with key: LNI\nAttempting with key: LNZ\nAttempting with key: LOV\nAttempting with key: LOI\nAttempting with key: LOZ\nAttempting with key: MSV\nAttempting with key: MSI\nAttempting with key: MSZ\nAttempting with key: MNV\nAttempting with key: MNI\nAttempting with key: MNZ\nAttempting with key: MOV\nAttempting with key: MOI\nAttempting with key: MOZ\nAttempting break with key length 2 (9 possible keys)...\nPossible letters for letter 1 of the key: O A E \nPossible letters for letter 2 of the key: M S I \nAttempting with key: OM\nAttempting with key: OS\nAttempting with key: OI\nAttempting with key: AM\nAttempting with key: AS\nAttempting with key: AI\nAttempting with key: EM\nAttempting with key: ES\nAttempting with key: EI\nAttempting break with key length 6 (729 possible keys)...\nPossible letters for letter 1 of the key: A E O \nPossible letters for letter 2 of the key: S D G \nPossible letters for letter 3 of the key: I V X \nPossible letters for letter 4 of the key: M Z Q \nPossible letters for letter 5 of the key: O B Z \nPossible letters for letter 6 of the key: V I K \nAttempting with key: ASIMOV\n\nPossible encryption break:\nKey ASIMOV: ALAN MATHISON TURING WAS A BRITISH MATHEMATICIAN, LOGICIAN, CRYPTANALYST, AND COMPUTER SCIENTIST. HE WAS HIGHLY INFLUENTIAL IN THE DEVELOPMENT OF COMPUTER SCIENCE, PROVIDING A FORMALISATION OF THE CON\n\nEnter D for done, or just press Enter to continue breaking:\n> Copying broken ciphertext to clipboard:\nALAN MATHISON TURING WAS A BRITISH MATHEMATICIAN, LOGICIAN, CRYPTANALYST, AND COMPUTER SCIENTIST. HE WAS HIGHLY INFLUENTIAL IN THE DEVELOPMENT OF COMPUTER SCIENCE, PROVIDING A FORMALISATION OF THE CONCEPTS OF "ALGORITHM" AND "COMPUTATION" WITH THE TURING MACHINE. TURING IS WIDELY CONSIDERED TO BE THE FATHER OF COMPUTER SCIENCE AND ARTIFICIAL INTELLIGENCE. DURING WORLD WAR II, TURING WORKED FOR THE GOVERNMENT CODE AND CYPHER SCHOOL (GCCS) AT BLETCHLEY PARK, BRITAIN\'S CODEBREAKING CENTRE. FOR A TIME HE WAS HEAD OF HUT 8, THE SECTION RESPONSIBLE FOR GERMAN NAVAL CRYPTANALYSIS. HE DEVISED A NUMBER OF TECHNIQUES FOR BREAKING GERMAN CIPHERS, INCLUDING THE METHOD OF THE BOMBE, AN ELECTROMECHANICAL MACHINE THAT COULD FIND SETTINGS FOR THE ENIGMA MACHINE. AFTER THE WAR HE WORKED AT THE NATIONAL PHYSICAL LABORATORY, WHERE HE CREATED ONE OF THE FIRST DESIGNS FOR A STORED-PROGRAM COMPUTER, THE ACE. IN 1948 TURING JOINED MAX NEWMAN\'S COMPUTING LABORATORY AT MANCHESTER UNIVERSITY, WHERE HE ASSISTED IN THE DEVELOPMENT OF THE MANCHESTER COMPUTERS AND BECAME INTERESTED IN MATHEMATICAL BIOLOGY. HE WROTE A PAPER ON THE CHEMICAL BASIS OF MORPHOGENESIS, AND PREDICTED OSCILLATING CHEMICAL REACTIONS SUCH AS THE BELOUSOV-ZHABOTINSKY REACTION, WHICH WERE FIRST OBSERVED IN THE 1960S. TURING\'S HOMOSEXUALITY RESULTED IN A CRIMINAL PROSECUTION IN 1952, WHEN HOMOSEXUAL ACTS WERE STILL ILLEGAL IN THE UNITED KINGDOM. HE ACCEPTED TREATMENT WITH FEMALE HORMONES (CHEMICAL CASTRATION) AS AN ALTERNATIVE TO PRISON. TURING DIED IN 1954, JUST OVER TWO WEEKS BEFORE HIS 42ND BIRTHDAY, FROM CYANIDE POISONING. AN INQUEST DETERMINED THAT HIS DEATH WAS SUICIDE; HIS MOTHER AND SOME OTHERS BELIEVED HIS DEATH WAS ACCIDENTAL. ON 10 SEPTEMBER 2009, FOLLOWING AN INTERNET CAMPAIGN, BRITISH PRIME MINISTER GORDON BROWN MADE AN OFFICIAL PUBLIC APOLOGY ON BEHALF OF THE BRITISH GOVERNMENT FOR "THE APPALLING WAY HE WAS TREATED." AS OF MAY 2012 A PRIVATE MEMBER\'S BILL WAS BEFORE THE HOUSE OF LORDS WHICH WOULD GRANT TURING A STATUTORY PARDON IF ENACTED.\n'
+        expectedClipboard = """Alan Mathison Turing was a British mathematician, logician, cryptanalyst, and computer scientist. He was highly influential in the development of computer science, providing a formalisation of the concepts of "algorithm" and "computation" with the Turing machine. Turing is widely considered to be the father of computer science and artificial intelligence. During World War II, Turing worked for the Government Code and Cypher School (GCCS) at Bletchley Park, Britain's codebreaking centre. For a time he was head of Hut 8, the section responsible for German naval cryptanalysis. He devised a number of techniques for breaking German ciphers, including the method of the bombe, an electromechanical machine that could find settings for the Enigma machine. After the war he worked at the National Physical Laboratory, where he created one of the first designs for a stored-program computer, the ACE. In 1948 Turing joined Max Newman's Computing Laboratory at Manchester University, where he assisted in the development of the Manchester computers and became interested in mathematical biology. He wrote a paper on the chemical basis of morphogenesis, and predicted oscillating chemical reactions such as the Belousov-Zhabotinsky reaction, which were first observed in the 1960s. Turing's homosexuality resulted in a criminal prosecution in 1952, when homosexual acts were still illegal in the United Kingdom. He accepted treatment with female hormones (chemical castration) as an alternative to prison. Turing died in 1954, just over two weeks before his 42nd birthday, from cyanide poisoning. An inquest determined that his death was suicide; his mother and some others believed his death was accidental. On 10 September 2009, following an Internet campaign, British Prime Minister Gordon Brown made an official public apology on behalf of the British government for "the appalling way he was treated." As of May 2012 a private member's bill was before the House of Lords which would grant Turing a statutory pardon if enacted."""
+        expectedOutput = 'Determining most likely key lengths with Kasiski Examination...\nKasiski Examination results say the most likely key lengths are: 3 2 6 4 12 \n\nAttempting hack with key length 3 (27 possible keys)...\nPossible letters for letter 1 of the key: A L M \nPossible letters for letter 2 of the key: S N O \nPossible letters for letter 3 of the key: V I Z \nAttempting with key: ASV\nAttempting with key: ASI\nAttempting with key: ASZ\nAttempting with key: ANV\nAttempting with key: ANI\nAttempting with key: ANZ\nAttempting with key: AOV\nAttempting with key: AOI\nAttempting with key: AOZ\nAttempting with key: LSV\nAttempting with key: LSI\nAttempting with key: LSZ\nAttempting with key: LNV\nAttempting with key: LNI\nAttempting with key: LNZ\nAttempting with key: LOV\nAttempting with key: LOI\nAttempting with key: LOZ\nAttempting with key: MSV\nAttempting with key: MSI\nAttempting with key: MSZ\nAttempting with key: MNV\nAttempting with key: MNI\nAttempting with key: MNZ\nAttempting with key: MOV\nAttempting with key: MOI\nAttempting with key: MOZ\nAttempting hack with key length 2 (9 possible keys)...\nPossible letters for letter 1 of the key: O A E \nPossible letters for letter 2 of the key: M S I \nAttempting with key: OM\nAttempting with key: OS\nAttempting with key: OI\nAttempting with key: AM\nAttempting with key: AS\nAttempting with key: AI\nAttempting with key: EM\nAttempting with key: ES\nAttempting with key: EI\nAttempting hack with key length 6 (729 possible keys)...\nPossible letters for letter 1 of the key: A E O \nPossible letters for letter 2 of the key: S D G \nPossible letters for letter 3 of the key: I V X \nPossible letters for letter 4 of the key: M Z Q \nPossible letters for letter 5 of the key: O B Z \nPossible letters for letter 6 of the key: V I K \nAttempting with key: ASIMOV\n\nPossible encryption hack:\nKey ASIMOV: ALAN MATHISON TURING WAS A BRITISH MATHEMATICIAN, LOGICIAN, CRYPTANALYST, AND COMPUTER SCIENTIST. HE WAS HIGHLY INFLUENTIAL IN THE DEVELOPMENT OF COMPUTER SCIENCE, PROVIDING A FORMALISATION OF THE CON\n\nEnter D for done, or just press Enter to continue hacking:\n> Copying broken ciphertext to clipboard:\nAlan Mathison Turing was a British mathematician, logician, cryptanalyst, and computer scientist. He was highly influential in the development of computer science, providing a formalisation of the concepts of "algorithm" and "computation" with the Turing machine. Turing is widely considered to be the father of computer science and artificial intelligence. During World War II, Turing worked for the Government Code and Cypher School (GCCS) at Bletchley Park, Britain\'s codebreaking centre. For a time he was head of Hut 8, the section responsible for German naval cryptanalysis. He devised a number of techniques for breaking German ciphers, including the method of the bombe, an electromechanical machine that could find settings for the Enigma machine. After the war he worked at the National Physical Laboratory, where he created one of the first designs for a stored-program computer, the ACE. In 1948 Turing joined Max Newman\'s Computing Laboratory at Manchester University, where he assisted in the development of the Manchester computers and became interested in mathematical biology. He wrote a paper on the chemical basis of morphogenesis, and predicted oscillating chemical reactions such as the Belousov-Zhabotinsky reaction, which were first observed in the 1960s. Turing\'s homosexuality resulted in a criminal prosecution in 1952, when homosexual acts were still illegal in the United Kingdom. He accepted treatment with female hormones (chemical castration) as an alternative to prison. Turing died in 1954, just over two weeks before his 42nd birthday, from cyanide poisoning. An inquest determined that his death was suicide; his mother and some others believed his death was accidental. On 10 September 2009, following an Internet campaign, British Prime Minister Gordon Brown made an official public apology on behalf of the British government for "the appalling way he was treated." As of May 2012 a private member\'s bill was before the House of Lords which would grant Turing a statutory pardon if enacted.\n'
 
         self.assertEqual(pyperclip.paste().decode('ascii'), expectedClipboard)
         self.assertEqual(procOut, expectedOutput)
@@ -591,20 +675,24 @@ Enter D for done, or just press Enter to continue:
         proc = subprocess.Popen('c:\\python32\\python.exe vigenereCipher.py', stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         procOut = proc.communicate()[0].decode('ascii')
 
-        expectedOutput = 'Encrypted message:\nADIZ AVTZQECI TMZUBB WSA M PMILQEV HALPQAVTAKUOI, LGOUQDAF, KDMKTSVMZTSL, IZR XOEXGHZR KKUSITAAF. VZ WSA TWBHDG UBALMMZHDAD QZ HCE VMHSGOHUQBO OX KAAKULMD GXIWVOS, KRGDURDNY I RCMMSTUGVTAWZ CA TZM OCICWXFG JF "STSCMILPY" OID "UWYDPTSBUCI" WABT HCE LCDWIG EIOVDNW. BGFDNY QE KDDWTK QJNKQPSMEV BA PZ TZM ROOHWZ AT XOEXGHZR KKUSICW IZR VRLQRWXIST UBOEDTUUZNUM. PIMIFO ICMLV EMF DI, LCDWIG OWDYZD XWD HCE YWHSMNEMZH XOVM MBY CQXTSM SUPACG (GUKE) OO BDMFQCLWG BOMK, TZUHVIF\'A OCYETZQOFIFO OSITJM. RCM A LQYS CE OIE VZAV WR VPT 8, LPQ GZCLQAB MEKXABNITTQ TJR YMDAVN FIHOG CJGBHVNSTKGDS. ZM PSQIKMP O IUEJQF JF LMOVIIICQG AOJ JDSVKAVS UZREIZ QDPZMDG, DNUTGRDNY BTS HELPAR JF LPQ PJMTM, MB ZLWKFFJMWKTOIIUIX AVCZQZS OHSB OCPLV NUBY SWBFWIGK NAF OHW MZWBMS UMQCIFM. MTOEJ BTS RAJ PQ KJRCMP OO TZM ZOOIGVMZ KHQAUQVL DINCMALWDM, RHWZQ VZ CJMMHZD GVQ CA TZM RWMSL LQGDGFA RCM A KBAFZD-HZAUMAE KAAKULMD, HCE SKQ. WI 1948 TMZUBB JGQZSY MSF ZSRMSV\'E QJMHCFWIG DINCMALWDM VT EIZQCEKBQF PNADQFNILG, IVZRW PQ ONSAAFSY IF BTS YENMXCKMWVF CA TZM YOICZMEHZR UWYDPTWZE OID TMOOHE AVFSMEKBQR DN EIFVZMSBUQVL TQAZJGQ. PQ KMOLM M DVPWZ AB OHW KTSHIUIX PVSAA AT HOJXTCBEFMEWN, AFL BFZDAKFSY OKKUZGALQZU XHWUUQVL JMMQOIGVE GPCZ IE HCE TMXCPSGD-LVVBGBUBNKQ ZQOXTAWZ, KCIUP ISME XQDGO OTAQFQEV QZ HCE 1960K. BGFDNY\'A TCHOKMJIVLABK FZSMTFSY IF I OFDMAVMZ KRGAQQPTAWZ WI 1952, WZMZ VJMGAQLPAD IOHN WWZQ GOIDT UZGEYIX WI TZM GBDTWL WWIGVWY. VZ AUKQDOEV BDSVTEMZH RILP RSHADM TCMMGVQG (XHWUUQVL UIEHMALQAB) VS SV MZOEJVMHDVW BA DMIKWZ. HPRAVS RDEV QZ 1954, XPSL WHSM TOW ISZKK JQTJRW PUG 42ID TQDHCDSG, RFJM UGMBDDW XAWNOFQZU. VN AVCIZSL LQHZREQZSY TZIF VDS VMMHC WSA EIDCALQ; VDS EWFVZR SVP GJMW WFVZRK JQZDENMP VDS VMMHC WSA MQXIVMZHVL. GV 10 ESKTWUNSM 2009, FGTXCRIFO MB DNLMDBZT UIYDVIYV, NFDTAAT DMIEM YWIIKBQF BOJLAB WRGEZ AVDW IZ CAFAKUOG PMJXWX AHWXCBY GV NSCADN AT OHW JDWOIKP SCQEJVYSIT XWD "HCE SXBOGLAVS KVY ZM ION TJMMHZD." SA AT HAQ 2012 I BFDVSBQ AZMTMD\'G WIDT ION BWNAFZ TZM TCPSW WR ZJRVA IVDCZ EAIGD YZMBO TMZUBB A KBMHPTGZK DVRVWZ WA EFIOHZD.\n\nThe message has been copied to the clipboard.\n'
-        expectedClipboard = 'ADIZ AVTZQECI TMZUBB WSA M PMILQEV HALPQAVTAKUOI, LGOUQDAF, KDMKTSVMZTSL, IZR XOEXGHZR KKUSITAAF. VZ WSA TWBHDG UBALMMZHDAD QZ HCE VMHSGOHUQBO OX KAAKULMD GXIWVOS, KRGDURDNY I RCMMSTUGVTAWZ CA TZM OCICWXFG JF "STSCMILPY" OID "UWYDPTSBUCI" WABT HCE LCDWIG EIOVDNW. BGFDNY QE KDDWTK QJNKQPSMEV BA PZ TZM ROOHWZ AT XOEXGHZR KKUSICW IZR VRLQRWXIST UBOEDTUUZNUM. PIMIFO ICMLV EMF DI, LCDWIG OWDYZD XWD HCE YWHSMNEMZH XOVM MBY CQXTSM SUPACG (GUKE) OO BDMFQCLWG BOMK, TZUHVIF\'A OCYETZQOFIFO OSITJM. RCM A LQYS CE OIE VZAV WR VPT 8, LPQ GZCLQAB MEKXABNITTQ TJR YMDAVN FIHOG CJGBHVNSTKGDS. ZM PSQIKMP O IUEJQF JF LMOVIIICQG AOJ JDSVKAVS UZREIZ QDPZMDG, DNUTGRDNY BTS HELPAR JF LPQ PJMTM, MB ZLWKFFJMWKTOIIUIX AVCZQZS OHSB OCPLV NUBY SWBFWIGK NAF OHW MZWBMS UMQCIFM. MTOEJ BTS RAJ PQ KJRCMP OO TZM ZOOIGVMZ KHQAUQVL DINCMALWDM, RHWZQ VZ CJMMHZD GVQ CA TZM RWMSL LQGDGFA RCM A KBAFZD-HZAUMAE KAAKULMD, HCE SKQ. WI 1948 TMZUBB JGQZSY MSF ZSRMSV\'E QJMHCFWIG DINCMALWDM VT EIZQCEKBQF PNADQFNILG, IVZRW PQ ONSAAFSY IF BTS YENMXCKMWVF CA TZM YOICZMEHZR UWYDPTWZE OID TMOOHE AVFSMEKBQR DN EIFVZMSBUQVL TQAZJGQ. PQ KMOLM M DVPWZ AB OHW KTSHIUIX PVSAA AT HOJXTCBEFMEWN, AFL BFZDAKFSY OKKUZGALQZU XHWUUQVL JMMQOIGVE GPCZ IE HCE TMXCPSGD-LVVBGBUBNKQ ZQOXTAWZ, KCIUP ISME XQDGO OTAQFQEV QZ HCE 1960K. BGFDNY\'A TCHOKMJIVLABK FZSMTFSY IF I OFDMAVMZ KRGAQQPTAWZ WI 1952, WZMZ VJMGAQLPAD IOHN WWZQ GOIDT UZGEYIX WI TZM GBDTWL WWIGVWY. VZ AUKQDOEV BDSVTEMZH RILP RSHADM TCMMGVQG (XHWUUQVL UIEHMALQAB) VS SV MZOEJVMHDVW BA DMIKWZ. HPRAVS RDEV QZ 1954, XPSL WHSM TOW ISZKK JQTJRW PUG 42ID TQDHCDSG, RFJM UGMBDDW XAWNOFQZU. VN AVCIZSL LQHZREQZSY TZIF VDS VMMHC WSA EIDCALQ; VDS EWFVZR SVP GJMW WFVZRK JQZDENMP VDS VMMHC WSA MQXIVMZHVL. GV 10 ESKTWUNSM 2009, FGTXCRIFO MB DNLMDBZT UIYDVIYV, NFDTAAT DMIEM YWIIKBQF BOJLAB WRGEZ AVDW IZ CAFAKUOG PMJXWX AHWXCBY GV NSCADN AT OHW JDWOIKP SCQEJVYSIT XWD "HCE SXBOGLAVS KVY ZM ION TJMMHZD." SA AT HAQ 2012 I BFDVSBQ AZMTMD\'G WIDT ION BWNAFZ TZM TCPSW WR ZJRVA IVDCZ EAIGD YZMBO TMZUBB A KBMHPTGZK DVRVWZ WA EFIOHZD.'
+        expectedOutput = 'Encrypted message:\nAdiz Avtzqeci Tmzubb wsa m Pmilqev halpqavtakuoi, lgouqdaf, kdmktsvmztsl, izr xoexghzr kkusitaaf. Vz wsa twbhdg ubalmmzhdad qz hce vmhsgohuqbo ox kaakulmd gxiwvos, krgdurdny i rcmmstugvtawz ca tzm ocicwxfg jf "stscmilpy" oid "uwydptsbuci" wabt hce Lcdwig eiovdnw. Bgfdny qe kddwtk qjnkqpsmev ba pz tzm roohwz at xoexghzr kkusicw izr vrlqrwxist uboedtuuznum. Pimifo Icmlv Emf DI, Lcdwig owdyzd xwd hce Ywhsmnemzh Xovm mby Cqxtsm Supacg (GUKE) oo Bdmfqclwg Bomk, Tzuhvif\'a ocyetzqofifo ositjm. Rcm a lqys ce oie vzav wr Vpt 8, lpq gzclqab mekxabnittq tjr Ymdavn fihog cjgbhvnstkgds. Zm psqikmp o iuejqf jf lmoviiicqg aoj jdsvkavs Uzreiz qdpzmdg, dnutgrdny bts helpar jf lpq pjmtm, mb zlwkffjmwktoiiuix avczqzs ohsb ocplv nuby swbfwigk naf ohw Mzwbms umqcifm. Mtoej bts raj pq kjrcmp oo tzm Zooigvmz Khqauqvl Dincmalwdm, rhwzq vz cjmmhzd gvq ca tzm rwmsl lqgdgfa rcm a kbafzd-hzaumae kaakulmd, hce SKQ. Wi 1948 Tmzubb jgqzsy Msf Zsrmsv\'e Qjmhcfwig Dincmalwdm vt Eizqcekbqf Pnadqfnilg, ivzrw pq onsaafsy if bts yenmxckmwvf ca tzm Yoiczmehzr uwydptwze oid tmoohe avfsmekbqr dn eifvzmsbuqvl tqazjgq. Pq kmolm m dvpwz ab ohw ktshiuix pvsaa at hojxtcbefmewn, afl bfzdakfsy okkuzgalqzu xhwuuqvl jmmqoigve gpcz ie hce Tmxcpsgd-Lvvbgbubnkq zqoxtawz, kciup isme xqdgo otaqfqev qz hce 1960k. Bgfdny\'a tchokmjivlabk fzsmtfsy if i ofdmavmz krgaqqptawz wi 1952, wzmz vjmgaqlpad iohn wwzq goidt uzgeyix wi tzm Gbdtwl Wwigvwy. Vz aukqdoev bdsvtemzh rilp rshadm tcmmgvqg (xhwuuqvl uiehmalqab) vs sv mzoejvmhdvw ba dmikwz. Hpravs rdev qz 1954, xpsl whsm tow iszkk jqtjrw pug 42id tqdhcdsg, rfjm ugmbddw xawnofqzu. Vn avcizsl lqhzreqzsy tzif vds vmmhc wsa eidcalq; vds ewfvzr svp gjmw wfvzrk jqzdenmp vds vmmhc wsa mqxivmzhvl. Gv 10 Esktwunsm 2009, fgtxcrifo mb Dnlmdbzt uiydviyv, Nfdtaat Dmiem Ywiikbqf Bojlab Wrgez avdw iz cafakuog pmjxwx ahwxcby gv nscadn at ohw Jdwoikp scqejvysit xwd "hce sxboglavs kvy zm ion tjmmhzd." Sa at Haq 2012 i bfdvsbq azmtmd\'g widt ion bwnafz tzm Tcpsw wr Zjrva ivdcz eaigd yzmbo Tmzubb a kbmhptgzk dvrvwz wa efiohzd.\n\nThe message has been copied to the clipboard.\n'
+        expectedClipboard = """Adiz Avtzqeci Tmzubb wsa m Pmilqev halpqavtakuoi, lgouqdaf, kdmktsvmztsl, izr xoexghzr kkusitaaf. Vz wsa twbhdg ubalmmzhdad qz hce vmhsgohuqbo ox kaakulmd gxiwvos, krgdurdny i rcmmstugvtawz ca tzm ocicwxfg jf "stscmilpy" oid "uwydptsbuci" wabt hce Lcdwig eiovdnw. Bgfdny qe kddwtk qjnkqpsmev ba pz tzm roohwz at xoexghzr kkusicw izr vrlqrwxist uboedtuuznum. Pimifo Icmlv Emf DI, Lcdwig owdyzd xwd hce Ywhsmnemzh Xovm mby Cqxtsm Supacg (GUKE) oo Bdmfqclwg Bomk, Tzuhvif'a ocyetzqofifo ositjm. Rcm a lqys ce oie vzav wr Vpt 8, lpq gzclqab mekxabnittq tjr Ymdavn fihog cjgbhvnstkgds. Zm psqikmp o iuejqf jf lmoviiicqg aoj jdsvkavs Uzreiz qdpzmdg, dnutgrdny bts helpar jf lpq pjmtm, mb zlwkffjmwktoiiuix avczqzs ohsb ocplv nuby swbfwigk naf ohw Mzwbms umqcifm. Mtoej bts raj pq kjrcmp oo tzm Zooigvmz Khqauqvl Dincmalwdm, rhwzq vz cjmmhzd gvq ca tzm rwmsl lqgdgfa rcm a kbafzd-hzaumae kaakulmd, hce SKQ. Wi 1948 Tmzubb jgqzsy Msf Zsrmsv'e Qjmhcfwig Dincmalwdm vt Eizqcekbqf Pnadqfnilg, ivzrw pq onsaafsy if bts yenmxckmwvf ca tzm Yoiczmehzr uwydptwze oid tmoohe avfsmekbqr dn eifvzmsbuqvl tqazjgq. Pq kmolm m dvpwz ab ohw ktshiuix pvsaa at hojxtcbefmewn, afl bfzdakfsy okkuzgalqzu xhwuuqvl jmmqoigve gpcz ie hce Tmxcpsgd-Lvvbgbubnkq zqoxtawz, kciup isme xqdgo otaqfqev qz hce 1960k. Bgfdny'a tchokmjivlabk fzsmtfsy if i ofdmavmz krgaqqptawz wi 1952, wzmz vjmgaqlpad iohn wwzq goidt uzgeyix wi tzm Gbdtwl Wwigvwy. Vz aukqdoev bdsvtemzh rilp rshadm tcmmgvqg (xhwuuqvl uiehmalqab) vs sv mzoejvmhdvw ba dmikwz. Hpravs rdev qz 1954, xpsl whsm tow iszkk jqtjrw pug 42id tqdhcdsg, rfjm ugmbddw xawnofqzu. Vn avcizsl lqhzreqzsy tzif vds vmmhc wsa eidcalq; vds ewfvzr svp gjmw wfvzrk jqzdenmp vds vmmhc wsa mqxivmzhvl. Gv 10 Esktwunsm 2009, fgtxcrifo mb Dnlmdbzt uiydviyv, Nfdtaat Dmiem Ywiikbqf Bojlab Wrgez avdw iz cafakuog pmjxwx ahwxcby gv nscadn at ohw Jdwoikp scqejvysit xwd "hce sxboglavs kvy zm ion tjmmhzd." Sa at Haq 2012 i bfdvsbq azmtmd'g widt ion bwnafz tzm Tcpsw wr Zjrva ivdcz eaigd yzmbo Tmzubb a kbmhptgzk dvrvwz wa efiohzd."""
 
         self.assertEqual(procOut, expectedOutput)
         self.assertEqual(pyperclip.paste().decode('ascii'), expectedClipboard)
 
+    def test_nullCipherModule(self):
+        import nullCipher
+        encrypted = nullCipher.encryptMessage('5031', FOX_MESSAGE)
+        decrypted = nullCipher.decryptMessage('5031', encrypted)
+        self.assertEqual(FOX_MESSAGE, decrypted)
 
 if __name__ == '__main__':
-    TEST_ALL = True
+    TEST_ALL = False
 
     if not TEST_ALL:
         customSuite = unittest.TestSuite()
-        customSuite.addTest(CodeBreakerUnitTests('test_rabinMillerModule'))
+        customSuite.addTest(CodeBreakerUnitTests('test_simpleSubHackerPy'))
         unittest.TextTestRunner().run(customSuite)
     elif TEST_ALL:
         unittest.main()
-
