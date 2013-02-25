@@ -94,9 +94,9 @@ def decryptMessage(encryptedBlocks, messageLength, key, blockSize=DEFAULT_BLOCK_
 def readKeyFile(keyFilename):
     # Given the filename of a file that contains a public or private key,
     # return the key as a (n,e) or (n,d) tuple value.
-    fp = open(keyFilename)
-    content = fp.read()
-    fp.close()
+    fo = open(keyFilename)
+    content = fo.read()
+    fo.close()
     keySize, N, EorD = content.split(',')
     return (int(keySize), int(N), int(EorD))
 
@@ -121,9 +121,9 @@ def encryptAndWriteToFile(messageFilename, keyFilename, message, blockSize=DEFAU
 
     # Write out the encrypted string to the output file.
     encryptedContent = '%s_%s_%s' % (len(message), blockSize, encryptedContent)
-    fp = open(messageFilename, 'w')
-    fp.write(encryptedContent)
-    fp.close()
+    fo = open(messageFilename, 'w')
+    fo.write(encryptedContent)
+    fo.close()
     # Also return the encrypted string.
     return encryptedContent
 
@@ -135,8 +135,8 @@ def readFromFileAndDecrypt(messageFilename, keyFilename):
 
 
     # Read in the message length and the encrypted message from the file.
-    fp = open(messageFilename)
-    content = fp.read()
+    fo = open(messageFilename)
+    content = fo.read()
     messageLength, blockSize, message = content.split('_')
     messageLength = int(messageLength)
     blockSize = int(blockSize)

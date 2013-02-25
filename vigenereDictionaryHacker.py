@@ -16,9 +16,9 @@ def main():
 
 
 def hackVigenere(ciphertext):
-    fp = open('dictionary.txt')
-    words = fp.readlines()
-    fp.close()
+    fo = open('dictionary.txt')
+    words = fo.readlines()
+    fo.close()
 
     for word in words:
         word = word.strip() # remove the newline at the end
