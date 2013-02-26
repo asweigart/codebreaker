@@ -8,7 +8,7 @@ def main():
     # create a public/private keypair with 1024 bit keys
     print('Making key files...')
     makeKeyFiles('al_sweigart', 1024)
-
+    print('Key files made.')
 
 def generateKey(keySize):
     # Creates a public/private key pair with keys that are keySize bits in

@@ -1,7 +1,7 @@
 # Vigenere Cipher Hacker
 # http://inventwithpython.com/hacking (BSD Licensed)
 
-import copy, itertools, re
+import itertools, re
 import vigenereCipher, pyperclip, freqAnalysis, detectEnglish
 
 LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -50,7 +50,6 @@ def findRepeatSequencesSpacings(message):
                     # Append the spacing distance between the repeated
                     # sequence and the original sequence.
                     seqSpacings[seq].append(i - seqStart)
-
     return seqSpacings
 
 
@@ -70,7 +69,8 @@ def getUsefulFactors(num):
         if num % i == 0:
             factors.append(i)
             factors.append(int(num / i))
-
+    if 1 in factors:
+        factors.remove(1)
     return list(set(factors))
 
 
