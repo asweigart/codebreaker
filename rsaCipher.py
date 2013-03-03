@@ -97,14 +97,14 @@ def readKeyFile(keyFilename):
     fo = open(keyFilename)
     content = fo.read()
     fo.close()
-    keySize, N, EorD = content.split(',')
-    return (int(keySize), int(N), int(EorD))
+    keySize, n, EorD = content.split(',')
+    return (int(keySize), int(n), int(EorD))
 
 
 def encryptAndWriteToFile(messageFilename, keyFilename, message, blockSize=DEFAULT_BLOCK_SIZE):
     # Using a key from a key file, encrypt the message and save it to a
     # file. Returns the encrypted message string.
-    keySize, N, E = readKeyFile(keyFilename)
+    keySize, n, e = readKeyFile(keyFilename)
 
     # Check that key size is greater than block size.
     if keySize < blockSize * 8: # * 8 to convert bytes to bits
@@ -112,7 +112,7 @@ def encryptAndWriteToFile(messageFilename, keyFilename, message, blockSize=DEFAU
 
 
     # Encrypt the message
-    encryptedBlocks = encryptMessage(message, (N, E), blockSize)
+    encryptedBlocks = encryptMessage(message, (n, e), blockSize)
 
     # Convert the large int values to one string value.
     for i in range(len(encryptedBlocks)):
@@ -131,7 +131,7 @@ def encryptAndWriteToFile(messageFilename, keyFilename, message, blockSize=DEFAU
 def readFromFileAndDecrypt(messageFilename, keyFilename):
     # Using a key from a key file, read an encrypted message from a file
     # and then decrypt it. Returns the decrypted message string.
-    keySize, N, D = readKeyFile(keyFilename)
+    keySize, n, d = readKeyFile(keyFilename)
 
 
     # Read in the message length and the encrypted message from the file.
@@ -151,7 +151,7 @@ def readFromFileAndDecrypt(messageFilename, keyFilename):
         encryptedBlocks.append(int(block))
 
     # Decrypt the large int values.
-    return decryptMessage(encryptedBlocks, messageLength, (N, D), blockSize)
+    return decryptMessage(encryptedBlocks, messageLength, (n, d), blockSize)
 
 
 # If rsaCipher.py is run (instead of imported as a module) call
