@@ -1,4 +1,4 @@
-# Transpositional Cipher Hacker
+# Transposition Cipher Hacker
 # http://inventwithpython.com/hacking (BSD Licensed)
 
 import pyperclip, detectEnglish, transpositionDecrypt
@@ -25,7 +25,7 @@ def hackTransposition(message):
     # Windows) or Ctrl-D (on Mac and Linux)
     print('(Press Ctrl-C or Ctrl-D to quit at any time.)')
 
-    # brute force by looping through every possible key
+    # brute-force by looping through every possible key
     for key in range(1, len(message)):
         print('Trying key #%s...' % (key))
 

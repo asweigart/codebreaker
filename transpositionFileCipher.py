@@ -30,7 +30,7 @@ def main():
 
     print('%sing...' % (myMode.title()))
 
-    # Measure how long the encryption takes.
+    # Measure how long the encryption/decryption takes.
     startTime = time.time()
     if myMode == 'encrypt':
         translated = transpositionEncrypt.encryptMessage(myKey, content)

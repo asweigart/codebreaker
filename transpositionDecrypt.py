@@ -21,9 +21,9 @@ def decryptMessage(key, message):
     # "rows" of the grid that the plaintext is written on by using a list
     # of strings. First, we need to calculate a few values.
 
-    # The number of "columns" our transposition grid:
+    # The number of "columns" in our transposition grid:
     numOfColumns = math.ceil(len(message) / key)
-    # The number of "rows" our grid will need:
+    # The number of "rows" in our grid will need:
     numOfRows = key
     # The number of "shaded boxes" in the last "column" of the grid:
     numOfShadedBoxes = (numOfColumns * numOfRows) - len(message)

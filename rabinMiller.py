@@ -58,5 +58,5 @@ def generateLargePrime(keysize=1024):
     # Return a random prime number of keysize bits in size.
     while True:
         num = random.randrange(2**(keysize-1), 2**(keysize))
-        if isPrime(num) == True:
+        if isPrime(num):
             return num

@@ -9,7 +9,7 @@ def main():
 
     ciphertext = encryptMessage(myKey, myMessage)
 
-    # Print the (encrypted) string in ciphertext to the screen, with
+    # Print the encrypted string in ciphertext to the screen, with
     # a | (called "pipe" character) after it in case there are spaces at
     # the end of the encrypted message.
     print(ciphertext + '|')

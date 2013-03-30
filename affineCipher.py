@@ -2,7 +2,7 @@
 # http://inventwithpython.com/hacking (BSD Licensed)
 
 import sys, pyperclip, cryptomath, random
-SYMBOLS = """ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"""
+SYMBOLS = """ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~""" # note the space at the front
 
 
 def main():
@@ -62,7 +62,7 @@ def decryptMessage(key, message):
         if symbol in SYMBOLS:
             # decrypt this symbol
             symIndex = SYMBOLS.find(symbol)
-            plaintext += SYMBOLS[( (symIndex - keyB) % len(SYMBOLS)) * modInverseOfKeyA % len(SYMBOLS)]
+            plaintext += SYMBOLS[(symIndex - keyB) * modInverseOfKeyA % len(SYMBOLS)]
         else:
             plaintext += symbol # just append this symbol undecrypted
     return plaintext

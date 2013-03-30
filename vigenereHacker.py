@@ -124,9 +124,9 @@ def kasiskiExamination(ciphertext):
     # See getMostCommonFactors() for a description of factorsByCount.
     factorsByCount = getMostCommonFactors(seqFactors)
 
-    # Now we extract the factor counts from factorsByCount and put them
-    # in variables named allLikelyKeyLengths and allLikelyKeyLengthsStr
-    # so that they are easier to use later.
+    # Now we extract the factor counts from factorsByCount and
+    # put them in allLikelyKeyLengths so that they are easier to
+    # use later.
     allLikelyKeyLengths = []
     for twoIntTuple in factorsByCount:
         allLikelyKeyLengths.append(twoIntTuple[0])
@@ -134,12 +134,12 @@ def kasiskiExamination(ciphertext):
     return allLikelyKeyLengths
 
 
-def getNthSubkeysLetter(n, keyLength, message):
+def getNthSubkeysLetters(n, keyLength, message):
     # Returns every Nth letter for each keyLength set of letters in text.
-    # E.g. getNthSubkeysLetter(1, 3, 'ABCABCABC') returns 'AAA'
-    #      getNthSubkeysLetter(2, 3, 'ABCABCABC') returns 'BBB'
-    #      getNthSubkeysLetter(3, 3, 'ABCABCABC') returns 'CCC'
-    #      getNthSubkeysLetter(1, 5, 'ABCDEFGHI') returns 'AF'
+    # E.g. getNthSubkeysLetters(1, 3, 'ABCABCABC') returns 'AAA'
+    #      getNthSubkeysLetters(2, 3, 'ABCABCABC') returns 'BBB'
+    #      getNthSubkeysLetters(3, 3, 'ABCABCABC') returns 'CCC'
+    #      getNthSubkeysLetters(1, 5, 'ABCDEFGHI') returns 'AF'
 
     # Use a "regular expression" remove non-letters from the message.
     message = NONLETTERS_PATTERN.sub('', message)
@@ -159,7 +159,7 @@ def attemptHackWithKeyLength(ciphertext, mostLikelyKeyLength):
     # These inner lists are the freqScores lists.
     allFreqScores = []
     for nth in range(1, mostLikelyKeyLength + 1):
-        nthLetters = getNthSubkeysLetter(nth, mostLikelyKeyLength, ciphertextUp)
+        nthLetters = getNthSubkeysLetters(nth, mostLikelyKeyLength, ciphertextUp)
 
         # freqScores is a list of tuples like:
         # [(<letter>, <Eng. Freq. match score>), ... ]
@@ -238,7 +238,7 @@ def hackVigenere(ciphertext):
             break
 
     # If none of the key lengths we found using Kasiski Examination
-    # worked, start brute forcing through key lengths.
+    # worked, start brute-forcing through key lengths.
     if hackedMessage == None:
         if not SILENT_MODE:
             print('Unable to hack message with likely key length(s). Brute forcing key length...')

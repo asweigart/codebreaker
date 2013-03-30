@@ -45,12 +45,12 @@ def addLettersToMapping(letterMapping, cipherword, candidate):
     # This function adds the letters of the candidate as potential
     # decryption letters for the cipherletters in the cipherletter
     # mapping.
-    # The letterMapping dictionary is modified in-place.
 
+    letterMapping = copy.deepcopy(letterMapping)
     for i in range(len(cipherword)):
         if candidate[i] not in letterMapping[cipherword[i]]:
             letterMapping[cipherword[i]].append(candidate[i])
-
+    return letterMapping
 
 
 def intersectMappings(mapA, mapB):
@@ -84,7 +84,7 @@ def removeSolvedLettersFromMapping(letterMapping):
     # to ['M']. Note that now that 'A' maps to only one letter, we can
     # remove 'M' from the list of letters for every other
     # letter. (This is why there is a loop that keeps reducing the map.)
-
+    letterMapping = copy.deepcopy(letterMapping)
     loopAgain = True
     while loopAgain:
         # First assume that we will not loop again:
@@ -107,13 +107,13 @@ def removeSolvedLettersFromMapping(letterMapping):
                     if len(letterMapping[cipherletter]) == 1:
                         # A new letter is now solved, so loop again.
                         loopAgain = True
-    # Nothing is returned because letterMapping is modified in-place.
+    return letterMapping
 
 
 def hackSimpleSub(message):
     intersectedMap = getBlankCipherletterMapping()
-    message = nonLettersOrSpacePattern.sub('', message.upper()).split()
-    for cipherword in message:
+    cipherwordList = nonLettersOrSpacePattern.sub('', message.upper()).split()
+    for cipherword in cipherwordList:
         # Get a new cipherletter mapping for each ciphertext word.
         newMap = getBlankCipherletterMapping()
 
@@ -123,13 +123,13 @@ def hackSimpleSub(message):
 
         # Add the letters of each candidate to the mapping.
         for candidate in wordPatterns.allPatterns[wordPattern]:
-            addLettersToMapping(newMap, cipherword, candidate)
+            newMap = addLettersToMapping(newMap, cipherword, candidate)
 
         # Intersect the new mapping with the existing intersected mapping.
         intersectedMap = intersectMappings(intersectedMap, newMap)
+
     # Remove any solved letters from the other lists.
-    removeSolvedLettersFromMapping(intersectedMap)
-    return intersectedMap
+    return removeSolvedLettersFromMapping(intersectedMap)
 
 
 def decryptWithCipherletterMapping(ciphertext, letterMapping):
@@ -148,7 +148,7 @@ def decryptWithCipherletterMapping(ciphertext, letterMapping):
             ciphertext = ciphertext.replace(cipherletter.upper(), '_')
     key = ''.join(key)
 
-    # With the key we've created, decrypt the message.
+    # With the key we've created, decrypt the ciphertext.
     return simpleSubCipher.decryptMessage(key, ciphertext)
 
 

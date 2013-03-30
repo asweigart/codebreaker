@@ -137,7 +137,7 @@ def readFromFileAndDecrypt(messageFilename, keyFilename):
     # Read in the message length and the encrypted message from the file.
     fo = open(messageFilename)
     content = fo.read()
-    messageLength, blockSize, message = content.split('_')
+    messageLength, blockSize, encryptedMessage = content.split('_')
     messageLength = int(messageLength)
     blockSize = int(blockSize)
 
@@ -147,7 +147,7 @@ def readFromFileAndDecrypt(messageFilename, keyFilename):
 
     # Convert the encrypted message into large int values.
     encryptedBlocks = []
-    for block in message.split(','):
+    for block in encryptedMessage.split(','):
         encryptedBlocks.append(int(block))
 
     # Decrypt the large int values.

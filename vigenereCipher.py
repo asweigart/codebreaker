@@ -45,7 +45,7 @@ def translateMessage(key, message, mode):
             elif mode == 'decrypt':
                 num -= LETTERS.find(key[keyIndex]) # subtract if decrypting
 
-            num %= len(LETTERS) # handle the potential wrap around
+            num %= len(LETTERS) # handle the potential wrap-around
 
             # add the encrypted/decrypted symbol to the end of translated.
             if symbol.isupper():

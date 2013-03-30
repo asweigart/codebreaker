@@ -19,7 +19,7 @@ for key in range(len(LETTERS)):
             num = LETTERS.find(symbol) # get the number of the symbol
             num = num - key
 
-            # handle the wrap around if num is 26 or larger of less than 0
+            # handle the wrap-around if num is 26 or larger or less than 0
             if num < 0:
                 num = num + len(LETTERS)
 

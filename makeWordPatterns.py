@@ -1,7 +1,7 @@
 # Makes the wordPatterns.py File
 # http://inventwithpython.com/hacking (BSD Licensed)
 
-# Create wordPatterns.py based on the words in our dictionary
+# Creates wordPatterns.py based on the words in our dictionary
 # text file, dictionary.txt. (Download this file from
 # http://invpy.com/dictionary.txt)
 

@@ -9,7 +9,7 @@ message = 'This is my secret message.'
 # the encryption/decryption key
 key = 13
 
-# tells the program to encrypt of decrypt
+# tells the program to encrypt or decrypt
 mode = 'encrypt' # set to 'encrypt' or 'decrypt'
 
 # every possible symbol that can be encrypted
@@ -31,7 +31,7 @@ for symbol in message:
         elif mode == 'decrypt':
             num = num - key
 
-        # handle the wrap around if num is larger than the length of
+        # handle the wrap-around if num is larger than the length of
         # LETTERS or less than 0
         if num >= len(LETTERS):
             num = num - len(LETTERS)

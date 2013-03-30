@@ -26,7 +26,7 @@ def hackSimpleSubDictionary(message):
 
     tryNum = 1
 
-    # brute force by looping through every possible key
+    # brute-force by looping through every possible key
     for key in detectEnglish.ENGLISH_WORDS:
         if tryNum % 100 == 0 and not SILENT_MODE:
             print('%s keys tried. (%s)' % (tryNum, key))
