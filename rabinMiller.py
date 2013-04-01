@@ -36,7 +36,7 @@ def isPrime(num):
     if (num < 2):
         return False # 0, 1, and negative numbers are not prime
 
-    # About a 1/3 of the time we can quickly determine if num is not prime
+    # About 1/3 of the time we can quickly determine if num is not prime
     # by dividing by the first few dozen prime numbers. This is quicker
     # than rabinMiller(), but unlike rabinMiller() is not guaranteed to
     # prove that a number is prime.

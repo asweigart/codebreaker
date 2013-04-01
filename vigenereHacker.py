@@ -6,7 +6,7 @@ import vigenereCipher, pyperclip, freqAnalysis, detectEnglish
 
 LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 SILENT_MODE = False # if set to True, program doesn't print attempts
-NUM_MOST_FREQ_LETTERS = 3 # attempts this many letters per subkey
+NUM_MOST_FREQ_LETTERS = 4 # attempts this many letters per subkey
 MAX_KEY_LENGTH = 16 # will not attempt keys longer than this
 NONLETTERS_PATTERN = re.compile('[^A-Z]')
 
@@ -28,9 +28,9 @@ def main():
 def findRepeatSequencesSpacings(message):
     # Goes through the message and finds any 3 to 5 letter sequences
     # that are repeated. Returns a dict with the keys of the sequence and
-    # value of a list of spacings (number of letters between the repeats.)
+    # values of a list of spacings (num of letters between the repeats).
 
-    # Use a "regular expression" to remove non-letters from the message.
+    # Use a regular expression to remove non-letters from the message.
     message = NONLETTERS_PATTERN.sub('', message.upper())
 
     # Compile a list of seqLen-letter sequences found in the message.
@@ -45,7 +45,7 @@ def findRepeatSequencesSpacings(message):
                 if message[i:i + seqLen] == seq:
                     # Found a repeated sequence.
                     if seq not in seqSpacings:
-                        seqSpacings[seq] = [] # initalize blank list
+                        seqSpacings[seq] = [] # initialize blank list
 
                     # Append the spacing distance between the repeated
                     # sequence and the original sequence.
@@ -79,11 +79,11 @@ def getItemAtIndexOne(x):
 
 
 def getMostCommonFactors(seqFactors):
-    # First, get a count of many times a factor occurs in seqFactors.
+    # First, get a count of times a factor occurs in seqFactors.
     factorCounts = {} # key is a factor, value is how often if occurs
 
-    # seqFactors keys are sequences, values are list of factors of the
-    # spacings. seqFactos has a value like: {'GFD': [2, 3, 4, 6, 9, 12,
+    # seqFactors keys are sequences, values are lists of factors of the
+    # spacings. seqFactors has a value like: {'GFD': [2, 3, 4, 6, 9, 12,
     # 18, 23, 36, 46, 69, 92, 138, 207], 'ALW': [2, 3, 4, 6, ...], ...}
     for seq in seqFactors:
         factorList = seqFactors[seq]
@@ -109,7 +109,7 @@ def getMostCommonFactors(seqFactors):
 
 
 def kasiskiExamination(ciphertext):
-    # Find out the sequences of 3 to 5 letters that occurr multiple times
+    # Find out the sequences of 3 to 5 letters that occur multiple times
     # in the ciphertext. repeatedSeqSpacings has a value like:
     # {'EXG': [192], 'NAF': [339, 972, 633], ... }
     repeatedSeqSpacings = findRepeatSequencesSpacings(ciphertext)
@@ -141,7 +141,7 @@ def getNthSubkeysLetters(n, keyLength, message):
     #      getNthSubkeysLetters(3, 3, 'ABCABCABC') returns 'CCC'
     #      getNthSubkeysLetters(1, 5, 'ABCDEFGHI') returns 'AF'
 
-    # Use a "regular expression" remove non-letters from the message.
+    # Use a regular expression to remove non-letters from the message.
     message = NONLETTERS_PATTERN.sub('', message)
 
     i = n - 1
@@ -163,8 +163,8 @@ def attemptHackWithKeyLength(ciphertext, mostLikelyKeyLength):
 
         # freqScores is a list of tuples like:
         # [(<letter>, <Eng. Freq. match score>), ... ]
-        # List is sorted by match score (lower score means better match.
-        # See the englishFreqMatchScore() comments in freqAnalysis.py).
+        # List is sorted by match score. Higher score means better match.
+        # See the englishFreqMatchScore() comments in freqAnalysis.py.
         freqScores = []
         for possibleKey in LETTERS:
             decryptedText = vigenereCipher.decryptMessage(possibleKey, nthLetters)

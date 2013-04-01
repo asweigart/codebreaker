@@ -54,7 +54,7 @@ def addLettersToMapping(letterMapping, cipherword, candidate):
 
 
 def intersectMappings(mapA, mapB):
-    # To intersect two maps, create a blank map, and that add only the
+    # To intersect two maps, create a blank map, and then add only the
     # potential decryption letters if they exist in BOTH maps.
     intersectedMapping = getBlankCipherletterMapping()
     for letter in LETTERS:
