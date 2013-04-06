@@ -134,7 +134,7 @@ def hackSimpleSub(message):
 
 def decryptWithCipherletterMapping(ciphertext, letterMapping):
     # Return a string of the ciphertext decrypted with the letter mapping,
-    # with any ambiguous decrypted letters replaced with a _ underscore.
+    # with any ambiguous decrypted letters replaced with an _ underscore.
 
     # First create a simple sub key from the letterMapping mapping.
     key = ['x'] * len(LETTERS)
