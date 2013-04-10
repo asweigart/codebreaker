@@ -79,7 +79,7 @@ def getItemAtIndexOne(x):
 
 
 def getMostCommonFactors(seqFactors):
-    # First, get a count of times a factor occurs in seqFactors.
+    # First, get a count of how many times a factor occurs in seqFactors.
     factorCounts = {} # key is a factor, value is how often if occurs
 
     # seqFactors keys are sequences, values are lists of factors of the
