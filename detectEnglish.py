@@ -12,9 +12,9 @@ LETTERS_AND_SPACE = ascii_uppercase + ' \t\n'
 
 def loadDictionary():
     dictionaryFile = open('dictionary.txt')
-    englishWords = {}
+    englishWords = set()
     for word in dictionaryFile.read().split('\n'):
-        englishWords[word.upper()] = None
+        englishWords.add(word.upper())
     dictionaryFile.close()
     return englishWords
 
