@@ -10,12 +10,11 @@
 from string import ascii_uppercase
 LETTERS_AND_SPACE = ascii_uppercase + ' \t\n'
 
-def loadDictionary():
-    dictionaryFile = open('dictionary.txt')
+def loadDictionary(filename='dictionary.txt'):
     englishWords = set()
-    for word in dictionaryFile.read().split('\n'):
+    for line in open(filename):
+        word = line.strip()
         englishWords.add(word.upper())
-    dictionaryFile.close()
     return englishWords
 
 ENGLISH_WORDS = loadDictionary()
