@@ -7,14 +7,14 @@
 # (There must be a "dictionary.txt" file in this directory with all English
 # words in it, one word per line. You can download this from
 # http://invpy.com/dictionary.txt)
-UPPERLETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-LETTERS_AND_SPACE = UPPERLETTERS + UPPERLETTERS.lower() + ' \t\n'
+from string import ascii_uppercase
+LETTERS_AND_SPACE = ascii_uppercase + ' \t\n'
 
 def loadDictionary():
     dictionaryFile = open('dictionary.txt')
     englishWords = {}
     for word in dictionaryFile.read().split('\n'):
-        englishWords[word] = None
+        englishWords[word.upper()] = None
     dictionaryFile.close()
     return englishWords
 
