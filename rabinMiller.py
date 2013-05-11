@@ -10,7 +10,7 @@ def rabinMiller(num):
     s = num - 1
     t = 0
     while s % 2 == 0:
-        # keep halving s until it is even (and use t
+        # keep halving s while it is even (and use t
         # to count how many times we halve s)
         s = s // 2
         t += 1
