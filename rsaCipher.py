@@ -108,7 +108,7 @@ def encryptAndWriteToFile(messageFilename, keyFilename, message, blockSize=DEFAU
 
     # Check that key size is greater than block size.
     if keySize < blockSize * 8: # * 8 to convert bytes to bits
-        sys.exit('ERROR: Block size is %s bits and key size is %s bits. The RSA cipher requires the block size to be equal to or greater than the key size. Either decrease the block size or use different keys.' % (blockSize * 8, keySize))
+        sys.exit('ERROR: Block size is %s bits and key size is %s bits. The RSA cipher requires the block size to be equal to or less than the key size. Either increase the block size or use different keys.' % (blockSize * 8, keySize))
 
 
     # Encrypt the message
@@ -143,7 +143,7 @@ def readFromFileAndDecrypt(messageFilename, keyFilename):
 
     # Check that key size is greater than block size.
     if keySize < blockSize * 8: # * 8 to convert bytes to bits
-        sys.exit('ERROR: Block size is %s bits and key size is %s bits. The RSA cipher requires the block size to be equal to or greater than the key size. Did you specify the correct key file and encrypted file?' % (blockSize * 8, keySize))
+        sys.exit('ERROR: Block size is %s bits and key size is %s bits. The RSA cipher requires the block size to be equal to or less than the key size. Did you specify the correct key file and encrypted file?' % (blockSize * 8, keySize))
 
     # Convert the encrypted message into large int values.
     encryptedBlocks = []
