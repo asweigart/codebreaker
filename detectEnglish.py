@@ -10,6 +10,11 @@
 UPPERLETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 LETTERS_AND_SPACE = UPPERLETTERS + UPPERLETTERS.lower() + ' \t\n'
 
+def main():
+    message = 'A computer would deserve to be called intelligent if it could deceive a human into believing that it was human." -Alan Turing'
+    testOutput = isEnglish(message)
+    print(testOutput)
+
 def loadDictionary():
     dictionaryFile = open('dictionary.txt')
     englishWords = {}
@@ -53,3 +58,8 @@ def isEnglish(message, wordPercentage=20, letterPercentage=85):
     messageLettersPercentage = float(numLetters) / len(message) * 100
     lettersMatch = messageLettersPercentage >= letterPercentage
     return wordsMatch and lettersMatch
+
+# If detectEnglish.py is run (instead of imported as a module) call
+# the main() function.
+if __name__ == '__main__':
+    main()
