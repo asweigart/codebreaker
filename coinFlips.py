@@ -5,8 +5,8 @@ flips = 0
 heads = 0
 while flips < 1000:
     if random.randint(0, 1) == 1:
-        heads = heads + 1
-    flips = flips + 1
+        heads += 1
+    flips += 1
 
     if flips == 900:
         print('900 flips and there have been ' + str(heads) + ' heads.')
