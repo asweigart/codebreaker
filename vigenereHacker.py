@@ -178,9 +178,9 @@ def attemptHackWithKeyLength(ciphertext, mostLikelyKeyLength):
     if not SILENT_MODE:
         for i in range(len(allFreqScores)):
             # use i + 1 so the first letter is not called the "0th" letter
-            print('Possible letters for letter %s of the key: ' % (i + 1), end='')
+            print('Possible letters for letter %s of the key: ' % (i + 1), end=='')
             for freqScore in allFreqScores[i]:
-                print('%s ' % freqScore[0], end='')
+                print('%s ' % freqScore[0], end=='')
             print() # print a newline
 
     # Try every combination of the most likely letters for each position
