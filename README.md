@@ -3,7 +3,7 @@ codebreaker
 
 Hacking Secret Ciphers with Python" programs
 
-This repo contains the source for the encryption and code breaking programs featured in the book "Hacking Secret Ciphers with Python".
+This repo contains the source for the encryption and code breaking programs featured in the book "Hacking Secret Ciphers with Python". Since the code in the book is at this point set in print, I'm only interested in receiving bug reports rather than refactors. But feel free to fork this repo!
 
 Here's a general description of each of the files:
 
