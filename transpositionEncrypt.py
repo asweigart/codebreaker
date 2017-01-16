@@ -10,7 +10,7 @@ def main():
     ciphertext = encryptMessage(myKey, myMessage)
 
     # Print the encrypted string in ciphertext to the screen, with
-    # a | (called "pipe" character) after it in case there are spaces at
+    # a | ("pipe" character) after it in case there are spaces at
     # the end of the encrypted message.
     print(ciphertext + '|')
 
@@ -24,16 +24,16 @@ def encryptMessage(key, message):
 
     # Loop through each column in ciphertext.
     for col in range(key):
-        pointer = col
+        currentIndex = col
 
-        # Keep looping until pointer goes past the length of the message.
-        while pointer < len(message):
-            # Place the character at pointer in message at the end of the
-            # current column in the ciphertext list.
-            ciphertext[col] += message[pointer]
+        # Keep looping until currentIndex goes past the message length.
+        while currentIndex < len(message):
+            # Place the character at currentIndex in message at the end
+            # end of the current column in the ciphertext list.
+            ciphertext[col] += message[currentIndex]
 
-            # move pointer over
-            pointer += key
+            # move currentIndex over
+            currentIndex += key
 
     # Convert the ciphertext list into a single string value and return it.
     return ''.join(ciphertext)
