@@ -142,7 +142,7 @@ def getNthSubkeysLetters(n, keyLength, message):
     #      getNthSubkeysLetters(1, 5, 'ABCDEFGHI') returns 'AF'
 
     # Use a regular expression to remove non-letters from the message.
-    message = NONLETTERS_PATTERN.sub('', message)
+    message = NONLETTERS_PATTERN.sub('', message.upper())
 
     i = n - 1
     letters = []
