@@ -17,7 +17,7 @@ import unittest, subprocess, pyperclip, hashlib, os, sys, io, random, shutil
 # @c:\Python32\python.exe c:\Python32\Lib\site-packages\pylint\lint.py --rcfile=pylint.conf %1 %2 %3 %4 %5 %6 %7 %8 %9
 #
 # This way I could run "run_pylint.bat foo.py" to run pylint on a source code file.
-# Be sure to download the pylint.conf config file and have it in the same folderas codebreaker_unit_tests.py
+# Be sure to download the pylint.conf config file and have it in the same folders codebreaker_unit_tests.py
 
 
 FOX_MESSAGE = "The quick brown fox jumped over the yellow lazy dog.".upper()
