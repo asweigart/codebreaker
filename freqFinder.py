@@ -17,7 +17,7 @@ def getLetterCount(message):
     # count of how many times they appear in the message parameter.
     letterToCount = {}
     for letter in LETTERS:
-        letterToCount[letter] = 0 # intialize each letter to 0
+        letterToCount[letter] = 0 # initialize each letter to 0
 
     for letter in message:
         if letter in LETTERS:
